@@ -1,8 +1,10 @@
 package org.example.servlets;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.example.model.User;
 import org.example.repo.UserRepository;
 import org.example.service.UserService;
-import org.example.model.User;
 import org.example.validation.ValidateUser;
 
 import javax.servlet.annotation.WebServlet;
@@ -15,10 +17,13 @@ import java.util.Arrays;
 @WebServlet("/addUser")
 public class AddUserServlet extends HttpServlet {
 
+    private static final Logger logger = LogManager.getLogger(AddUserServlet.class);
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try{
-        request.getRequestDispatcher("/WEB-INF/views/addUser.jsp").forward(request, response);
+        try {
+            request.getRequestDispatcher("/WEB-INF/views/addUser.jsp").forward(request, response);
         } catch (Exception e) {
+            logger.error(e);
             response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
         }
     }
@@ -40,9 +45,10 @@ public class AddUserServlet extends HttpServlet {
             return;
         }
         UserRepository userRepository = new UserService();
-        try{
-        userRepository.create(user);
+        try {
+            userRepository.create(user);
         } catch (Exception e) {
+            logger.error(e);
             response.sendRedirect(request.getContextPath() + "/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
         }
         response.sendRedirect("users");
