@@ -4,9 +4,9 @@ import java.sql.*;
 
 public class DatabaseUtils {
     private static DatabaseUtils instance;
-    private String databaseUrl;
-    private String databaseUsername;
-    private String databasePassword;
+    private final String databaseUrl;
+    private final String databaseUsername;
+    private final String databasePassword;
 
 
     private DatabaseUtils() {
@@ -33,15 +33,15 @@ public class DatabaseUtils {
     }
 
     public Connection getConnection() {
-        Connection conn = null;
+        Connection connection;
         setDatabaseDriver();
         try {
-            conn = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
-            conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            connection = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return conn;
+        return connection;
     }
 
     private void setDatabaseDriver(){

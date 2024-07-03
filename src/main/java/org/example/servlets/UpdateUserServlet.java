@@ -5,7 +5,6 @@ import org.example.repo.UserRepository;
 import org.example.service.UserService;
 import org.example.validation.ValidateUser;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,7 @@ import java.util.Arrays;
 @WebServlet("/updateUser")
 public class UpdateUserServlet extends HttpServlet {
 
-    private UserRepository userRepository = new UserService();
+    private final UserRepository userRepository = new UserService();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
