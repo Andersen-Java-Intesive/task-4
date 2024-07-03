@@ -1,6 +1,10 @@
 package org.example.util;
 
-import java.sql.*;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
 
 public class DatabaseUtils {
     private static DatabaseUtils instance;
@@ -10,18 +14,28 @@ public class DatabaseUtils {
 
 
     private DatabaseUtils() {
-//        databaseUrl = System.getenv("DB_URL");
-//        databaseUsername = System.getenv("DB_USERNAME");
-//        databasePassword = System.getenv("DB_PASSWORD");
-          databaseUrl = "jdbc:postgresql://192.168.64.14:5432/Users";
-          databaseUsername = "postgres";
-          databasePassword = "nurdos";
+        loadProperties();
         setDatabaseDriver();
         try {
             Connection testConn = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
             testConn.close();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to establish database connection during initialization", e);
+        }
+    }
+
+    private void loadProperties() {
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("secrets.properties")) {
+            if (input == null) {
+                throw new RuntimeException("Unable to find secrets.properties");
+            }
+            Properties prop = new Properties();
+            prop.load(input);
+            databaseUrl = prop.getProperty("DB_URL");
+            databaseUsername = prop.getProperty("DB_USERNAME");
+            databasePassword = prop.getProperty("DB_PASSWORD");
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to load database properties", ex);
         }
     }
 
@@ -44,12 +58,11 @@ public class DatabaseUtils {
         return connection;
     }
 
-    private void setDatabaseDriver(){
+    private void setDatabaseDriver() {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
-
 }

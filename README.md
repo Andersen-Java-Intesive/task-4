@@ -1,13 +1,15 @@
 # task-4
 
-To run the Tomcat application, ensure you have JDK 11 or higher and Apache Tomcat version 9 or later. 
-Set the required environment variables to your database.
+1. Create secrets.properties:
+To run the application, you need to create a secrets.properties file in the resources directory with the following 
+content, replacing the placeholders with your own credentials:
 
-```
-DB_URL
-DB_USERNAME
-DB_PASSWORD
+```properties
+DB_URL=jdbc:postgresql://{DB_IP_ADDRESS}:{DB_PORT}/{DB_TABLE}
+DB_USERNAME={DB_USERNAME}
+DB_PASSWORD={DB_PASSWORD}
 ```
 
-These environment variables must be present for the application to connect to the database. 
-Access your application at http://localhost:8085/users in a web browser.
+2. Database Setup:
+Create a table in the database according to the script `src/main/java/org/example/sql/db.sql`
+
