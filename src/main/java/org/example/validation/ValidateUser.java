@@ -6,10 +6,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-//All name strings must be not null and not empty
-//Age values must be at least zero
-//All fields must be completed
 public class ValidateUser {
     public static String validate (User user) {
         if (Objects.equals(null, user.getFirstName()) || user.getFirstName().isBlank() || user.getFirstName().isEmpty()) {

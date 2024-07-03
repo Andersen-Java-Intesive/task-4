@@ -1,7 +1,7 @@
 package org.example.servlets;
 
-import org.example.dao.abs.UserDAO;
-import org.example.dao.impl.UserDaoImpl;
+import org.example.repo.UserRepository;
+import org.example.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,11 +13,11 @@ import java.io.IOException;
 @WebServlet("/deleteUser")
 public class DeleteUserServlet extends HttpServlet {
 
-    private UserDAO userDAO = new UserDaoImpl();
+    private UserRepository userRepository = new UserService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        userDAO.deleteById(id);
+        userRepository.deleteById(id);
         response.sendRedirect("users");
     }
 }
