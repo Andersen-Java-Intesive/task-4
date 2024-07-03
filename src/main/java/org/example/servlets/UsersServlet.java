@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 
-@WebServlet(urlPatterns = {"/users", "/"})
+@WebServlet(urlPatterns = {"/users"})
 public class UsersServlet extends HttpServlet {
 
     private UserRepository userRepository = new UserService();
