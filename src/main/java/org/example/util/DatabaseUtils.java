@@ -13,7 +13,7 @@ public class DatabaseUtils {
 //        databaseUrl = System.getenv("DB_URL");
 //        databaseUsername = System.getenv("DB_USERNAME");
 //        databasePassword = System.getenv("DB_PASSWORD");
-          databaseUrl = "jdbc:postgresql://192.168.64.14:5432/postgres";
+          databaseUrl = "jdbc:postgresql://192.168.64.14:5432/Users";
           databaseUsername = "postgres";
           databasePassword = "nurdos";
         setDatabaseDriver();
