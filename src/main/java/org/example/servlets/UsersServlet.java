@@ -18,7 +18,7 @@ public class UsersServlet extends HttpServlet {
 
     private UserRepository userRepository = new UserService();
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 //        try {
             Set<User> users = userRepository.all();
             request.setAttribute("users", users);
