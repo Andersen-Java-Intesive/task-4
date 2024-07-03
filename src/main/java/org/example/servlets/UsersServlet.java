@@ -19,12 +19,12 @@ public class UsersServlet extends HttpServlet {
     private UserRepository userRepository = new UserService();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
+//        try {
             Set<User> users = userRepository.all();
             request.setAttribute("users", users);
             request.getRequestDispatcher("/WEB-INF/views/users.jsp").forward(request, response);
-        } catch (Exception e) {
-            response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
-        }
+//        } catch (Exception e) {
+//            response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
+//        }
     }
 }
