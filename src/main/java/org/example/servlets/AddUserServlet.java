@@ -5,7 +5,6 @@ import org.example.service.UserService;
 import org.example.model.User;
 import org.example.validation.ValidateUser;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,6 @@ public class AddUserServlet extends HttpServlet {
         } catch (Exception e) {
             response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
         }
-
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -38,14 +36,14 @@ public class AddUserServlet extends HttpServlet {
 
         String validationError = ValidateUser.validate(user);
         if (!validationError.isEmpty()) {
-            response.sendRedirect("/error.jsp?error=" + validationError);
+            response.sendRedirect(request.getContextPath() + "/error.jsp?error=" + validationError);
             return;
         }
         UserRepository userRepository = new UserService();
         try{
         userRepository.create(user);
         } catch (Exception e) {
-            response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
+            response.sendRedirect(request.getContextPath() + "/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
         }
         response.sendRedirect("users");
     }

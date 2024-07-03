@@ -6,18 +6,38 @@
     <meta charset="UTF-8">
     <title>Список пользователей</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
         table {
-            width: 50%;
+            width: 60%;
+            margin: 20px auto;
             border-collapse: collapse;
+            background-color: white;
         }
-
         table, th, td {
-            border: 1px solid black;
+            border: 1px solid #ddd;
         }
-
         th, td {
-            padding: 10px;
+            padding: 12px;
             text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button-container {
+            text-align: center;
+            margin: 20px;
+        }
+        .button-container form {
+            display: inline;
         }
     </style>
 </head>

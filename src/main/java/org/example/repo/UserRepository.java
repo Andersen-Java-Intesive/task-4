@@ -2,12 +2,12 @@ package org.example.repo;
 
 import org.example.model.User;
 
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 public interface UserRepository  {
     boolean create(User user);
     User findById(int id);
-    boolean deleteById(int id);
-    boolean update(User user);
-    Set<User> all();
+    void deleteById(int id);
+    void update(User user);
+    LinkedHashSet<User> all();
 }

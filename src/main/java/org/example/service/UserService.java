@@ -5,20 +5,19 @@ import org.example.repo.UserRepository;
 import org.example.util.DatabaseUtils;
 
 import java.sql.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 public class UserService implements UserRepository {
     @Override
-    public boolean create(User type) {
+    public boolean create(User user) {
 
         try (Connection connection = DatabaseUtils.getInstance().getConnection()) {
             String sql = "INSERT INTO user_info (first_name, second_name, age) VALUES (?, ?, ?)";
-            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-                pstmt.setString(1, type.getFirstName());
-                pstmt.setString(2, type.getSecondName());
-                pstmt.setInt(3, type.getAge());
-                pstmt.executeUpdate();
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, user.getFirstName());
+                preparedStatement.setString(2, user.getSecondName());
+                preparedStatement.setInt(3, user.getAge());
+                preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -30,13 +29,13 @@ public class UserService implements UserRepository {
     }
 
     @Override
-    public User findById(int key) {
+    public User findById(int id) {
         Connection connection = DatabaseUtils.getInstance().getConnection();
         try {
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM user_info where id =" + key);
-            if (rs.next()) {
-                return createUser(rs);
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM user_info where id =" + id);
+            if (resultSet.next()) {
+                return createUser(resultSet);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -45,51 +44,44 @@ public class UserService implements UserRepository {
     }
 
     @Override
-    public boolean deleteById(int id) {
+    public void deleteById(int id) {
 
         try (Connection connection = DatabaseUtils.getInstance().getConnection()) {
             Statement statement = connection.createStatement();
             if (findById(id) != null) {
                 statement.execute("DELETE FROM user_info where id =" + id);
-                return true;
-            } else return false;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public boolean update(User type) {
-
+    public void update(User user) {
         try (Connection connection = DatabaseUtils.getInstance().getConnection()) {
             String sql = "UPDATE user_info SET first_name = ?, second_name = ?, age = ? WHERE id = ?";
-            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-                pstmt.setString(1, type.getFirstName());
-                pstmt.setString(2, type.getSecondName());
-                pstmt.setInt(3, type.getAge());
-                pstmt.setInt(4, type.getId());
-                pstmt.executeUpdate();
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, user.getFirstName());
+                preparedStatement.setString(2, user.getSecondName());
+                preparedStatement.setInt(3, user.getAge());
+                preparedStatement.setInt(4, user.getId());
+                preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            if (findById(type.getId()).equals(type)) {
-                return true;
-            } else return false;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Set<User> all() {
-        Set<User> users = new HashSet<>();
-        Statement statement = null;
-        ResultSet rs = null;
-        try (Connection connection = DatabaseUtils.getInstance().getConnection();) {
-            statement = connection.createStatement();
-            rs = statement.executeQuery("SELECT * FROM user_info");
-            while (rs.next()) {
-                users.add(createUser(rs));
+    public LinkedHashSet<User> all() {
+        LinkedHashSet<User> users = new LinkedHashSet<>();
+        try (Connection connection = DatabaseUtils.getInstance().getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM user_info");
+            while (resultSet.next()) {
+                users.add(createUser(resultSet));
             }
             return users;
         } catch (SQLException e) {
@@ -97,12 +89,12 @@ public class UserService implements UserRepository {
         }
     }
 
-    private User createUser(ResultSet rs) throws SQLException {
+    private User createUser(ResultSet resultSet) throws SQLException {
         User user = new User();
-        user.setId(rs.getInt("id"));
-        user.setAge(rs.getInt("age"));
-        user.setFirstName(rs.getString("first_name"));
-        user.setSecondName(rs.getString("second_name"));
+        user.setId(resultSet.getInt("id"));
+        user.setAge(resultSet.getInt("age"));
+        user.setFirstName(resultSet.getString("first_name"));
+        user.setSecondName(resultSet.getString("second_name"));
         return user;
     }
 }
