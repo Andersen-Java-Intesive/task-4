@@ -38,14 +38,14 @@ public class AddUserServlet extends HttpServlet {
 
         String validationError = ValidateUser.validate(user);
         if (!validationError.isEmpty()) {
-            response.sendRedirect("MyWebApp/error.jsp?error=" + validationError);
+            response.sendRedirect("/error.jsp?error=" + validationError);
             return;
         }
         UserRepository userRepository = new UserService();
         try{
         userRepository.create(user);
         } catch (Exception e) {
-            response.sendRedirect("MyWebApp/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
+            response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
         }
         response.sendRedirect("users");
     }
