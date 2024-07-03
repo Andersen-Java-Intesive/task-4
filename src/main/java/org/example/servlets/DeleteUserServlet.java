@@ -17,8 +17,10 @@ public class DeleteUserServlet extends HttpServlet {
     private UserRepository userRepository = new UserService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+
         try {
+            int id = Integer.parseInt(request.getParameter("id"));
+
             userRepository.deleteById(id);
         } catch (Exception e) {
             response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));

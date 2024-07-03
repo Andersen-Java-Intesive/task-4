@@ -10,12 +10,12 @@ public class DatabaseUtils {
 
 
     private DatabaseUtils() {
-//        databaseUrl = System.getenv("DB_URL");
-//        databaseUsername = System.getenv("DB_USERNAME");
-//        databasePassword = System.getenv("DB_PASSWORD");
-          databaseUrl = "jdbc:postgresql://192.168.64.14:5432/postgres";
-          databaseUsername = "postgres";
-          databasePassword = "nurdos";
+        databaseUrl = System.getenv("DB_URL");
+        databaseUsername = System.getenv("DB_USERNAME");
+        databasePassword = System.getenv("DB_PASSWORD");
+//          databaseUrl = "jdbc:postgresql://192.168.64.14:5432/postgres";
+//          databaseUsername = "postgres";
+//          databasePassword = "nurdos";
         setDatabaseDriver();
         try {
             Connection testConn = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);

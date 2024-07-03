@@ -49,7 +49,7 @@ public class UserService implements UserRepository {
 
         try (Connection connection = DatabaseUtils.getInstance().getConnection()) {
             Statement statement = connection.createStatement();
-            if (findById(id) == null) {
+            if (findById(id) != null) {
                 statement.execute("DELETE FROM user_info where id =" + id);
                 return true;
             } else return false;
