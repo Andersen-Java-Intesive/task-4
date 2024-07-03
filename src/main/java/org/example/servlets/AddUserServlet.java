@@ -1,7 +1,7 @@
 package org.example.servlets;
 
-import org.example.dao.abs.UserDAO;
-import org.example.dao.impl.UserDaoImpl;
+import org.example.repo.UserRepository;
+import org.example.service.UserService;
 import org.example.model.User;
 import org.example.validation.ValidateUser;
 
@@ -29,13 +29,14 @@ public class AddUserServlet extends HttpServlet {
         user.setFirstName(firstName);
         user.setSecondName(secondName);
         user.setAge(age);
+
         String validationError = ValidateUser.validate(user);
         if (!validationError.isEmpty()) {
-            response.sendRedirect("/error.jsp?error="+validationError);
+            response.sendRedirect("/error.jsp?error=" + validationError);
             return;
         }
-        UserDAO userDAO = new UserDaoImpl();
-        userDAO.create(user);
+        UserRepository userRepository = new UserService();
+        userRepository.create(user);
 
         response.sendRedirect("users");
     }
