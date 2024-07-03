@@ -3,6 +3,7 @@ package org.example.servlets;
 import org.example.dao.abs.UserDAO;
 import org.example.dao.impl.UserDaoImpl;
 import org.example.model.User;
+import org.example.validation.ValidateUser;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,12 +29,12 @@ public class UpdateUserServlet extends HttpServlet {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("secondName");
         int age = Integer.parseInt(request.getParameter("age"));
-        if (age < 0) {
-            request.setAttribute("errorMessage", "No negative age allowed");
-            request.getRequestDispatcher("/WEB-INF/views/addUser.jsp").forward(request, response);
+        User user = new User(id, firstName, lastName, age);
+        String validationError = ValidateUser.validate(user);
+        if (!validationError.isEmpty()) {
+            response.sendRedirect("/error.jsp?error="+validationError);
             return;
         }
-        User user = new User(id, firstName, lastName, age);
         userDAO.update(user);
         response.sendRedirect("users");
     }
