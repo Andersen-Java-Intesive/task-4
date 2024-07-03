@@ -1,15 +1,14 @@
-package org.example.dao.impl;
+package org.example.service;
 
-import org.example.dao.abs.UserDAO;
 import org.example.model.User;
+import org.example.repo.UserRepository;
 import org.example.util.DatabaseUtils;
 
 import java.sql.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
-public class UserDaoImpl implements UserDAO {
+public class UserService implements UserRepository {
     @Override
     public boolean create(User type) {
 
@@ -50,7 +49,7 @@ public class UserDaoImpl implements UserDAO {
 
         try (Connection connection = DatabaseUtils.getInstance().getConnection()) {
             Statement statement = connection.createStatement();
-            if (!Objects.equals(findById(id), null)) {
+            if (findById(id) != null) {
                 statement.execute("DELETE FROM user_info where id =" + id);
                 return true;
             } else return false;
