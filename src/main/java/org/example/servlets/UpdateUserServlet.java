@@ -11,20 +11,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 @WebServlet("/updateUser")
 public class UpdateUserServlet extends HttpServlet {
 
     private UserRepository userRepository = new UserService();
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        User user = userRepository.findById(id);
-        request.setAttribute("user", user);
-        request.getRequestDispatcher("/WEB-INF/views/updateUser.jsp").forward(request, response);
+        try {
+            User user = userRepository.findById(id);
+            request.setAttribute("user", user);
+            request.getRequestDispatcher("/WEB-INF/views/updateUser.jsp").forward(request, response);
+        } catch (Exception e) {
+            response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
+        }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("secondName");
@@ -32,10 +37,14 @@ public class UpdateUserServlet extends HttpServlet {
         User user = new User(id, firstName, lastName, age);
         String validationError = ValidateUser.validate(user);
         if (!validationError.isEmpty()) {
-            response.sendRedirect("/error.jsp?error="+validationError);
+            response.sendRedirect("/error.jsp?error=" + validationError);
             return;
         }
-        userRepository.update(user);
+        try {
+            userRepository.update(user);
+        } catch (Exception e) {
+            response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
+        }
         response.sendRedirect("users");
     }
 }
