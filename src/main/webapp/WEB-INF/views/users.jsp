@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,9 +10,11 @@
             width: 50%;
             border-collapse: collapse;
         }
+
         table, th, td {
             border: 1px solid black;
         }
+
         th, td {
             padding: 10px;
             text-align: left;
@@ -28,25 +30,28 @@
         <th>First Name</th>
         <th>Second Name</th>
         <th>Age</th>
+        <th>Update</th>
+        <th>Delete</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach var="user" items="${users}">
-        <tr>
-            <td>${user.id}</td>
-            <td>${user.firstName}</td>
-            <td>${user.secondName}</td>
-            <td>${user.age}</td>
-            <td>
-                <form action="updateUser" method="get" style="display:inline;">
-                    <input type="hidden" name="id" value="${user.id}">
-                    <input type="submit" value="Edit">
-                </form>
-                <form action="deleteUser" method="post" style="display:inline;">
-                    <input type="hidden" name="id" value="${user.id}">
-                    <input type="submit" value="Remove">
-                </form>
-            </td>
+        <td>${user.id}</td>
+        <td>${user.firstName}</td>
+        <td>${user.secondName}</td>
+        <td>${user.age}</td>
+        <td>
+            <form action="updateUser" method="get" style="display:inline;">
+                <input type="hidden" name="id" value="${user.id}">
+                <input type="submit" value="Edit">
+            </form>
+        </td>
+        <td>
+            <form action="deleteUser" method="post" style="display:inline;">
+                <input type="hidden" name="id" value="${user.id}">
+                <input type="submit" value="Remove">
+            </form>
+        </td>
         </tr>
     </c:forEach>
     </tbody>

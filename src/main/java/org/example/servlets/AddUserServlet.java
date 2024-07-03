@@ -20,7 +20,7 @@ public class AddUserServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
+        String secondName = request.getParameter("secondName");
         int age = Integer.parseInt(request.getParameter("age"));
 
         if (age < 0) {
@@ -31,7 +31,7 @@ public class AddUserServlet extends HttpServlet {
 
         User user = new User();
         user.setFirstName(firstName);
-        user.setSecondName(lastName);
+        user.setSecondName(secondName);
         user.setAge(age);
 
         UserDAO userDAO = new UserDaoImpl();

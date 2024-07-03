@@ -1,11 +1,9 @@
 package org.example.util;
 import java.sql.*;
 public class DBUtils {
-    public static final String DB_USER = "root";
+    public static final String DB_USER = "postgres";
     public static final String DB_PASSWORD = "root";
-
- //TODO: добавить валидный урл БД
-    public static final String DB_URL = "";
+    public static final String DB_URL = "jdbc:postgresql://localhost:5432/Users";
 
     private DBUtils() {
 
@@ -13,6 +11,11 @@ public class DBUtils {
 
     public static Connection getConnection() {
         Connection conn = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         try {
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         } catch (SQLException e) {
