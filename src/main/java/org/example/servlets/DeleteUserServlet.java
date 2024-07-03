@@ -1,5 +1,7 @@
 package org.example.servlets;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.example.repo.UserRepository;
 import org.example.service.UserService;
 
@@ -14,12 +16,14 @@ import java.util.Arrays;
 public class DeleteUserServlet extends HttpServlet {
 
     private final UserRepository userRepository = new UserService();
+    private static final Logger logger = LogManager.getLogger(DeleteUserServlet.class);
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             userRepository.deleteById(id);
         } catch (Exception e) {
+            logger.error(e);
             response.sendRedirect("MyWebApp/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
         }
         response.sendRedirect("users");

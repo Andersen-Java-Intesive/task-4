@@ -1,27 +1,47 @@
 package org.example.util;
 
-import java.sql.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
 
 public class DatabaseUtils {
     private static DatabaseUtils instance;
-    private final String databaseUrl;
-    private final String databaseUsername;
-    private final String databasePassword;
+    private String databaseUrl;
+    private String databaseUsername;
+    private String databasePassword;
 
+    private static final Logger logger = LogManager.getLogger(DatabaseUtils.class);
 
     private DatabaseUtils() {
-//        databaseUrl = System.getenv("DB_URL");
-//        databaseUsername = System.getenv("DB_USERNAME");
-//        databasePassword = System.getenv("DB_PASSWORD");
-          databaseUrl = "jdbc:postgresql://192.168.64.14:5432/Users";
-          databaseUsername = "postgres";
-          databasePassword = "nurdos";
+        loadProperties();
         setDatabaseDriver();
         try {
             Connection testConn = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
             testConn.close();
         } catch (SQLException e) {
+            logger.error(e);
             throw new RuntimeException("Failed to establish database connection during initialization", e);
+        }
+    }
+
+    private void loadProperties() {
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("secrets.properties")) {
+            if (input == null) {
+                throw new RuntimeException("Unable to find secrets.properties");
+            }
+            Properties prop = new Properties();
+            prop.load(input);
+            databaseUrl = prop.getProperty("DB_URL");
+            databaseUsername = prop.getProperty("DB_USERNAME");
+            databasePassword = prop.getProperty("DB_PASSWORD");
+        } catch (Exception e) {
+            logger.error(e);
+            throw new RuntimeException("Failed to load database properties", e);
         }
     }
 
@@ -39,17 +59,18 @@ public class DatabaseUtils {
             connection = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
             connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
         } catch (SQLException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
         return connection;
     }
 
-    private void setDatabaseDriver(){
+    private void setDatabaseDriver() {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }
-
 }

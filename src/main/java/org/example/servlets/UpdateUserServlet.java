@@ -1,5 +1,7 @@
 package org.example.servlets;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.example.model.User;
 import org.example.repo.UserRepository;
 import org.example.service.UserService;
@@ -16,6 +18,7 @@ import java.util.Arrays;
 public class UpdateUserServlet extends HttpServlet {
 
     private final UserRepository userRepository = new UserService();
+    private static final Logger logger = LogManager.getLogger(UpdateUserServlet.class);
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
@@ -24,6 +27,7 @@ public class UpdateUserServlet extends HttpServlet {
             request.setAttribute("user", user);
             request.getRequestDispatcher("/WEB-INF/views/updateUser.jsp").forward(request, response);
         } catch (Exception e) {
+            logger.error(e);
             response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
         }
     }
@@ -42,6 +46,7 @@ public class UpdateUserServlet extends HttpServlet {
         try {
             userRepository.update(user);
         } catch (Exception e) {
+            logger.error(e);
             response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
         }
         response.sendRedirect("users");
