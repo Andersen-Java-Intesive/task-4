@@ -37,7 +37,7 @@ public class UpdateUserServlet extends HttpServlet {
         User user = new User(id, firstName, lastName, age);
         String validationError = ValidateUser.validate(user);
         if (!validationError.isEmpty()) {
-            response.sendRedirect("MyWebApp/error.jsp?error=" + validationError);
+            response.sendRedirect(request.getContextPath() + "/error.jsp?error=" + validationError);
             return;
         }
         try {
