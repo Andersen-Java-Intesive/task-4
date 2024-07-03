@@ -1,5 +1,7 @@
 package org.example.servlets;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.example.repo.UserRepository;
 import org.example.model.User;
 import org.example.service.UserService;
@@ -16,6 +18,7 @@ import java.util.LinkedHashSet;
 public class UsersServlet extends HttpServlet {
 
     private final UserRepository userRepository = new UserService();
+    private static final Logger logger = LogManager.getLogger(UsersServlet.class);
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
@@ -23,6 +26,7 @@ public class UsersServlet extends HttpServlet {
             request.setAttribute("users", users);
             request.getRequestDispatcher("/WEB-INF/views/users.jsp").forward(request, response);
         } catch (Exception e) {
+            logger.error(e);
             response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
         }
     }

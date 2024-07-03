@@ -1,5 +1,8 @@
 package org.example.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,6 +15,7 @@ public class DatabaseUtils {
     private String databaseUsername;
     private String databasePassword;
 
+    private static final Logger logger = LogManager.getLogger(DatabaseUtils.class);
 
     private DatabaseUtils() {
         loadProperties();
@@ -20,6 +24,7 @@ public class DatabaseUtils {
             Connection testConn = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
             testConn.close();
         } catch (SQLException e) {
+            logger.error(e);
             throw new RuntimeException("Failed to establish database connection during initialization", e);
         }
     }
@@ -34,8 +39,9 @@ public class DatabaseUtils {
             databaseUrl = prop.getProperty("DB_URL");
             databaseUsername = prop.getProperty("DB_USERNAME");
             databasePassword = prop.getProperty("DB_PASSWORD");
-        } catch (Exception ex) {
-            throw new RuntimeException("Failed to load database properties", ex);
+        } catch (Exception e) {
+            logger.error(e);
+            throw new RuntimeException("Failed to load database properties", e);
         }
     }
 
@@ -53,6 +59,7 @@ public class DatabaseUtils {
             connection = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
             connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
         } catch (SQLException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
         return connection;
@@ -62,6 +69,7 @@ public class DatabaseUtils {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }
