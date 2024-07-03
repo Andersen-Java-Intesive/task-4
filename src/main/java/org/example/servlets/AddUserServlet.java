@@ -25,7 +25,7 @@ public class AddUserServlet extends HttpServlet {
 
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String firstName = request.getParameter("firstName");
         String secondName = request.getParameter("secondName");
         int age = Integer.parseInt(request.getParameter("age"));
