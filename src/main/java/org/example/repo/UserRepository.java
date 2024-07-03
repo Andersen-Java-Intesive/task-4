@@ -1,10 +1,10 @@
-package org.example.dao.abs;
+package org.example.repo;
 
 import org.example.model.User;
 
 import java.util.Set;
 
-public interface UserDAO  {
+public interface UserRepository  {
     boolean create(User user);
     User findById(int id);
     boolean deleteById(int id);

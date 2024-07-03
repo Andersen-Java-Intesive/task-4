@@ -1,27 +1,27 @@
 package org.example.util;
 import java.sql.*;
-public class DBUtils {
+public class DBConnection {
     public static final String DB_USER = "postgres";
-    public static final String DB_PASSWORD = "root";
-    public static final String DB_URL = "jdbc:postgresql://localhost:5432/Users";
+    public static final String DB_PASSWORD = "nurdos";
+    public static final String DB_URL = "jdbc:postgresql://192.168.64.14:5432/Users";
 
-    private DBUtils() {
+    private DBConnection() {
 
     }
 
     public static Connection getConnection() {
-        Connection conn = null;
+        Connection connection;
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         try {
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return conn;
+        return connection;
     }
 
     public static void release(Connection conn, Statement stmt, ResultSet rs) {

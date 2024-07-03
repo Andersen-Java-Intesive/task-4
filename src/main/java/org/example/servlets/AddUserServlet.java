@@ -1,7 +1,7 @@
 package org.example.servlets;
 
-import org.example.dao.abs.UserDAO;
-import org.example.dao.impl.UserDaoImpl;
+import org.example.repo.UserRepository;
+import org.example.service.UserService;
 import org.example.model.User;
 
 import javax.servlet.ServletException;
@@ -34,8 +34,8 @@ public class AddUserServlet extends HttpServlet {
         user.setSecondName(secondName);
         user.setAge(age);
 
-        UserDAO userDAO = new UserDaoImpl();
-        userDAO.create(user);
+        UserRepository userRepository = new UserService();
+        userRepository.create(user);
 
         response.sendRedirect("users");
     }
