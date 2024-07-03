@@ -23,7 +23,7 @@ public class DeleteUserServlet extends HttpServlet {
 
             userRepository.deleteById(id);
         } catch (Exception e) {
-            response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
+            response.sendRedirect("MyWebApp/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
         }
         response.sendRedirect("users");
     }
