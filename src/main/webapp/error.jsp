@@ -18,7 +18,7 @@
     }
   %>
 </p>
-<a href="/users">Go back</a>
+<a href="/MyWebApp/users">Go back</a>
 </body>
 </body>
 </html>
