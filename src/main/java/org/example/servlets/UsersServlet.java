@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
-@WebServlet("/users")
+@WebServlet(urlPatterns = {"/users", "/"})
 public class UsersServlet extends HttpServlet {
 
     private UserDAO userDAO = new UserDaoImpl();
