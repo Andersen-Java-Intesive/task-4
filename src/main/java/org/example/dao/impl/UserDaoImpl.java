@@ -6,6 +6,7 @@ import org.example.util.DBUtils;
 
 import java.sql.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class UserDaoImpl implements UserDAO {
@@ -49,7 +50,7 @@ public class UserDaoImpl implements UserDAO {
 
         try (Connection connection = DBUtils.getConnection()) {
             Statement statement = connection.createStatement();
-            if (findById(id) == null) {
+            if (!Objects.equals(findById(id), null)) {
                 statement.execute("DELETE FROM user_info where id =" + id);
                 return true;
             } else return false;
