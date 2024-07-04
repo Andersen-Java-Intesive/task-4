@@ -9,6 +9,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import static java.sql.Connection.*;
+
 public class DatabaseUtils {
     private static DatabaseUtils instance;
     private String databaseUrl;
@@ -52,12 +54,12 @@ public class DatabaseUtils {
         return instance;
     }
 
-    public Connection getConnection() {
+    public Connection getConnection(int isolationLevel) {
         Connection connection;
         setDatabaseDriver();
         try {
             connection = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
-            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            connection.setTransactionIsolation(setDatabaseUser(isolationLevel));
         } catch (SQLException e) {
             logger.error(e);
             throw new RuntimeException(e);
@@ -72,5 +74,21 @@ public class DatabaseUtils {
             logger.error(e);
             throw new RuntimeException(e);
         }
+    }
+
+    private static int setDatabaseUser(int isolationLevel) {
+        if (isolationLevel == TRANSACTION_READ_UNCOMMITTED) {
+            return TRANSACTION_READ_UNCOMMITTED;
+        }
+        if (isolationLevel == TRANSACTION_READ_COMMITTED) {
+            return TRANSACTION_READ_COMMITTED;
+        }
+        if (isolationLevel == TRANSACTION_REPEATABLE_READ) {
+            return TRANSACTION_REPEATABLE_READ;
+        }
+        if (isolationLevel == TRANSACTION_SERIALIZABLE) {
+            return TRANSACTION_SERIALIZABLE;
+        }
+        return TRANSACTION_READ_COMMITTED;
     }
 }
