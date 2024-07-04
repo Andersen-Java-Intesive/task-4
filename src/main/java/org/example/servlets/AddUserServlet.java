@@ -24,7 +24,7 @@ public class AddUserServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/addUser.jsp").forward(request, response);
         } catch (Exception e) {
             logger.error(e);
-            response.sendRedirect(request.getContextPath() + "error.jsp?error=Exception" + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/error.jsp?error=Exception" + e.getMessage());
         }
     }
 
