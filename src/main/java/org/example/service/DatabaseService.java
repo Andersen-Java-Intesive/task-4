@@ -1,4 +1,4 @@
-package org.example.util;
+package org.example.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,15 +9,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DatabaseUtils {
-    private static DatabaseUtils instance;
+import static java.sql.Connection.*;
+
+public class DatabaseService {
+    private static DatabaseService instance;
     private String databaseUrl;
     private String databaseUsername;
     private String databasePassword;
 
-    private static final Logger logger = LogManager.getLogger(DatabaseUtils.class);
+    private static final Logger logger = LogManager.getLogger(DatabaseService.class);
 
-    private DatabaseUtils() {
+    private DatabaseService() {
         loadProperties();
         setDatabaseDriver();
         try {
@@ -45,19 +47,19 @@ public class DatabaseUtils {
         }
     }
 
-    public static synchronized DatabaseUtils getInstance() {
+    public static synchronized DatabaseService getInstance() {
         if (instance == null) {
-            instance = new DatabaseUtils();
+            instance = new DatabaseService();
         }
         return instance;
     }
 
-    public Connection getConnection() {
+    public Connection getConnection(int isolationLevel) {
         Connection connection;
         setDatabaseDriver();
         try {
             connection = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
-            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            connection.setTransactionIsolation(setDatabaseUser(isolationLevel));
         } catch (SQLException e) {
             logger.error(e);
             throw new RuntimeException(e);
@@ -72,5 +74,21 @@ public class DatabaseUtils {
             logger.error(e);
             throw new RuntimeException(e);
         }
+    }
+
+    private static int setDatabaseUser(int isolationLevel) {
+        if (isolationLevel == TRANSACTION_READ_UNCOMMITTED) {
+            return TRANSACTION_READ_UNCOMMITTED;
+        }
+        if (isolationLevel == TRANSACTION_READ_COMMITTED) {
+            return TRANSACTION_READ_COMMITTED;
+        }
+        if (isolationLevel == TRANSACTION_REPEATABLE_READ) {
+            return TRANSACTION_REPEATABLE_READ;
+        }
+        if (isolationLevel == TRANSACTION_SERIALIZABLE) {
+            return TRANSACTION_SERIALIZABLE;
+        }
+        return TRANSACTION_READ_COMMITTED;
     }
 }

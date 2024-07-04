@@ -1,4 +1,4 @@
-package org.example.validation;
+package org.example.util;
 
 import org.example.model.User;
 
@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ValidateUser {
+public class ValidateUserUtils {
     public static String validate (User user) {
         if (Objects.equals(null, user.getFirstName()) || user.getFirstName().isBlank() || user.getFirstName().isEmpty()) {
             return "Empty First Name field";
@@ -16,6 +16,9 @@ public class ValidateUser {
         }
         if (containsPunctuation(user.getFirstName()) || containsPunctuation(user.getSecondName())) {
             return "No punctuation allowed";
+        }
+        if (containsNonLatin(user.getFirstName()) || containsNonLatin(user.getSecondName())) {
+            return "No non-latin characters allowed";
         }
         if (user.getFirstName().length() > 50) {
             return "First Name field must be no more than 50 characters long";
@@ -32,6 +35,17 @@ public class ValidateUser {
     private static boolean containsPunctuation(String input) {
 
         String regex = "[\\p{Punct}]";
+
+        Pattern pattern = Pattern.compile(regex);
+
+        Matcher matcher = pattern.matcher(input);
+
+        return matcher.find();
+    }
+
+    private static boolean containsNonLatin(String input) {
+
+        String regex = "[^A-Za-z\\s]";
 
         Pattern pattern = Pattern.compile(regex);
 
