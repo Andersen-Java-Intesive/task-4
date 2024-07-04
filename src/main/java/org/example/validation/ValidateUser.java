@@ -17,6 +17,9 @@ public class ValidateUser {
         if (containsPunctuation(user.getFirstName()) || containsPunctuation(user.getSecondName())) {
             return "No punctuation allowed";
         }
+        if (containsNonLatin(user.getFirstName()) || containsNonLatin(user.getSecondName())) {
+            return "No non-latin characters allowed";
+        }
         if (user.getFirstName().length() > 50) {
             return "First Name field must be no more than 50 characters long";
         }
@@ -32,6 +35,17 @@ public class ValidateUser {
     private static boolean containsPunctuation(String input) {
 
         String regex = "[\\p{Punct}]";
+
+        Pattern pattern = Pattern.compile(regex);
+
+        Matcher matcher = pattern.matcher(input);
+
+        return matcher.find();
+    }
+
+    private static boolean containsNonLatin(String input) {
+
+        String regex = "[^A-Za-z\\s]";
 
         Pattern pattern = Pattern.compile(regex);
 

@@ -28,7 +28,7 @@ public class UpdateUserServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/updateUser.jsp").forward(request, response);
         } catch (Exception e) {
             logger.error(e);
-            response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
+            response.sendRedirect("/error.jsp?error=Exception" + e.getMessage());
         }
     }
 
@@ -47,7 +47,7 @@ public class UpdateUserServlet extends HttpServlet {
             userRepository.update(user);
         } catch (Exception e) {
             logger.error(e);
-            response.sendRedirect("/error.jsp?error=Exception" + Arrays.toString(e.getStackTrace()));
+            response.sendRedirect("/error.jsp?error=Exception" + e.getMessage());
         }
         response.sendRedirect("users");
     }
