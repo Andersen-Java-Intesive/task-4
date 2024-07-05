@@ -1,12 +1,12 @@
 package org.example.controller;
 
 import org.example.command.*;
-import org.example.command.get.GetAddUsersFormCommand;
-import org.example.command.get.GetUpdateUsersCommand;
-import org.example.command.get.ShowUsersCommand;
-import org.example.command.post.AddUsersCommand;
-import org.example.command.post.DeleteUsersCommand;
-import org.example.command.post.UpdateUsersCommand;
+import org.example.command.get.GetCreatingUserPage;
+import org.example.command.get.GetUpdatingUserPage;
+import org.example.command.get.GetAllUserPage;
+import org.example.command.post.CreateUser;
+import org.example.command.post.DeleteUser;
+import org.example.command.post.UpdateUser;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,23 +21,23 @@ public class UsersCommandFactory {
 
         String method = request.getMethod();
         if (action.equals("users")) {
-            return new ShowUsersCommand();
+            return new GetAllUserPage();
         }
         if (action.equals("deleteUser")) {
-            return new DeleteUsersCommand();
+            return new DeleteUser();
         }
         if (action.equals("addUser") && method.equals("GET")) {
-            return new GetAddUsersFormCommand();
+            return new GetCreatingUserPage();
         }
         if (action.equals("addUser") && method.equals("POST")) {
-            return new AddUsersCommand();
+            return new CreateUser();
         }
         if (action.equals("updateUser") && method.equals("GET")) {
-            return new GetUpdateUsersCommand();
+            return new GetUpdatingUserPage();
         }
         if (action.equals("updateUser") && method.equals("POST")) {
-            return new UpdateUsersCommand();
+            return new UpdateUser();
         }
-        return new ShowUsersCommand();
+        return new GetAllUserPage();
     }
 }

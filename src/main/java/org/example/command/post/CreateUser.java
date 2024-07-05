@@ -13,25 +13,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class UpdateUsersCommand implements UsersCommand {
-
-    private final UserRepository userRepository = new UserService();
-    private static final Logger logger = LogManager.getLogger(UpdateUsersCommand.class);
+public class CreateUser implements UsersCommand {
+    private static final Logger logger = LogManager.getLogger(CreateUser.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
         String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("secondName");
+        String secondName = request.getParameter("secondName");
         int age = Integer.parseInt(request.getParameter("age"));
-        User user = new User(id, firstName, lastName, age);
+
+
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setSecondName(secondName);
+        user.setAge(age);
+
         String validationError = ValidateUserUtils.validate(user);
         if (!validationError.isEmpty()) {
             response.sendRedirect(request.getContextPath() + "/error.jsp?error=" + validationError);
             return;
         }
+        UserRepository userRepository = new UserService();
         try {
-            userRepository.update(user);
+            userRepository.create(user);
         } catch (Exception e) {
             logger.error(e);
             response.sendRedirect(request.getContextPath() + "/error.jsp?error=Exception" + e.getMessage());
