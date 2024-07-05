@@ -1,4 +1,4 @@
-package org.example.util;
+package org.example.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,15 +11,15 @@ import java.util.Properties;
 
 import static java.sql.Connection.*;
 
-public class DatabaseUtils {
-    private static DatabaseUtils instance;
+public class DatabaseService {
+    private static DatabaseService instance;
     private String databaseUrl;
     private String databaseUsername;
     private String databasePassword;
 
-    private static final Logger logger = LogManager.getLogger(DatabaseUtils.class);
+    private static final Logger logger = LogManager.getLogger(DatabaseService.class);
 
-    private DatabaseUtils() {
+    private DatabaseService() {
         loadProperties();
         setDatabaseDriver();
         try {
@@ -47,9 +47,9 @@ public class DatabaseUtils {
         }
     }
 
-    public static synchronized DatabaseUtils getInstance() {
+    public static synchronized DatabaseService getInstance() {
         if (instance == null) {
-            instance = new DatabaseUtils();
+            instance = new DatabaseService();
         }
         return instance;
     }

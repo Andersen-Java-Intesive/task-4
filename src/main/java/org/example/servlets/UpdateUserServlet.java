@@ -5,14 +5,13 @@ import org.apache.logging.log4j.Logger;
 import org.example.model.User;
 import org.example.repo.UserRepository;
 import org.example.service.UserService;
-import org.example.validation.ValidateUser;
+import org.example.util.ValidateUserUtils;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 
 @WebServlet("/updateUser")
 public class UpdateUserServlet extends HttpServlet {
@@ -38,7 +37,7 @@ public class UpdateUserServlet extends HttpServlet {
         String lastName = request.getParameter("secondName");
         int age = Integer.parseInt(request.getParameter("age"));
         User user = new User(id, firstName, lastName, age);
-        String validationError = ValidateUser.validate(user);
+        String validationError = ValidateUserUtils.validate(user);
         if (!validationError.isEmpty()) {
             response.sendRedirect(request.getContextPath() + "/error.jsp?error=" + validationError);
             return;

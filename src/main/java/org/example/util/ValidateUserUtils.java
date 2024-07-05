@@ -1,4 +1,4 @@
-package org.example.validation;
+package org.example.util;
 
 import org.example.model.User;
 
@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ValidateUser {
+public class ValidateUserUtils {
     public static String validate (User user) {
         if (Objects.equals(null, user.getFirstName()) || user.getFirstName().isBlank() || user.getFirstName().isEmpty()) {
             return "Empty First Name field";

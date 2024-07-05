@@ -2,7 +2,6 @@ package org.example.service;
 
 import org.example.model.User;
 import org.example.repo.UserRepository;
-import org.example.util.DatabaseUtils;
 
 import java.sql.*;
 import java.util.LinkedHashSet;
@@ -13,7 +12,7 @@ public class UserService implements UserRepository {
     @Override
     public boolean create(User user) {
 
-        try (Connection connection = DatabaseUtils.getInstance().getConnection(TRANSACTION_READ_UNCOMMITTED)) {
+        try (Connection connection = DatabaseService.getInstance().getConnection(TRANSACTION_READ_UNCOMMITTED)) {
             connection.setAutoCommit(false);
             String sql = "INSERT INTO user_info (first_name, second_name, age) VALUES (?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -34,7 +33,7 @@ public class UserService implements UserRepository {
 
     @Override
     public User findById(int id) {
-        Connection connection = DatabaseUtils.getInstance().getConnection(TRANSACTION_READ_COMMITTED);
+        Connection connection = DatabaseService.getInstance().getConnection(TRANSACTION_READ_COMMITTED);
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM user_info where id =" + id);
@@ -50,7 +49,7 @@ public class UserService implements UserRepository {
     @Override
     public void deleteById(int id) {
 
-        try (Connection connection = DatabaseUtils.getInstance().getConnection(TRANSACTION_REPEATABLE_READ)) {
+        try (Connection connection = DatabaseService.getInstance().getConnection(TRANSACTION_REPEATABLE_READ)) {
             connection.setAutoCommit(false);
             Statement statement = connection.createStatement();
             try {
@@ -69,7 +68,7 @@ public class UserService implements UserRepository {
 
     @Override
     public void update(User user) {
-        try (Connection connection = DatabaseUtils.getInstance().getConnection(TRANSACTION_REPEATABLE_READ)) {
+        try (Connection connection = DatabaseService.getInstance().getConnection(TRANSACTION_REPEATABLE_READ)) {
             connection.setAutoCommit(false);
             String sql = "UPDATE user_info SET first_name = ?, second_name = ?, age = ? WHERE id = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -94,7 +93,7 @@ public class UserService implements UserRepository {
     @Override
     public LinkedHashSet<User> all() {
         LinkedHashSet<User> users = new LinkedHashSet<>();
-        try (Connection connection = DatabaseUtils.getInstance().getConnection(TRANSACTION_READ_COMMITTED)) {
+        try (Connection connection = DatabaseService.getInstance().getConnection(TRANSACTION_READ_COMMITTED)) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM user_info");
             while (resultSet.next()) {
