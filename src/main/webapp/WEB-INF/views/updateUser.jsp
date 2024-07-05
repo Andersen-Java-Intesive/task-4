@@ -25,5 +25,8 @@
         <input type="submit" value="Commit changes">
     </div>
 </form>
+<div>
+    <a href="users">Back to users list</a>
+</div>
 </body>
 </html>

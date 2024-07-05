@@ -1,37 +1,25 @@
-package org.example.servlets;
+package org.example.command.post;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.example.command.UsersCommand;
 import org.example.model.User;
-import org.example.repo.UserRepository;
+import org.example.repository.UserRepository;
 import org.example.service.UserService;
 import org.example.util.ValidateUserUtils;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/updateUser")
-public class UpdateUserServlet extends HttpServlet {
+public class UpdateUser implements UsersCommand {
 
     private final UserRepository userRepository = new UserService();
-    private static final Logger logger = LogManager.getLogger(UpdateUserServlet.class);
+    private static final Logger logger = LogManager.getLogger(UpdateUser.class);
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        try {
-            User user = userRepository.findById(id);
-            request.setAttribute("user", user);
-            request.getRequestDispatcher("/WEB-INF/views/updateUser.jsp").forward(request, response);
-        } catch (Exception e) {
-            logger.error(e);
-            response.sendRedirect(request.getContextPath() + "/error.jsp?error=Exception" + e.getMessage());
-        }
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @Override
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("secondName");
