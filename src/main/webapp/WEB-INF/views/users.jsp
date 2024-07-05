@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Список пользователей</title>
+    <title>Users list</title>
     <style>
         body {
             font-family: Arial, sans-serif;

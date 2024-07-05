@@ -1,7 +1,7 @@
 package org.example.service;
 
 import org.example.model.User;
-import org.example.repo.UserRepository;
+import org.example.repository.UserRepository;
 
 import java.sql.*;
 import java.util.LinkedHashSet;
