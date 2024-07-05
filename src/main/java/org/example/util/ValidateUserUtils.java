@@ -1,5 +1,6 @@
 package org.example.util;
 
+import org.example.dto.UserDto;
 import org.example.model.User;
 
 import java.util.Objects;
@@ -7,26 +8,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ValidateUserUtils {
-    public static String validate (User user) {
-        if (Objects.equals(null, user.getFirstName()) || user.getFirstName().isBlank() || user.getFirstName().isEmpty()) {
+    public static String validate (UserDto userDto) {
+        if (Objects.equals(null, userDto.getFirstName()) || userDto.getFirstName().isBlank() || userDto.getFirstName().isEmpty()) {
             return "Empty First Name field";
         }
-        if (Objects.equals(null, user.getSecondName()) || user.getSecondName().isBlank() || user.getSecondName().isEmpty()) {
+        if (Objects.equals(null, userDto.getSecondName()) || userDto.getSecondName().isBlank() || userDto.getSecondName().isEmpty()) {
             return "Empty Second Name field";
         }
-        if (containsPunctuation(user.getFirstName()) || containsPunctuation(user.getSecondName())) {
+        if (containsPunctuation(userDto.getFirstName()) || containsPunctuation(userDto.getSecondName())) {
             return "No punctuation allowed";
         }
-        if (containsNonLatin(user.getFirstName()) || containsNonLatin(user.getSecondName())) {
+        if (containsNonLatin(userDto.getFirstName()) || containsNonLatin(userDto.getSecondName())) {
             return "No non-latin characters allowed";
         }
-        if (user.getFirstName().length() > 50) {
+        if (userDto.getFirstName().length() > 50) {
             return "First Name field must be no more than 50 characters long";
         }
-        if (user.getSecondName().length() > 50) {
+        if (userDto.getSecondName().length() > 50) {
             return "Second Name field must be no more than 50 characters long";
         }
-        if (user.getAge() > 999 || user.getAge() < 0) {
+        if (userDto.getAge() > 999 || userDto.getAge() < 0) {
             return "Age is improbable";
         }
         return "";

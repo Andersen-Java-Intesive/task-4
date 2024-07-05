@@ -1,9 +1,8 @@
 package org.example.servlets;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.example.repo.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.example.service.UserService;
+import org.example.service.impl.UserServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,20 +11,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 
+@Slf4j
 @WebServlet("/deleteUser")
 public class DeleteUserServlet extends HttpServlet {
 
-    private final UserRepository userRepository = new UserService();
-    private static final Logger logger = LogManager.getLogger(DeleteUserServlet.class);
+    private final UserService userService = UserServiceImpl.getInstance();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            userRepository.deleteById(id);
+            userService.remove(id);
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e.getMessage());
+            log.debug(Arrays.asList(e.getStackTrace()).toString());
             response.sendRedirect(request.getContextPath() + "/error.jsp?error=Exception" + e.getMessage());
         }
         response.sendRedirect("users");
     }
+
 }
