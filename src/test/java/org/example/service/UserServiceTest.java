@@ -30,16 +30,18 @@ public class UserServiceTest {
     private MockedStatic<DatabaseService> mockedDatabaseService;
 
     @BeforeEach
-    public void setUp() throws SQLException {
-        MockitoAnnotations.initMocks(this);
-        userService = new UserService();
-        mockedDatabaseService = Mockito.mockStatic(DatabaseService.class);
-        DatabaseService mockDatabaseService = mock(DatabaseService.class);
-        mockedDatabaseService.when(DatabaseService::getInstance).thenReturn(mockDatabaseService);
-        when(mockDatabaseService.getConnection(anyInt())).thenReturn(mockConnection);
-        when(mockConnection.createStatement()).thenReturn(mockStatement);
-        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
-        when(mockStatement.executeQuery(anyString())).thenReturn(mockResultSet);
+    public void setUp() throws Exception {
+        AutoCloseable ac = MockitoAnnotations.openMocks(this);
+        try (ac) {
+            userService = new UserService();
+            mockedDatabaseService = Mockito.mockStatic(DatabaseService.class);
+            DatabaseService mockDatabaseService = mock(DatabaseService.class);
+            mockedDatabaseService.when(DatabaseService::getInstance).thenReturn(mockDatabaseService);
+            when(mockDatabaseService.getConnection(anyInt())).thenReturn(mockConnection);
+            when(mockConnection.createStatement()).thenReturn(mockStatement);
+            when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+            when(mockStatement.executeQuery(anyString())).thenReturn(mockResultSet);
+        }
     }
 
     @AfterEach
@@ -71,8 +73,6 @@ public class UserServiceTest {
 
     @Test
     public void testFindById() throws SQLException {
-        when(mockConnection.createStatement()).thenReturn(mockStatement);
-        when(mockStatement.executeQuery(anyString())).thenReturn(mockResultSet);
         when(mockResultSet.next()).thenReturn(true);
         when(mockResultSet.getInt("id")).thenReturn(1);
         when(mockResultSet.getString("first_name")).thenReturn("Arnold");
@@ -90,12 +90,8 @@ public class UserServiceTest {
 
     @Test
     public void testDeleteById() throws SQLException {
-        when(mockConnection.createStatement()).thenReturn(mockStatement);
-        when(mockStatement.executeQuery(anyString())).thenReturn(mockResultSet);
         when(mockResultSet.next()).thenReturn(true);
-
         userService.deleteById(1);
-
         verify(mockConnection).setAutoCommit(false);
         verify(mockStatement).execute("DELETE FROM user_info where id =1");
         verify(mockConnection).commit();
@@ -109,9 +105,6 @@ public class UserServiceTest {
         user.setSecondName("Stallone");
         user.setAge(77);
 
-        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
-        when(mockConnection.createStatement()).thenReturn(mockStatement);
-        when(mockStatement.executeQuery(anyString())).thenReturn(mockResultSet);
         when(mockResultSet.next()).thenReturn(true);
 
         userService.update(user);
@@ -127,8 +120,6 @@ public class UserServiceTest {
 
     @Test
     public void testAll() throws SQLException {
-        when(mockConnection.createStatement()).thenReturn(mockStatement);
-        when(mockStatement.executeQuery(anyString())).thenReturn(mockResultSet);
         when(mockResultSet.next()).thenReturn(true).thenReturn(false);
         when(mockResultSet.getInt("id")).thenReturn(1);
         when(mockResultSet.getString("first_name")).thenReturn("Arnold");
