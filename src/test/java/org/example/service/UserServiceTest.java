@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.sql.*;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -120,20 +121,40 @@ public class UserServiceTest {
 
     @Test
     public void testAll() throws SQLException {
-        when(mockResultSet.next()).thenReturn(true).thenReturn(false);
-        when(mockResultSet.getInt("id")).thenReturn(1);
-        when(mockResultSet.getString("first_name")).thenReturn("Arnold");
-        when(mockResultSet.getString("second_name")).thenReturn("Schwarzenegger");
-        when(mockResultSet.getInt("age")).thenReturn(76);
+        when(mockResultSet.next())
+                .thenReturn(true)
+                .thenReturn(true)
+                .thenReturn(false);
+        when(mockResultSet.getInt("id"))
+                .thenReturn(1)
+                .thenReturn(2);
+        when(mockResultSet.getString("first_name"))
+                .thenReturn("Arnold")
+                .thenReturn("Sylvester");
+        when(mockResultSet.getString("second_name"))
+                .thenReturn("Schwarzenegger")
+                .thenReturn("Stallone");
+        when(mockResultSet.getInt("age"))
+                .thenReturn(76)
+                .thenReturn(77);
 
         LinkedHashSet<User> users = userService.all();
 
         assertNotNull(users);
-        assertEquals(1, users.size());
-        User user = users.iterator().next();
-        assertEquals(1, user.getId());
-        assertEquals("Arnold", user.getFirstName());
-        assertEquals("Schwarzenegger", user.getSecondName());
-        assertEquals(76, user.getAge());
+        assertEquals(2, users.size());
+
+        Iterator<User> iterator = users.iterator();
+
+        User user1 = iterator.next();
+        assertEquals(1, user1.getId());
+        assertEquals("Arnold", user1.getFirstName());
+        assertEquals("Schwarzenegger", user1.getSecondName());
+        assertEquals(76, user1.getAge());
+
+        User user2 = iterator.next();
+        assertEquals(2, user2.getId());
+        assertEquals("Sylvester", user2.getFirstName());
+        assertEquals("Stallone", user2.getSecondName());
+        assertEquals(77, user2.getAge());
     }
 }
