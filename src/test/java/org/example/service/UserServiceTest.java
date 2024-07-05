@@ -16,6 +16,7 @@ import java.util.LinkedHashSet;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+
 public class UserServiceTest {
     private UserService userService;
     @Mock
@@ -32,7 +33,6 @@ public class UserServiceTest {
     public void setUp() throws SQLException {
         MockitoAnnotations.initMocks(this);
         userService = new UserService();
-
         mockedDatabaseService = Mockito.mockStatic(DatabaseService.class);
         DatabaseService mockDatabaseService = mock(DatabaseService.class);
         mockedDatabaseService.when(DatabaseService::getInstance).thenReturn(mockDatabaseService);
@@ -40,12 +40,6 @@ public class UserServiceTest {
         when(mockConnection.createStatement()).thenReturn(mockStatement);
         when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
         when(mockStatement.executeQuery(anyString())).thenReturn(mockResultSet);
-
-        when(mockResultSet.next()).thenReturn(true).thenReturn(false);
-        when(mockResultSet.getInt("id")).thenReturn(1);
-        when(mockResultSet.getString("first_name")).thenReturn("Arnold");
-        when(mockResultSet.getString("second_name")).thenReturn("Schwarzenegger");
-        when(mockResultSet.getInt("age")).thenReturn(65);
     }
 
     @AfterEach
