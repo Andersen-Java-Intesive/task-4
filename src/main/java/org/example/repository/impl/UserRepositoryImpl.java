@@ -10,6 +10,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository {
@@ -19,7 +22,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final SessionFactory sessionFactory;
 
     private UserRepositoryImpl() {
-        sessionFactory = new Configuration().configure().buildSessionFactory();
+        sessionFactory = createSessionFactory();
     }
 
     public static synchronized UserRepository getInstance() {
@@ -29,12 +32,31 @@ public class UserRepositoryImpl implements UserRepository {
         return instance;
     }
 
+    private SessionFactory createSessionFactory() {
+        Configuration configuration = new Configuration();
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("database.properties")) {
+            Properties properties = new Properties();
+            if (input == null) {
+                throw new IOException("Sorry, unable to find database.properties");
+            }
+            properties.load(input);
+
+            configuration.setProperty("hibernate.connection.url", properties.getProperty("DB_URL"));
+            configuration.setProperty("hibernate.connection.username", properties.getProperty("DB_USERNAME"));
+            configuration.setProperty("hibernate.connection.password", properties.getProperty("DB_PASSWORD"));
+        } catch (IOException ex) {
+            throw new RuntimeException("Failed to load database properties", ex);
+        }
+        configuration.configure("hibernate.cfg.xml");
+        return configuration.buildSessionFactory();
+    }
+
     @Override
     public boolean create(UserDto userDto) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            User user = userMapper.mapUserDtoToUser(userDto);
+            User user = userMapper.mapDtoToUser(userDto);
             session.save(user);
             transaction.commit();
             return true;
@@ -55,8 +77,6 @@ public class UserRepositoryImpl implements UserRepository {
             } else {
                 throw new RuntimeException("User with id " + id + " not found");
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -64,8 +84,6 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> getAll() {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from User", User.class).list();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -105,5 +123,4 @@ public class UserRepositoryImpl implements UserRepository {
             throw new RuntimeException(e);
         }
     }
-
 }

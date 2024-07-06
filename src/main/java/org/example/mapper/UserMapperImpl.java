@@ -12,7 +12,7 @@ public class UserMapperImpl implements UserMapper {
     private UserMapperImpl() {
     }
 
-    public static UserMapperImpl getInstance() {
+    public static synchronized UserMapperImpl getInstance() {
         if (instance == null) {
             instance = new UserMapperImpl();
         }
@@ -21,12 +21,22 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public User mapUserDtoToUser(UserDto userDto) {
-        return User.builder().id(userDto.getId()).firstName(userDto.getFirstName()).secondName(userDto.getSecondName()).age(userDto.getAge()).build();
+        User user = new User();
+        user.setId(userDto.getId());
+        user.setFirstName(userDto.getFirstName());
+        user.setSecondName(userDto.getSecondName());
+        user.setAge(userDto.getAge());
+        return user;
     }
 
     @Override
     public UserDto mapRequestToUserDto(HttpServletRequest httpServletRequest) {
-        return UserDto.builder().id(Integer.parseInt(httpServletRequest.getParameter("id"))).firstName(httpServletRequest.getParameter("firstName")).secondName(httpServletRequest.getParameter("secondName")).age(Integer.parseInt(httpServletRequest.getParameter("age"))).build();
+        UserDto userDto = new UserDto();
+        userDto.setId(Integer.parseInt(httpServletRequest.getParameter("id")));
+        userDto.setFirstName(httpServletRequest.getParameter("firstName"));
+        userDto.setSecondName(httpServletRequest.getParameter("secondName"));
+        userDto.setAge(Integer.parseInt(httpServletRequest.getParameter("age")));
+        return userDto;
     }
 
     @Override
@@ -40,5 +50,10 @@ public class UserMapperImpl implements UserMapper {
         if (userDto.getAge() != 0) {
             user.setAge(userDto.getAge());
         }
+    }
+
+    @Override
+    public User mapDtoToUser(UserDto userDto) {
+        return mapUserDtoToUser(userDto);
     }
 }
