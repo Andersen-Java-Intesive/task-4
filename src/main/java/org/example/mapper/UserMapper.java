@@ -12,4 +12,7 @@ public interface UserMapper {
     User mapResultSetToUser (ResultSet resultSet);
     UserDto mapRequestToUserDto(HttpServletRequest httpServletRequest);
 
+    void updateUserFromDto(User user, UserDto userDto);
+
+    User mapDtoToUser(UserDto userDto);
 }

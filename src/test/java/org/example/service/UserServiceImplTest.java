@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import java.sql.*;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -143,7 +144,7 @@ public class UserServiceImplTest {
                 .thenReturn(76) // Возвращение значения 76 при первом вызове getInt.
                 .thenReturn(77); // Возвращение значения 77 при втором вызове getInt.
 
-        LinkedHashSet<User> users = userServiceImpl.findAll(); // Вызов метода all.
+        List<User> users = userServiceImpl.findAll(); // Вызов метода all.
 
         assertNotNull(users); // Проверка, что множество пользователей не null.
         assertEquals(2, users.size()); // Проверка, что размер множества пользователей равен 2.

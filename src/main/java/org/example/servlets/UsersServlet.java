@@ -5,13 +5,13 @@ import org.example.model.User;
 import org.example.service.UserService;
 import org.example.service.impl.UserServiceImpl;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 @Slf4j
@@ -20,16 +20,14 @@ public class UsersServlet extends HttpServlet {
 
     private final UserService userService = UserServiceImpl.getInstance();
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            LinkedHashSet<User> users = userService.findAll();
+            List<User> users = userService.findAll();
             request.setAttribute("users", users);
             request.getRequestDispatcher("/WEB-INF/views/users.jsp").forward(request, response);
         } catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug(Arrays.asList(e.getStackTrace()).toString());
+            log.error(e.getMessage(), e);
             response.sendRedirect(request.getContextPath() + "/error.jsp?error=Exception" + e.getMessage());
         }
     }
-
 }

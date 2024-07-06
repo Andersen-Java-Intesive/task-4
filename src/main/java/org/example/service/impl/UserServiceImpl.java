@@ -6,7 +6,7 @@ import org.example.repository.UserRepository;
 import org.example.repository.impl.UserRepositoryImpl;
 import org.example.service.UserService;
 
-import java.util.LinkedHashSet;
+import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
@@ -23,7 +23,6 @@ public class UserServiceImpl implements UserService {
         return instance;
     }
 
-
     @Override
     public boolean add(UserDto userDto) {
         return userRepository.create(userDto);
@@ -35,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public LinkedHashSet<User> findAll() {
+    public List<User> findAll() {
         return userRepository.getAll();
     }
 
