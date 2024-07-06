@@ -1,6 +1,7 @@
 package org.example.model;
 
 import lombok.*;
+import org.example.model.enums.Team;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,5 +16,6 @@ public class User {
     private String firstName;
     private String secondName;
     private int age;
+    private Team team;
 
 }

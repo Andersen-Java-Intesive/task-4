@@ -4,6 +4,7 @@ import org.example.command.*;
 import org.example.command.get.GetCreatingUserPage;
 import org.example.command.get.GetUpdatingUserPage;
 import org.example.command.get.GetAllUserPage;
+import org.example.command.get.GetUserPairs;
 import org.example.command.post.CreateUser;
 import org.example.command.post.DeleteUser;
 import org.example.command.post.UpdateUser;
@@ -37,6 +38,9 @@ public class UsersCommandFactory {
         }
         if (action.equals("updateUser") && method.equals("POST")) {
             return new UpdateUser();
+        }
+        if (action.equals("formPairs")) {
+            return new GetUserPairs();
         }
         return new GetAllUserPage();
     }

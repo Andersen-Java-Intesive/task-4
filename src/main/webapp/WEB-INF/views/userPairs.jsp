@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Users list</title>
+    <title>User pairs</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,7 +42,33 @@
     </style>
 </head>
 <body>
-<h2>Users list</h2>
+<h2>User pairs</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Team</th>
+        <th>First Name</th>
+        <th>Second Name</th>
+        <th>VS</th>
+        <th>Team</th>
+        <th>First Name</th>
+        <th>Second Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="pair" items="${pairs}">
+        <td>${pair.getKey().team}</td>
+        <td>${pair.getKey().firstName}</td>
+        <td>${pair.getKey().secondName}</td>
+        <td>VS</td>
+        <td>${pair.getValue().team}</td>
+        <td>${pair.getValue().firstName}</td>
+        <td>${pair.getValue().secondName}</td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
+<h2>Pairless users</h2>
 <table>
     <thead>
     <tr>
@@ -51,42 +77,21 @@
         <th>Second Name</th>
         <th>Age</th>
         <th>Team</th>
-        <th>Update</th>
-        <th>Delete</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="user" items="${users}">
+    <c:forEach var="user" items="${pairlessUsers}">
         <td>${user.id}</td>
         <td>${user.firstName}</td>
         <td>${user.secondName}</td>
         <td>${user.age}</td>
         <td>${user.team}</td>
-        <td>
-            <form action="updateUser" method="get" style="display:inline;">
-                <input type="hidden" name="id" value="${user.id}">
-                <input type="submit" value="Edit">
-            </form>
-        </td>
-        <td>
-            <form action="deleteUser" method="post" style="display:inline;">
-                <input type="hidden" name="id" value="${user.id}">
-                <input type="submit" value="Remove">
-            </form>
-        </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<div class="button-container">
-    <form action="addUser" method="get">
-        <input type="submit" value="Add User">
-    </form>
-</div>
-<div class="button-container">
-    <form action="formPairs" method="post">
-        <input type="submit" value="Form Pairs">
-    </form>
+<div>
+    <a href="users">Back to users list</a>
 </div>
 </body>
 </html>
