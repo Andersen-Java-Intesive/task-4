@@ -3,7 +3,7 @@ package org.example.mapper.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.UserDto;
 import org.example.mapper.UserMapper;
-import org.example.model.Team;
+import org.example.model.enums.Team;
 import org.example.model.User;
 
 import javax.servlet.http.HttpServletRequest;

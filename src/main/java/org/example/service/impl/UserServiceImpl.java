@@ -1,22 +1,22 @@
 package org.example.service.impl;
 
 import org.example.dto.UserDto;
-import org.example.model.Team;
 import org.example.model.User;
+import org.example.model.enums.Team;
 import org.example.repository.UserRepository;
 import org.example.repository.impl.UserRepositoryImpl;
 import org.example.service.UserService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 
 public class UserServiceImpl implements UserService {
 
     private static UserService instance;
     private final UserRepository userRepository = UserRepositoryImpl.getInstance();
+
+    private List<Map.Entry<User, User>> userPairs;
+    private List<User> pairlessUsers;
 
     private UserServiceImpl() {
     }
@@ -27,7 +27,6 @@ public class UserServiceImpl implements UserService {
         }
         return instance;
     }
-
 
     @Override
     public boolean add(UserDto userDto) {
@@ -55,55 +54,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Pair<User, User>> generateUserPairs() {
-        List<Pair<User, User>> userPairs = new ArrayList<>();
-        LinkedHashSet<User> allUsers = userRepository.getAll();
-        List<User> teamOneUsers = new ArrayList<>();
-        List<User> teamTwoUsers = new ArrayList<>();
-        for (User user : allUsers) {
-            if (user.getTeam() == Team.TEAM_ONE) {
-                teamOneUsers.add(user);
-            } else if (user.getTeam() == Team.TEAM_TWO) {
-                teamTwoUsers.add(user);
-            }
+    public void generateUserPairs() {
+        List<User> firstTeamUsers = new ArrayList<>(userRepository.getAllByTeam(Team.ORANGE_TEAM));
+        List<User> secondTeamUsers = new ArrayList<>(userRepository.getAllByTeam(Team.PINK_TEAM));
+        Collections.shuffle(firstTeamUsers);
+        Collections.shuffle(secondTeamUsers);
+        if (firstTeamUsers.size() < secondTeamUsers.size()) {
+            createPairsBySmallerTeam(firstTeamUsers, secondTeamUsers);
+        } else {
+            createPairsBySmallerTeam(secondTeamUsers, firstTeamUsers);
         }
-        Collections.shuffle(teamOneUsers);
-        Collections.shuffle(teamTwoUsers);
-        for (int i = 0; i < Math.min(teamOneUsers.size(), teamTwoUsers.size()); i++) {
-            userPairs.add(new  Pair<>(teamOneUsers.get(i), teamTwoUsers.get(i)));
+    }
+
+    private void createPairsBySmallerTeam(List<User> smallerTeam, List<User> largerTeam) {
+        userPairs = new LinkedList<>();
+        Iterator<User> smallerTeamIterator = smallerTeam.iterator();
+        Iterator<User> largerTeamIterator = largerTeam.iterator();
+        while (smallerTeamIterator.hasNext()) {
+            userPairs.add(new AbstractMap.SimpleEntry<>(smallerTeamIterator.next(), largerTeamIterator.next()));
         }
+        pairlessUsers = new LinkedList<>();
+        while (largerTeamIterator.hasNext()) {
+            pairlessUsers.add(largerTeamIterator.next());
+        }
+    }
+
+    @Override
+    public List<Map.Entry<User, User>> getUserPairs() {
         return userPairs;
     }
 
     @Override
-    public LinkedHashSet<User> getPairlessUsers(List<Pair<User, User>> pairs) {
-        LinkedHashSet<User> allUsers = userRepository.getAll();
-        if (pairs.size()*2 == allUsers.size()){
-            return new LinkedHashSet<>();
-        }
-        pairs.forEach(userUserPair -> {
-            allUsers.remove(userUserPair.getFirst());
-            allUsers.remove(userUserPair.getSecond());
-        });
-        return allUsers;
-    }
-
-    public static class Pair<F, S> {
-        private final F first;
-        private final S second;
-
-        public Pair(F first, S second) {
-            this.first = first;
-            this.second = second;
-        }
-
-        public F getFirst() {
-            return first;
-        }
-
-        public S getSecond() {
-            return second;
-        }
+    public List<User> getPairlessUsers() {
+        return pairlessUsers;
     }
 
 }
