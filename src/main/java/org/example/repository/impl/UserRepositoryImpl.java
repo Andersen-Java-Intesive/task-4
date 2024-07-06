@@ -18,10 +18,10 @@ public class UserRepositoryImpl implements UserRepository {
     private final DatabaseService databaseService = DatabaseService.getInstance();
     private final UserMapper userMapper = UserMapperImpl.getInstance();
 
-    private static final String INSERT_USERS_SQL = "INSERT INTO user_info (first_name, second_name, age) VALUES (?, ?, ?)";
-    private static final String SELECT_USER_BY_ID = "SELECT id, first_name, second_name, age FROM user_info WHERE id = ?";
-    private static final String SELECT_ALL_USERS = "SELECT id, first_name, second_name, age FROM user_info ORDER BY id ASC";
-    private static final String UPDATE_USERS_SQL = "UPDATE user_info SET first_name = ?, second_name = ?, age = ? WHERE id = ?;";
+    private static final String INSERT_USERS_SQL = "INSERT INTO user_info (first_name, second_name, age, team) VALUES (?, ?, ?, ?)";
+    private static final String SELECT_USER_BY_ID = "SELECT id, first_name, second_name, age, team FROM user_info WHERE id = ?";
+    private static final String SELECT_ALL_USERS = "SELECT id, first_name, second_name, age, team FROM user_info ORDER BY id ASC";
+    private static final String UPDATE_USERS_SQL = "UPDATE user_info SET first_name = ?, second_name = ?, age = ?, team = ? WHERE id = ?;";
     private static final String DELETE_USERS_SQL = "DELETE FROM user_info WHERE id = ?;";
 
     private UserRepositoryImpl() {}
@@ -41,6 +41,7 @@ public class UserRepositoryImpl implements UserRepository {
                 preparedStatement.setString(1, userDto.getFirstName());
                 preparedStatement.setString(2, userDto.getSecondName());
                 preparedStatement.setInt(3, userDto.getAge());
+                preparedStatement.setString(4, userDto.getTeam().toString());
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 connection.rollback();
@@ -94,7 +95,8 @@ public class UserRepositoryImpl implements UserRepository {
                     preparedStatement.setString(1, userDto.getFirstName());
                     preparedStatement.setString(2, userDto.getSecondName());
                     preparedStatement.setInt(3, userDto.getAge());
-                    preparedStatement.setInt(4, userDto.getId());
+                    preparedStatement.setString(4, userDto.getTeam().toString());
+                    preparedStatement.setInt(5, userDto.getId());
                     preparedStatement.executeUpdate();
                 }
             } catch (SQLException e) {

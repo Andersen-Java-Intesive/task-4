@@ -17,8 +17,8 @@
       out.println("Unknown error occurred.");
     }
   %>
-</p>
-<a href="/MyWebApp/users">Go back</a>
-</body>
+<div>
+  <a href="users">Back to users list</a>
+</div>
 </body>
 </html>

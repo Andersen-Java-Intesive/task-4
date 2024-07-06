@@ -15,5 +15,6 @@ public class User {
     private String firstName;
     private String secondName;
     private int age;
+    private Team team;
 
 }

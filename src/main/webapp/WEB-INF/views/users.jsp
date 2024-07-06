@@ -50,6 +50,7 @@
         <th>First Name</th>
         <th>Second Name</th>
         <th>Age</th>
+        <th>Team</th>
         <th>Update</th>
         <th>Delete</th>
     </tr>
@@ -60,6 +61,7 @@
         <td>${user.firstName}</td>
         <td>${user.secondName}</td>
         <td>${user.age}</td>
+        <td>${user.team}</td>
         <td>
             <form action="updateUser" method="get" style="display:inline;">
                 <input type="hidden" name="id" value="${user.id}">
@@ -79,6 +81,11 @@
 <div class="button-container">
     <form action="addUser" method="get">
         <input type="submit" value="Add User">
+    </form>
+</div>
+<div class="button-container">
+    <form action="formPairs" method="get">
+        <input type="submit" value="Form Pairs">
     </form>
 </div>
 </body>

@@ -3,6 +3,7 @@ package org.example.mapper.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.UserDto;
 import org.example.mapper.UserMapper;
+import org.example.model.Team;
 import org.example.model.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public User mapUserDtoToUser(UserDto userDto) {
-        return new User(userDto.getId(), userDto.getFirstName(), userDto.getSecondName(), userDto.getAge());
+        return new User(userDto.getId(), userDto.getFirstName(), userDto.getSecondName(), userDto.getAge(), userDto.getTeam());
     }
 
     @Override
@@ -38,6 +39,7 @@ public class UserMapperImpl implements UserMapper {
                     .firstName(resultSet.getString("first_name"))
                     .secondName(resultSet.getString("second_name"))
                     .age(resultSet.getInt("age"))
+                    .team(Team.valueOf(resultSet.getString("team")))
                     .build();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -56,6 +58,7 @@ public class UserMapperImpl implements UserMapper {
                     .firstName(httpServletRequest.getParameter("firstName"))
                     .secondName(httpServletRequest.getParameter("secondName"))
                     .age(Integer.parseInt(httpServletRequest.getParameter("age")))
+                    .team(Team.valueOf(httpServletRequest.getParameter("team")))
                     .build();
         } catch (Exception e) {
             throw new RuntimeException(e);

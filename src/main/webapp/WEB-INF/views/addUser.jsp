@@ -3,7 +3,42 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Add user</title>
+    <title>Users list</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            width: 60%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        form, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button-container {
+            text-align: center;
+            margin: 20px;
+        }
+        .button-container form {
+            display: inline;
+        }
+    </style>
 </head>
 <body>
 <h2>Add user</h2>
@@ -24,11 +59,19 @@
         <input type="number" id="age" name="age" min="0" required>
     </div>
     <div>
+        <label for="team">Team:</label>
+        <select id="team" name="team" required>
+            <option value="TEAM_ONE">TEAM_ONE</option>
+            <option value="TEAM_TWO">TEAM_TWO</option>
+        </select>
+    </div>
+    <div>
         <input type="submit" value="Add">
     </div>
+    <div>
+        <a href="users">Back to users list</a>
+    </div>
 </form>
-<div>
-    <a href="users">Back to users list</a>
-</div>
+
 </body>
 </html>

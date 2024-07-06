@@ -1,6 +1,7 @@
 package org.example.dto;
 
 import lombok.*;
+import org.example.model.Team;
 
 import javax.validation.constraints.*;
 
@@ -16,7 +17,6 @@ public class UserDto {
     private Integer id;
 
     @NotBlank(message = "Empty First Name field")
-    @NotNull(message = "Empty First Name field")
     @NotEmpty(message = "Empty First Name field")
     @Size(max = 50, message = "First Name field must be no more than 50 characters long")
     @Pattern(regexp = "^[A-Za-z\\s]*$", message = "No non-latin characters allowed")
@@ -24,7 +24,6 @@ public class UserDto {
     private String firstName;
 
     @NotBlank(message = "Empty Second Name field")
-    @NotNull(message = "Empty Second Name field")
     @NotEmpty(message = "Empty Second Name field")
     @Size(max = 50, message = "Second Name field must be no more than 50 characters long")
     @Pattern(regexp = "^[A-Za-z\\s]*$", message = "No non-latin characters allowed")
@@ -35,4 +34,6 @@ public class UserDto {
     @Max(value = 999, message = "Age is improbable")
     private Integer age;
 
+    @NotNull(message = "Empty Team field")
+    private Team team;
 }
