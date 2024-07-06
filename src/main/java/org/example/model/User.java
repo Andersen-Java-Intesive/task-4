@@ -17,7 +17,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -26,7 +26,7 @@ public class User {
     private String secondName;
 
     @Column(name = "age")
-    private int age;
+    private Integer age;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "team")

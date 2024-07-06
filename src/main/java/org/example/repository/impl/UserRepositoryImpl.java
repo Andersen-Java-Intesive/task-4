@@ -37,10 +37,8 @@ public class UserRepositoryImpl implements UserRepository {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-
             User user = userMapper.mapUserDtoToUser(userDto);
             session.save(user);
-
             transaction.commit();
             return true;
         } catch (HibernateException e) {
@@ -52,7 +50,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getById(int id) {
+    public User getById(Long id) {
         try (Session session = sessionFactory.openSession()) {
             return session.get(User.class, id);
         }
@@ -81,7 +79,8 @@ public class UserRepositoryImpl implements UserRepository {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            User user = userMapper.mapUserDtoToUser(userDto);
+            User user = getById(userDto.getId());
+            userMapper.updateUserByUserDto(user, userDto);
             session.update(user);
             transaction.commit();
         } catch (Exception e) {
@@ -93,7 +92,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();

@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
 @Builder
 public class UserDto {
 
-    private Integer id;
+    private Long id;
 
     @NotBlank(message = "Empty First Name field")
     @NotEmpty(message = "Empty First Name field")
@@ -36,5 +36,5 @@ public class UserDto {
 
     @NotNull(message = "Empty Team field")
     // TODO validation of enum
-    private Team team;
+    private String team;
 }

@@ -9,15 +9,12 @@ import java.util.LinkedHashSet;
 public interface UserRepository {
 
     boolean create(UserDto userDto);
-
-    User getById(int id);
-
+    User getById(Long id);
     LinkedHashSet<User> getAll();
 
     LinkedHashSet<User> getAllByTeam(Team team);
 
     void update(UserDto userDto);
-
-    void deleteById(int id);
+    void deleteById(Long id);
 
 }

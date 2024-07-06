@@ -14,7 +14,7 @@ public class DeleteUser implements UsersCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter("id"));
         userService.remove(id);
         response.sendRedirect("users");
     }

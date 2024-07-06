@@ -16,7 +16,7 @@ public class GetUpdatingUserPage implements UsersCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter("id"));
         User user = userService.find(id);
         request.setAttribute("user", user);
         request.getRequestDispatcher("/WEB-INF/views/updateUser.jsp").forward(request, response);
