@@ -1,8 +1,5 @@
 package org.example.service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,12 +9,12 @@ import java.util.Properties;
 import static java.sql.Connection.*;
 
 public class DatabaseService {
+
     private static DatabaseService instance;
+
     private String databaseUrl;
     private String databaseUsername;
     private String databasePassword;
-
-    private static final Logger logger = LogManager.getLogger(DatabaseService.class);
 
     private DatabaseService() {
         loadProperties();
@@ -26,9 +23,20 @@ public class DatabaseService {
             Connection testConn = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
             testConn.close();
         } catch (SQLException e) {
-            logger.error(e);
             throw new RuntimeException("Failed to establish database connection during initialization", e);
         }
+    }
+
+    public Connection getConnection(int isolationLevel) {
+        Connection connection;
+        setDatabaseDriver();
+        try {
+            connection = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
+            connection.setTransactionIsolation(setDatabaseUser(isolationLevel));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return connection;
     }
 
     private void loadProperties() {
@@ -42,7 +50,6 @@ public class DatabaseService {
             databaseUsername = prop.getProperty("DB_USERNAME");
             databasePassword = prop.getProperty("DB_PASSWORD");
         } catch (Exception e) {
-            logger.error(e);
             throw new RuntimeException("Failed to load database properties", e);
         }
     }
@@ -54,24 +61,10 @@ public class DatabaseService {
         return instance;
     }
 
-    public Connection getConnection(int isolationLevel) {
-        Connection connection;
-        setDatabaseDriver();
-        try {
-            connection = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
-            connection.setTransactionIsolation(setDatabaseUser(isolationLevel));
-        } catch (SQLException e) {
-            logger.error(e);
-            throw new RuntimeException(e);
-        }
-        return connection;
-    }
-
     private void setDatabaseDriver() {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            logger.error(e);
             throw new RuntimeException(e);
         }
     }
@@ -91,4 +84,5 @@ public class DatabaseService {
         }
         return TRANSACTION_READ_COMMITTED;
     }
+
 }

@@ -1,6 +1,6 @@
 package org.example.controller;
 
-import org.apache.logging.log4j.core.tools.picocli.CommandLine;
+import lombok.extern.slf4j.Slf4j;
 import org.example.command.UsersCommand;
 
 import javax.servlet.ServletException;
@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
+@Slf4j
 @WebServlet(urlPatterns = {"/users", "/"})
 public class UserCommandServlet extends HttpServlet {
     @Override
@@ -26,8 +28,10 @@ public class UserCommandServlet extends HttpServlet {
         try {
             UsersCommand command = UsersCommandFactory.getCommand(request);
             command.execute(request, response);
-        } catch (IllegalArgumentException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        } catch (Exception e) {
+            response.sendRedirect(request.getContextPath() + "/error.jsp?error=Exception" + e.getMessage());
+            log.error(e.getMessage(), e);
+            log.debug(Arrays.asList(e.getStackTrace()).toString());
         }
     }
 }

@@ -7,5 +7,5 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public interface UsersCommand {
-    void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    void execute(HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

@@ -1,45 +1,28 @@
 package org.example.command.post;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.example.command.UsersCommand;
-import org.example.model.User;
-import org.example.repository.UserRepository;
+import org.example.dto.UserDto;
+import org.example.mapper.UserMapper;
+import org.example.mapper.impl.UserMapperImpl;
 import org.example.service.UserService;
+import org.example.service.impl.UserServiceImpl;
 import org.example.util.ValidateUserUtils;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CreateUser implements UsersCommand {
-    private static final Logger logger = LogManager.getLogger(CreateUser.class);
+
+    private final UserService userService = UserServiceImpl.getInstance();
+    private final UserMapper userMapper = UserMapperImpl.getInstance();
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String firstName = request.getParameter("firstName");
-        String secondName = request.getParameter("secondName");
-        int age = Integer.parseInt(request.getParameter("age"));
-
-
-        User user = new User();
-        user.setFirstName(firstName);
-        user.setSecondName(secondName);
-        user.setAge(age);
-
-        String validationError = ValidateUserUtils.validate(user);
-        if (!validationError.isEmpty()) {
-            response.sendRedirect(request.getContextPath() + "/error.jsp?error=" + validationError);
-            return;
-        }
-        UserRepository userRepository = new UserService();
-        try {
-            userRepository.create(user);
-        } catch (Exception e) {
-            logger.error(e);
-            response.sendRedirect(request.getContextPath() + "/error.jsp?error=Exception" + e.getMessage());
-        }
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        UserDto userDto = userMapper.mapRequestToUserDto(request);
+        ValidateUserUtils.validate(userDto);
+        userService.add(userDto);
         response.sendRedirect("users");
     }
+
 }

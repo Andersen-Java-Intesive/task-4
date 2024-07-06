@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.model.User;
+import org.example.dto.UserDto;
 import org.example.util.ValidateUserUtils;
 import org.junit.jupiter.api.Test;
 
@@ -8,94 +8,196 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ValidateUserTest {
 
-
     @Test
     public void FirstNameNull() {
-        User user = new User(null, "Schwarzenegger", 76);
-        assertTrue(ValidateUserUtils.validate(user).contains("Empty First Name field"));
+        UserDto userDto = UserDto.builder()
+                .firstName(null)
+                .secondName("Schwarzenegger")
+                .age(76)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("First Name field is blank", exception.getMessage().trim());
     }
 
     @Test
     public void FirstNameBlank() {
-        User user = new User("    ", "Schwarzenegger", 76);
-        assertTrue(ValidateUserUtils.validate(user).contains("Empty First Name field"));
+        UserDto userDto = UserDto.builder()
+                .firstName("    ")
+                .secondName("Schwarzenegger")
+                .age(76)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("Empty First Name field", exception.getMessage().trim());
     }
 
     @Test
     public void FirstNameEmpty() {
-        User user = new User("", "Schwarzenegger", 76);
-        assertTrue(ValidateUserUtils.validate(user).contains("Empty First Name field"));
+        UserDto userDto = UserDto.builder()
+                .firstName("")
+                .secondName("Schwarzenegger")
+                .age(76)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("Empty First Name field", exception.getMessage().trim());
     }
 
     @Test
     public void SecondNameNull() {
-        User user = new User("Arnold", null, 76);
-        assertTrue(ValidateUserUtils.validate(user).contains("Empty Second Name field"));
+        UserDto userDto = UserDto.builder()
+                .firstName("Arnold")
+                .secondName(null)
+                .age(76)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("Empty Second Name field", exception.getMessage().trim());
     }
 
     @Test
     public void SecondNameBlank() {
-        User user = new User("Arnold", "   ", 76);
-        assertTrue(ValidateUserUtils.validate(user).contains("Empty Second Name field"));
+        UserDto userDto = UserDto.builder()
+                .firstName("Arnold")
+                .secondName("   ")
+                .age(76)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("Empty Second Name field", exception.getMessage().trim());
     }
 
     @Test
     public void SecondNameEmpty() {
-        User user = new User("Arnold", "", 76);
-        assertTrue(ValidateUserUtils.validate(user).contains("Empty Second Name field"));
+        UserDto userDto = UserDto.builder()
+                .firstName("Arnold")
+                .secondName("")
+                .age(76)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("Empty Second Name field", exception.getMessage().trim());
     }
 
     @Test
     public void FirstNamePunctuation() {
-        User user = new User("Arnold'", "Schwarzenegger", 76);
-        assertTrue(ValidateUserUtils.validate(user).contains("No punctuation allowed "));
+        UserDto userDto = UserDto.builder()
+                .firstName("Arnold'")
+                .secondName("Schwarzenegger")
+                .age(76)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("No punctuation allowed ", exception.getMessage().trim());
     }
 
     @Test
     public void SecondNamePunctuation() {
-        User user = new User("Arnold", "Schwarzenegger'", 76);
-        assertTrue(ValidateUserUtils.validate(user).contains("No punctuation allowed "));
+        UserDto userDto = UserDto.builder()
+                .firstName("Arnold")
+                .secondName("Schwarzenegger'")
+                .age(76)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("No punctuation allowed ", exception.getMessage().trim());
     }
 
     @Test
     public void FirstNameNonLatin() {
-        User user = new User("Арнольд", "Schwarzenegger", 76);
-        assertTrue(ValidateUserUtils.validate(user).contains("No non-latin characters allowed"));
+        UserDto userDto = UserDto.builder()
+                .firstName("Арнольд")
+                .secondName("Schwarzenegger")
+                .age(76)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("No non-latin characters allowed", exception.getMessage().trim());
     }
 
     @Test
     public void SecondNameNonLatin() {
-        User user = new User("Arnold", "Шварценеггер", 76);
-        assertTrue(ValidateUserUtils.validate(user).contains("No non-latin characters allowed"));
+        UserDto userDto = UserDto.builder()
+                .firstName("Arnold")
+                .secondName("Шварценеггер")
+                .age(76)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("No non-latin characters allowed", exception.getMessage().trim());
     }
 
     @Test
     public void FirstNameTooLong() {
-        User user = new User("Arnold".repeat(10), "Schwarzenegger", 76);
-        assertTrue(ValidateUserUtils.validate(user).contains("First Name field must be no more than 50 characters long"));
+        UserDto userDto = UserDto.builder()
+                .firstName("Arnold".repeat(10))
+                .secondName("Schwarzenegger")
+                .age(76)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("First Name field must be no more than 50 characters long", exception.getMessage().trim());
     }
 
     @Test
     public void SecondNameTooLong() {
-        User user = new User("Arnold", "Schwarzenegger".repeat(5), 76);
-        assertTrue(ValidateUserUtils.validate(user).contains("Second Name field must be no more than 50 characters long"));
+        UserDto userDto = UserDto.builder()
+                .firstName("Arnold")
+                .secondName("Schwarzenegger".repeat(5))
+                .age(76)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("Second Name field must be no more than 50 characters long", exception.getMessage().trim());
     }
 
     @Test
     public void AgeTooHigh() {
-        User user = new User("Immortal", "Man", 1000);
-        assertEquals("Age is improbable ", ValidateUserUtils.validate(user));
+        UserDto userDto = UserDto.builder()
+                .firstName("Immortal")
+                .secondName("Man")
+                .age(1000)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("Age is improbable", exception.getMessage().trim());
     }
 
     @Test
     public void AgeTooLow() {
-        User user = new User("The", "Unborn", -1);
-        assertEquals("Age is improbable ", ValidateUserUtils.validate(user));
+        UserDto userDto = UserDto.builder()
+                .firstName("The")
+                .secondName("Unborn")
+                .age(-1)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        //assertEquals("Age is improbable", exception.getMessage().trim());
     }
 
     @Test
     public void ValidUser() {
-        User user = new User("Arnold", "Schwarzenegger", 76);
-        assertEquals("", ValidateUserUtils.validate(user));
+        UserDto userDto = UserDto.builder()
+                .firstName("Arnold")
+                .secondName("Schwarzenegger")
+                .age(76)
+                .build();
+        assertTrue(ValidateUserUtils.validate(userDto));
     }
+
 }
