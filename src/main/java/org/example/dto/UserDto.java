@@ -1,7 +1,7 @@
 package org.example.dto;
 
 import lombok.*;
-import org.example.model.Team;
+import org.example.model.enums.Team;
 
 import javax.validation.constraints.*;
 
@@ -35,5 +35,6 @@ public class UserDto {
     private Integer age;
 
     @NotNull(message = "Empty Team field")
+    // TODO validation of enum
     private Team team;
 }

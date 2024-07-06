@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
 
 public class GetUserPairs implements UsersCommand {
@@ -16,9 +17,13 @@ public class GetUserPairs implements UsersCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<UserServiceImpl.Pair<User, User>> pairs = userService.generateUserPairs();
-        request.setAttribute("pairs", pairs);
-        LinkedHashSet<User> pairlessUsers = userService.getPairlessUsers(pairs);
+        userService.generateUserPairs();
+        List<Map.Entry<User, User>> userPairs = userService.getUserPairs();
+        userPairs.forEach((userPair) -> {
+            System.out.println(userPair.getKey().getId() + ", " + userPair.getValue().getId());
+        });
+        List<User> pairlessUsers = userService.getPairlessUsers();
+        request.setAttribute("pairs", userPairs);
         request.setAttribute("pairlessUsers", pairlessUsers);
         request.getRequestDispatcher("/WEB-INF/views/userPairs.jsp").forward(request, response);
     }

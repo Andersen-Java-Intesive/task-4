@@ -4,6 +4,7 @@ import org.example.dto.UserDto;
 import org.example.mapper.UserMapper;
 import org.example.mapper.impl.UserMapperImpl;
 import org.example.model.User;
+import org.example.model.enums.Team;
 import org.example.repository.UserRepository;
 import org.example.service.DatabaseService;
 
@@ -21,10 +22,12 @@ public class UserRepositoryImpl implements UserRepository {
     private static final String INSERT_USERS_SQL = "INSERT INTO user_info (first_name, second_name, age, team) VALUES (?, ?, ?, ?)";
     private static final String SELECT_USER_BY_ID = "SELECT id, first_name, second_name, age, team FROM user_info WHERE id = ?";
     private static final String SELECT_ALL_USERS = "SELECT id, first_name, second_name, age, team FROM user_info ORDER BY id ASC";
+    private static final String SELECT_ALL_USERS_BY_TEAM = "SELECT id, first_name, second_name, age, team FROM user_info WHERE team = ? ORDER BY id ASC";
     private static final String UPDATE_USERS_SQL = "UPDATE user_info SET first_name = ?, second_name = ?, age = ?, team = ? WHERE id = ?;";
     private static final String DELETE_USERS_SQL = "DELETE FROM user_info WHERE id = ?;";
 
-    private UserRepositoryImpl() {}
+    private UserRepositoryImpl() {
+    }
 
     public static synchronized UserRepository getInstance() {
         if (instance == null) {
@@ -81,6 +84,23 @@ public class UserRepositoryImpl implements UserRepository {
                 users.add(userMapper.mapResultSetToUser(resultSet));
             }
             return users;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public LinkedHashSet<User> getAllByTeam(Team team) {
+        LinkedHashSet<User> users = new LinkedHashSet<>();
+        try (Connection connection = databaseService.getConnection(TRANSACTION_READ_COMMITTED)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS_BY_TEAM)) {
+                preparedStatement.setString(1, team.toString());
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    users.add(userMapper.mapResultSetToUser(resultSet));
+                }
+                return users;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
