@@ -34,7 +34,7 @@ public class UserRepositoryImpl implements UserRepository {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            User user = userMapper.mapDtoToUser(userDto);
+            User user = userMapper.mapUserDtoToUser(userDto);
             session.save(user);
             transaction.commit();
             return true;
@@ -55,6 +55,8 @@ public class UserRepositoryImpl implements UserRepository {
             } else {
                 throw new RuntimeException("User with id " + id + " not found");
             }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -62,6 +64,8 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> getAll() {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from User", User.class).list();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -101,4 +105,5 @@ public class UserRepositoryImpl implements UserRepository {
             throw new RuntimeException(e);
         }
     }
+
 }
