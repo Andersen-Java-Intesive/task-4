@@ -2,6 +2,8 @@ package org.example.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.command.UsersCommand;
+import org.example.exception.DatabaseOperationException;
+import org.example.exception.UserNotFoundException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,10 +30,19 @@ public class UserCommandServlet extends HttpServlet {
         try {
             UsersCommand command = UsersCommandFactory.getCommand(request);
             command.execute(request, response);
+        } catch (UserNotFoundException e) {
+            handleException(response, request, "UserNotFoundException", e);
+        } catch (DatabaseOperationException e) {
+            handleException(response, request, "DatabaseOperationException", e);
         } catch (Exception e) {
-            response.sendRedirect(request.getContextPath() + "/error.jsp?error=Exception" + e.getMessage());
-            log.error(e.getMessage(), e);
-            log.debug(Arrays.asList(e.getStackTrace()).toString());
+            handleException(response, request, "Exception", e);
         }
+    }
+
+    private void handleException(HttpServletResponse response, HttpServletRequest request, String exceptionType, Exception e) throws IOException {
+        String errorMessage = "/error.jsp?error=" + exceptionType + ": " + e.getMessage();
+        response.sendRedirect(request.getContextPath() + errorMessage);
+        log.error(e.getMessage(), e);
+        log.debug(Arrays.asList(e.getStackTrace()).toString());
     }
 }

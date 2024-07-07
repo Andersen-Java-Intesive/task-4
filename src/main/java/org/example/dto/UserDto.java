@@ -2,6 +2,8 @@ package org.example.dto;
 
 import lombok.*;
 import org.example.model.enums.Team;
+import org.example.validation.annotation.NotBlankNotNullNotEmpty;
+import org.example.validation.annotation.ValidTeam;
 
 import javax.validation.constraints.*;
 
@@ -16,18 +18,14 @@ public class UserDto {
 
     private Integer id;
 
-    @NotBlank(message = "Empty First Name field")
-    @NotEmpty(message = "Empty First Name field")
+    @NotBlankNotNullNotEmpty
     @Size(max = 50, message = "First Name field must be no more than 50 characters long")
-    @Pattern(regexp = "^[A-Za-z\\s]*$", message = "No non-latin characters allowed")
-    @Pattern(regexp = "^[^\\p{Punct}]*$", message = "No punctuation allowed")
+    @Pattern(regexp = "^[A-Za-z \\s]*$", message = "No non-latin characters or punctuation allowed")
     private String firstName;
 
-    @NotBlank(message = "Empty Second Name field")
-    @NotEmpty(message = "Empty Second Name field")
+    @NotBlankNotNullNotEmpty
     @Size(max = 50, message = "Second Name field must be no more than 50 characters long")
-    @Pattern(regexp = "^[A-Za-z\\s]*$", message = "No non-latin characters allowed")
-    @Pattern(regexp = "^[^\\p{Punct}]*$", message = "No punctuation allowed")
+    @Pattern(regexp = "^[A-Za-z \\s]*$", message = "No non-latin characters or punctuation allowed")
     private String secondName;
 
     @Min(value = 0, message = "Age is improbable")
@@ -35,6 +33,6 @@ public class UserDto {
     private Integer age;
 
     @NotNull(message = "Empty Team field")
-    // TODO validation of enum
+    @ValidTeam
     private Team team;
 }

@@ -1,9 +1,8 @@
 package org.example.service;
 
-import org.example.dto.UserDto;
-import org.example.model.User;
 
-import org.example.service.impl.UserServiceImpl;
+import org.example.model.User;
+import org.example.service.impl.OldUserServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,11 +16,15 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
+public class OldUserServiceImplTest {
 
-public class UserServiceImplTest {
-    private UserService userServiceImpl; // Экземпляр класса UserService, который будет тестироваться.
+    private OldUserServiceImpl userServiceImpl; // Экземпляр класса UserService, который будет тестироваться.
 
     @Mock
     private Connection mockConnection; // Mock объект для соединения с базой данных.
@@ -41,7 +44,7 @@ public class UserServiceImplTest {
     public void setUp() throws Exception {
         AutoCloseable ac = MockitoAnnotations.openMocks(this); // Открытие моков.
         try (ac) {
-            userServiceImpl = UserServiceImpl.getInstance(); // Инициализация UserService.
+            userServiceImpl = OldUserServiceImpl.getInstance(); // Инициализация UserService.
             mockedDatabaseService = Mockito.mockStatic(DatabaseService.class); // Мокирование статического метода.
             DatabaseService mockDatabaseService = mock(DatabaseService.class); // Создание мока DatabaseService.
             mockedDatabaseService.when(DatabaseService::getInstance).thenReturn(mockDatabaseService); // Возвращение мока при вызове getInstance.
@@ -59,7 +62,7 @@ public class UserServiceImplTest {
 
     @Test
     public void testCreate() throws SQLException {
-        UserDto userDto = new UserDto(); // Создание нового пользователя.
+        User userDto = new User(); // Создание нового пользователя.
         userDto.setId(2);
         userDto.setFirstName("Arthur");
         userDto.setSecondName("Auskern");
@@ -67,7 +70,7 @@ public class UserServiceImplTest {
 
         when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement); // Возвращение мока подготовленного запроса.
 
-        boolean result = userServiceImpl.add(userDto); // Вызов метода create.
+        boolean result = userServiceImpl.create(userDto); // Вызов метода create.
 
         verify(mockConnection).setAutoCommit(false); // Проверка, что setAutoCommit был вызван с параметром false.
         verify(mockPreparedStatement).setString(1, "Arthur"); // Проверка, что setString был вызван с нужными параметрами.
@@ -86,7 +89,7 @@ public class UserServiceImplTest {
         when(mockResultSet.getString("second_name")).thenReturn("Schwarzenegger");
         when(mockResultSet.getInt("age")).thenReturn(76);
 
-        User user = userServiceImpl.find(1); // Вызов метода findById.
+        User user = userServiceImpl.findById(1); // Вызов метода findById.
 
         assertNotNull(user); // Проверка, что пользователь не null.
         assertEquals(1, user.getId()); // Проверка, что id пользователя равен 1.
@@ -98,7 +101,7 @@ public class UserServiceImplTest {
     @Test
     public void testDeleteById() throws SQLException {
         when(mockResultSet.next()).thenReturn(true); // Возвращение true при вызове next.
-        userServiceImpl.remove(1); // Вызов метода deleteById.
+        userServiceImpl.deleteById(1); // Вызов метода deleteById.
         verify(mockConnection).setAutoCommit(false); // Проверка, что setAutoCommit был вызван с параметром false.
         verify(mockStatement).execute("DELETE FROM user_info where id =1"); // Проверка, что execute был вызван с нужным SQL запросом.
         verify(mockConnection).commit(); // Проверка, что commit был вызван.
@@ -106,7 +109,7 @@ public class UserServiceImplTest {
 
     @Test
     public void testUpdate() throws SQLException {
-        UserDto userDto = new UserDto(); // Создание нового пользователя.
+        User userDto = new User(); // Создание нового пользователя.
         userDto.setId(1);
         userDto.setFirstName("Sylvester");
         userDto.setSecondName("Stallone");
@@ -114,7 +117,7 @@ public class UserServiceImplTest {
 
         when(mockResultSet.next()).thenReturn(true); // Возвращение true при вызове next.
 
-        userServiceImpl.edit(userDto); // Вызов метода update.
+        userServiceImpl.update(userDto); // Вызов метода update.
 
         verify(mockConnection).setAutoCommit(false); // Проверка, что setAutoCommit был вызван с параметром false.
         verify(mockPreparedStatement).setString(1, "Sylvester"); // Проверка, что setString был вызван с нужными параметрами.
@@ -142,8 +145,11 @@ public class UserServiceImplTest {
         when(mockResultSet.getInt("age"))
                 .thenReturn(76) // Возвращение значения 76 при первом вызове getInt.
                 .thenReturn(77); // Возвращение значения 77 при втором вызове getInt.
+        when(mockResultSet.getString("team"))
+                .thenReturn("PINK_TEAM") // Возвращение строки "Schwarzenegger" при первом вызове getString.
+                .thenReturn("PINK_TEAM"); // Возвращение строки "Stallone" при втором вызове getString.
 
-        LinkedHashSet<User> users = userServiceImpl.findAll(); // Вызов метода all.
+        LinkedHashSet<User> users = userServiceImpl.all(); // Вызов метода all.
 
         assertNotNull(users); // Проверка, что множество пользователей не null.
         assertEquals(2, users.size()); // Проверка, что размер множества пользователей равен 2.
@@ -164,3 +170,4 @@ public class UserServiceImplTest {
     }
 
 }
+
