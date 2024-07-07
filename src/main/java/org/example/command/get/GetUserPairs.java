@@ -19,9 +19,6 @@ public class GetUserPairs implements UsersCommand {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         userService.generateUserPairs();
         List<Map.Entry<User, User>> userPairs = userService.getUserPairs();
-        userPairs.forEach((userPair) -> {
-            System.out.println(userPair.getKey().getId() + ", " + userPair.getValue().getId());
-        });
         List<User> pairlessUsers = userService.getPairlessUsers();
         request.setAttribute("pairs", userPairs);
         request.setAttribute("pairlessUsers", pairlessUsers);

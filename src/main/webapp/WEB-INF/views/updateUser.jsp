@@ -58,8 +58,8 @@
         <div class="form-group">
             <label for="team">Team:</label>
             <select class="form-control" id="team" name="team" required>
-                <option value="TEAM_ONE" ${user.team == 'TEAM_ONE' ? 'selected' : ''}>TEAM_ONE</option>
-                <option value="TEAM_TWO" ${user.team == 'TEAM_TWO' ? 'selected' : ''}>TEAM_TWO</option>
+                <option value="ORANGE_TEAM" ${user.team == 'ORANGE_TEAM' ? 'selected' : ''}>ORANGE_TEAM</option>
+                <option value="PINK_TEAM" ${user.team == 'PINK_TEAM' ? 'selected' : ''}>PINK_TEAM</option>
             </select>
         </div>
         <div class="button-container">

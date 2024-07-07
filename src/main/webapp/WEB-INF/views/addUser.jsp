@@ -50,8 +50,8 @@
         <div class="form-group">
             <label for="team">Team:</label>
             <select class="form-control" id="team" name="team" required>
-                <option value="TEAM_ONE">TEAM_ONE</option>
-                <option value="TEAM_TWO">TEAM_TWO</option>
+                <option value="ORANGE_TEAM">ORANGE_TEAM</option>
+                <option value="PINK_TEAM">PINK_TEAM</option>
             </select>
         </div>
         <button type="submit" class="btn btn-custom btn-block">Add</button>

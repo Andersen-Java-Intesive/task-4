@@ -51,13 +51,13 @@
             <tbody>
             <c:forEach var="pair" items="${pairs}">
                 <tr>
-                    <td>${pair.first.team}</td>
-                    <td>${pair.first.firstName}</td>
-                    <td>${pair.first.secondName}</td>
+                    <td>${pair.getKey().team}</td>
+                    <td>${pair.getKey().firstName}</td>
+                    <td>${pair.getKey().secondName}</td>
                     <td class="text-center">VS</td>
-                    <td>${pair.second.team}</td>
-                    <td>${pair.second.firstName}</td>
-                    <td>${pair.second.secondName}</td>
+                    <td>${pair.getValue().team}</td>
+                    <td>${pair.getValue().firstName}</td>
+                    <td>${pair.getValue().secondName}</td>
                 </tr>
             </c:forEach>
             </tbody>

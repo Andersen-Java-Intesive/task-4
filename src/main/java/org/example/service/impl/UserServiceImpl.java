@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public LinkedHashSet<User> findAll() {
+    public List<User> findAll() {
         return userRepository.getAll();
     }
 
@@ -55,8 +55,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void generateUserPairs() {
-        List<User> firstTeamUsers = new ArrayList<>(userRepository.getAllByTeam(Team.ORANGE_TEAM));
-        List<User> secondTeamUsers = new ArrayList<>(userRepository.getAllByTeam(Team.PINK_TEAM));
+        List<User> firstTeamUsers = userRepository.getAllByTeam(Team.ORANGE_TEAM);
+        List<User> secondTeamUsers = userRepository.getAllByTeam(Team.PINK_TEAM);
         Collections.shuffle(firstTeamUsers);
         Collections.shuffle(secondTeamUsers);
         if (firstTeamUsers.size() < secondTeamUsers.size()) {

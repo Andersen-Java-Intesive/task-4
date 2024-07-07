@@ -14,7 +14,7 @@ public interface UserService {
 
     User find(Long id);
 
-    LinkedHashSet<User> findAll();
+    List<User> findAll();
 
     void edit(UserDto userDto);
 

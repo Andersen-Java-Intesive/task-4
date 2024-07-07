@@ -6,13 +6,11 @@ import org.example.mapper.impl.UserMapperImpl;
 import org.example.model.User;
 import org.example.model.enums.Team;
 import org.example.repository.UserRepository;
-import org.hibernate.HibernateException;
+import org.example.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository {
@@ -22,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final SessionFactory sessionFactory;
 
     private UserRepositoryImpl() {
-        sessionFactory = new Configuration().configure().buildSessionFactory();
+        sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     public static UserRepositoryImpl getInstance() {
@@ -41,7 +39,7 @@ public class UserRepositoryImpl implements UserRepository {
             session.save(user);
             transaction.commit();
             return true;
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -57,20 +55,20 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public LinkedHashSet<User> getAll() {
+    public List<User> getAll() {
         try (Session session = sessionFactory.openSession()) {
             List<User> users = session.createQuery("from User", User.class).list();
-            return new LinkedHashSet<>(users);
+            return users;
         }
     }
 
     @Override
-    public LinkedHashSet<User> getAllByTeam(Team team) {
+    public List<User> getAllByTeam(Team team) {
         try (Session session = sessionFactory.openSession()) {
             List<User> users = session.createQuery("from User where team = :team", User.class)
                     .setParameter("team", team)
                     .list();
-            return new LinkedHashSet<>(users);
+            return users;
         }
     }
 
