@@ -48,6 +48,15 @@
         .button-container form {
             display: inline;
         }
+
+        .pink-team {
+            background-color: pink;
+        }
+
+        .orange-team {
+            background-color: orange;
+        }
+
     </style>
 </head>
 <body>
@@ -67,18 +76,19 @@
                     <th>Second Name</th>
                 </tr>
                 </thead>
-                <tbody>
-                <c:forEach var="pair" items="${pairs}">
-                    <td>${pair.getKey().team}</td>
-                    <td>${pair.getKey().firstName}</td>
-                    <td>${pair.getKey().secondName}</td>
+            <tbody>
+            <c:forEach var="pair" items="${pairs}">
+                <tr>
+                    <td class="${pair.getKey().team == 'PINK_TEAM' ? 'pink-team' : (pair.getKey().team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.getKey().team}</td>
+                    <td class="${pair.getKey().team == 'PINK_TEAM' ? 'pink-team' : (pair.getKey().team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.getKey().firstName}</td>
+                    <td class="${pair.getKey().team == 'PINK_TEAM' ? 'pink-team' : (pair.getKey().team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.getKey().secondName}</td>
                     <td>VS</td>
-                    <td>${pair.getValue().team}</td>
-                    <td>${pair.getValue().firstName}</td>
-                    <td>${pair.getValue().secondName}</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
+                    <td class="${pair.getValue().team == 'PINK_TEAM' ? 'pink-team' : (pair.getValue().team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.getValue().team}</td>
+                    <td class="${pair.getValue().team == 'PINK_TEAM' ? 'pink-team' : (pair.getValue().team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.getValue().firstName}</td>
+                    <td class="${pair.getValue().team == 'PINK_TEAM' ? 'pink-team' : (pair.getValue().team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.getValue().secondName}</td>
+                </tr>
+            </c:forEach>
+            </tbody>
             </table>
     </div>
     <h2>Pairless users</h2>
@@ -95,14 +105,16 @@
             </thead>
             <tbody>
             <c:forEach var="user" items="${pairlessUsers}">
-                <td>${user.id}</td>
-                <td>${user.firstName}</td>
-                <td>${user.secondName}</td>
-                <td>${user.age}</td>
-                <td>${user.team}</td>
+                <tr>
+                    <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.id}</td>
+                    <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.firstName}</td>
+                    <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.secondName}</td>
+                    <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.age}</td>
+                    <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.team}</td>
                 </tr>
             </c:forEach>
             </tbody>
+
         </table>
     </div>
     <div class="button-container">

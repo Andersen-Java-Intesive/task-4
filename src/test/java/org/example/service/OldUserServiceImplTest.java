@@ -145,9 +145,6 @@ public class OldUserServiceImplTest {
         when(mockResultSet.getInt("age"))
                 .thenReturn(76) // Возвращение значения 76 при первом вызове getInt.
                 .thenReturn(77); // Возвращение значения 77 при втором вызове getInt.
-        when(mockResultSet.getString("team"))
-                .thenReturn("PINK_TEAM") // Возвращение строки "Schwarzenegger" при первом вызове getString.
-                .thenReturn("PINK_TEAM"); // Возвращение строки "Stallone" при втором вызове getString.
 
         LinkedHashSet<User> users = userServiceImpl.all(); // Вызов метода all.
 
@@ -168,6 +165,4 @@ public class OldUserServiceImplTest {
         assertEquals("Stallone", user2.getSecondName());
         assertEquals(77, user2.getAge());
     }
-
 }
-

@@ -27,7 +27,13 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public User mapUserDtoToUser(UserDto userDto) {
-        return new User(userDto.getId(), userDto.getFirstName(), userDto.getSecondName(), userDto.getAge(), userDto.getTeam());
+        return new User(
+                userDto.getId(),
+                userDto.getFirstName(),
+                userDto.getSecondName(),
+                userDto.getAge(),
+                Team.valueOf(userDto.getTeam())
+        );
     }
 
     @Override
@@ -58,7 +64,7 @@ public class UserMapperImpl implements UserMapper {
                     .firstName(httpServletRequest.getParameter("firstName"))
                     .secondName(httpServletRequest.getParameter("secondName"))
                     .age(Integer.parseInt(httpServletRequest.getParameter("age")))
-                    .team(Team.valueOf(httpServletRequest.getParameter("team")))
+                    .team(httpServletRequest.getParameter("team"))
                     .build();
         } catch (Exception e) {
             throw new RuntimeException(e);

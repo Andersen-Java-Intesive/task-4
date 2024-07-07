@@ -6,7 +6,7 @@ import org.example.validation.annotation.ValidTeam;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ValidTeamValidator implements ConstraintValidator<ValidTeam, Team> {
+public class ValidTeamValidator implements ConstraintValidator<ValidTeam, String> {
 
     @Override
     public void initialize(ValidTeam constraintAnnotation) {
@@ -14,12 +14,15 @@ public class ValidTeamValidator implements ConstraintValidator<ValidTeam, Team> 
     }
 
     @Override
-    public boolean isValid(Team value, ConstraintValidatorContext context) {
-        for (Team team : Team.values()) {
-            if (team.equals(value)) {
-                return true;
-            }
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        if (value == null) {
+            return false;
         }
-        return false;
+        try {
+            Team.valueOf(value);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }
