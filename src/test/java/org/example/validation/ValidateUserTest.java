@@ -1,8 +1,10 @@
-package org.example.service;
+package org.example.validation;
 
 import org.example.dto.UserDto;
-import org.example.util.ValidateUserUtils;
+import org.example.model.enums.Team;
+import org.example.validation.util.ValidateUserUtils;
 import org.junit.jupiter.api.Test;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,11 +16,12 @@ public class ValidateUserTest {
                 .firstName(null)
                 .secondName("Schwarzenegger")
                 .age(76)
+                .team(Team.PINK_TEAM)
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ValidateUserUtils.validate(userDto);
         });
-        //assertEquals("First Name field is blank", exception.getMessage().trim());
+        assertEquals("Empty First/Second Name field", exception.getMessage().trim());
     }
 
     @Test
@@ -27,11 +30,12 @@ public class ValidateUserTest {
                 .firstName("    ")
                 .secondName("Schwarzenegger")
                 .age(76)
+                .team(Team.PINK_TEAM)
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ValidateUserUtils.validate(userDto);
         });
-        //assertEquals("Empty First Name field", exception.getMessage().trim());
+        assertEquals("Empty First/Second Name field", exception.getMessage().trim());
     }
 
     @Test
@@ -40,11 +44,12 @@ public class ValidateUserTest {
                 .firstName("")
                 .secondName("Schwarzenegger")
                 .age(76)
+                .team(Team.PINK_TEAM)
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ValidateUserUtils.validate(userDto);
         });
-        //assertEquals("Empty First Name field", exception.getMessage().trim());
+        assertEquals("Empty First/Second Name field", exception.getMessage().trim());
     }
 
     @Test
@@ -53,11 +58,12 @@ public class ValidateUserTest {
                 .firstName("Arnold")
                 .secondName(null)
                 .age(76)
+                .team(Team.PINK_TEAM)
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ValidateUserUtils.validate(userDto);
         });
-        //assertEquals("Empty Second Name field", exception.getMessage().trim());
+        assertEquals("Empty First/Second Name field", exception.getMessage().trim());
     }
 
     @Test
@@ -66,11 +72,12 @@ public class ValidateUserTest {
                 .firstName("Arnold")
                 .secondName("   ")
                 .age(76)
+                .team(Team.PINK_TEAM)
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ValidateUserUtils.validate(userDto);
         });
-        //assertEquals("Empty Second Name field", exception.getMessage().trim());
+        assertEquals("Empty First/Second Name field", exception.getMessage().trim());
     }
 
     @Test
@@ -79,37 +86,12 @@ public class ValidateUserTest {
                 .firstName("Arnold")
                 .secondName("")
                 .age(76)
+                .team(Team.PINK_TEAM)
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ValidateUserUtils.validate(userDto);
         });
-        //assertEquals("Empty Second Name field", exception.getMessage().trim());
-    }
-
-    @Test
-    public void FirstNamePunctuation() {
-        UserDto userDto = UserDto.builder()
-                .firstName("Arnold'")
-                .secondName("Schwarzenegger")
-                .age(76)
-                .build();
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            ValidateUserUtils.validate(userDto);
-        });
-        //assertEquals("No punctuation allowed ", exception.getMessage().trim());
-    }
-
-    @Test
-    public void SecondNamePunctuation() {
-        UserDto userDto = UserDto.builder()
-                .firstName("Arnold")
-                .secondName("Schwarzenegger'")
-                .age(76)
-                .build();
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            ValidateUserUtils.validate(userDto);
-        });
-        //assertEquals("No punctuation allowed ", exception.getMessage().trim());
+        assertEquals("Empty First/Second Name field", exception.getMessage().trim());
     }
 
     @Test
@@ -118,11 +100,12 @@ public class ValidateUserTest {
                 .firstName("Арнольд")
                 .secondName("Schwarzenegger")
                 .age(76)
+                .team(Team.PINK_TEAM)
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ValidateUserUtils.validate(userDto);
         });
-        //assertEquals("No non-latin characters allowed", exception.getMessage().trim());
+        assertEquals("No non-latin characters or punctuation allowed", exception.getMessage().trim());
     }
 
     @Test
@@ -131,11 +114,12 @@ public class ValidateUserTest {
                 .firstName("Arnold")
                 .secondName("Шварценеггер")
                 .age(76)
+                .team(Team.PINK_TEAM)
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ValidateUserUtils.validate(userDto);
         });
-        //assertEquals("No non-latin characters allowed", exception.getMessage().trim());
+        assertEquals("No non-latin characters or punctuation allowed", exception.getMessage().trim());
     }
 
     @Test
@@ -144,11 +128,12 @@ public class ValidateUserTest {
                 .firstName("Arnold".repeat(10))
                 .secondName("Schwarzenegger")
                 .age(76)
+                .team(Team.PINK_TEAM)
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ValidateUserUtils.validate(userDto);
         });
-        //assertEquals("First Name field must be no more than 50 characters long", exception.getMessage().trim());
+        assertEquals("First Name field must be no more than 50 characters long", exception.getMessage().trim());
     }
 
     @Test
@@ -157,11 +142,12 @@ public class ValidateUserTest {
                 .firstName("Arnold")
                 .secondName("Schwarzenegger".repeat(5))
                 .age(76)
+                .team(Team.PINK_TEAM)
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ValidateUserUtils.validate(userDto);
         });
-        //assertEquals("Second Name field must be no more than 50 characters long", exception.getMessage().trim());
+        assertEquals("Second Name field must be no more than 50 characters long", exception.getMessage().trim());
     }
 
     @Test
@@ -170,11 +156,12 @@ public class ValidateUserTest {
                 .firstName("Immortal")
                 .secondName("Man")
                 .age(1000)
+                .team(Team.PINK_TEAM)
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ValidateUserUtils.validate(userDto);
         });
-        //assertEquals("Age is improbable", exception.getMessage().trim());
+        assertEquals("Age is improbable", exception.getMessage().trim());
     }
 
     @Test
@@ -183,11 +170,12 @@ public class ValidateUserTest {
                 .firstName("The")
                 .secondName("Unborn")
                 .age(-1)
+                .team(Team.PINK_TEAM)
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ValidateUserUtils.validate(userDto);
         });
-        //assertEquals("Age is improbable", exception.getMessage().trim());
+        assertEquals("Age is improbable", exception.getMessage().trim());
     }
 
     @Test
@@ -196,6 +184,7 @@ public class ValidateUserTest {
                 .firstName("Arnold")
                 .secondName("Schwarzenegger")
                 .age(76)
+                .team(Team.PINK_TEAM)
                 .build();
         assertTrue(ValidateUserUtils.validate(userDto));
     }

@@ -6,7 +6,7 @@ import org.example.mapper.UserMapper;
 import org.example.mapper.impl.UserMapperImpl;
 import org.example.service.UserService;
 import org.example.service.impl.UserServiceImpl;
-import org.example.util.ValidateUserUtils;
+import org.example.validation.util.ValidateUserUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
