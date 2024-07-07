@@ -1,6 +1,8 @@
 package org.example.repository.impl;
 
 import org.example.dto.UserDto;
+import org.example.exception.DatabaseOperationException;
+import org.example.exception.UserNotFoundException;
 import org.example.mapper.UserMapper;
 import org.example.mapper.impl.UserMapperImpl;
 import org.example.model.User;
@@ -48,11 +50,11 @@ public class UserRepositoryImpl implements UserRepository {
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 connection.rollback();
-                throw new RuntimeException(e);
+                throw new DatabaseOperationException("Error exceuting sql query while creating user: " + e.getMessage(), e);
             }
             connection.commit();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseOperationException("Error committing transaction while creating user: " + e.getMessage(), e);
         }
         return true;
     }
@@ -66,11 +68,11 @@ public class UserRepositoryImpl implements UserRepository {
                 if (resultSet.next()) {
                     return userMapper.mapResultSetToUser(resultSet);
                 } else {
-                    throw new RuntimeException("User with id " + id + " not found");
+                    throw new UserNotFoundException("User with id " + id + " not found");
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseOperationException("Error getting user: " + e.getMessage(), e);
         }
     }
 
@@ -85,7 +87,7 @@ public class UserRepositoryImpl implements UserRepository {
             }
             return users;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseOperationException("Error getting all users: " + e.getMessage(), e);
         }
     }
 
@@ -102,7 +104,7 @@ public class UserRepositoryImpl implements UserRepository {
                 return users;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseOperationException("Error getting all users by team: " + e.getMessage(), e);
         }
     }
 
@@ -118,14 +120,16 @@ public class UserRepositoryImpl implements UserRepository {
                     preparedStatement.setString(4, userDto.getTeam().toString());
                     preparedStatement.setInt(5, userDto.getId());
                     preparedStatement.executeUpdate();
+                } else {
+                    throw new UserNotFoundException("User with id " + userDto.getId() + " not found");
                 }
             } catch (SQLException e) {
                 connection.rollback();
-                throw new RuntimeException(e);
+                throw new DatabaseOperationException("Error exceuting sql query while updating user: " + e.getMessage(), e);
             }
             connection.commit();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseOperationException("Error committing transaction while updating user: " + e.getMessage(), e);
         }
 
     }
@@ -138,14 +142,16 @@ public class UserRepositoryImpl implements UserRepository {
                 if (getById(id) != null) {
                     preparedStatement.setInt(1, id);
                     preparedStatement.executeUpdate();
+                } else {
+                    throw new UserNotFoundException("User with id " + id + " not found");
                 }
             } catch (SQLException e) {
                 connection.rollback();
-                throw new RuntimeException(e);
+                throw new DatabaseOperationException("Error exceuting sql query while deleting user: " + e.getMessage(), e);
             }
             connection.commit();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseOperationException("Error committing transaction while deleting user: " + e.getMessage(), e);
         }
     }
 

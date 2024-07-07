@@ -1,5 +1,7 @@
 package org.example.service;
 
+import org.example.exception.DatabaseOperationException;
+
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,7 +25,7 @@ public class DatabaseService {
             Connection testConn = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
             testConn.close();
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to establish database connection during initialization", e);
+            throw new DatabaseOperationException("Failed to establish database connection during initialization", e);
         }
     }
 
@@ -34,7 +36,7 @@ public class DatabaseService {
             connection = DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
             connection.setTransactionIsolation(setDatabaseUser(isolationLevel));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseOperationException("Failed to get database connection", e);
         }
         return connection;
     }
