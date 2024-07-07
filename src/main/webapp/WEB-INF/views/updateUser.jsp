@@ -59,8 +59,8 @@
     <div>
         <label for="team">Team:</label>
         <select id="team" name="team" required>
-            <option value="ORANGE_TEAM">ORANGE_TEAM</option>
-            <option value="PINK_TEAM">PINK_TEAM</option>
+            <option value="ORANGE_TEAM" ${user.team == 'ORANGE_TEAM' ? 'selected' : ''}>ORANGE_TEAM</option>
+            <option value="PINK_TEAM" ${user.team == 'PINK_TEAM' ? 'selected' : ''}>PINK_TEAM</option>
         </select>
     </div>
     <div>
