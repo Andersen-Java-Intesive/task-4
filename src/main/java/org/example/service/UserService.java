@@ -12,13 +12,13 @@ public interface UserService {
 
     boolean add(UserDto userDto);
 
-    User find(int id);
+    User find(Long id);
 
-    LinkedHashSet<User> findAll();
+    List<User> findAll();
 
     void edit(UserDto userDto);
 
-    void remove(int id);
+    void remove(Long id);
 
     void generateUserPairs();
 

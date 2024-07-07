@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 public interface UserMapper {
 
     User mapUserDtoToUser (UserDto userDto);
-    User mapResultSetToUser (ResultSet resultSet);
     UserDto mapRequestToUserDto(HttpServletRequest httpServletRequest);
+    void updateUserByUserDto(User user, UserDto userDto);
 
 }

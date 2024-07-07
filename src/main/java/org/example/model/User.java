@@ -1,8 +1,11 @@
 package org.example.model;
 
 import lombok.*;
+import javax.persistence.*;
 import org.example.model.enums.Team;
 
+@Entity
+@Table(name = "user_info")
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
@@ -12,10 +15,20 @@ import org.example.model.enums.Team;
 @Builder
 public class User {
 
-    private int id;
-    private String firstName;
-    private String secondName;
-    private int age;
-    private Team team;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "second_name")
+    private String secondName;
+
+    @Column(name = "age")
+    private Integer age;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "team")
+    private Team team;
 }

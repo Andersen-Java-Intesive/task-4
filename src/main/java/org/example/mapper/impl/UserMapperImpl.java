@@ -27,26 +27,14 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public User mapUserDtoToUser(UserDto userDto) {
-        return new User(userDto.getId(), userDto.getFirstName(), userDto.getSecondName(), userDto.getAge(), userDto.getTeam());
+        return User.builder()
+                .id(userDto.getId())
+                .firstName(userDto.getFirstName())
+                .secondName(userDto.getSecondName())
+                .age(userDto.getAge())
+                .team(Team.valueOf(userDto.getTeam()))
+                .build();
     }
-
-    @Override
-    public User mapResultSetToUser(ResultSet resultSet) {
-        User user;
-        try {
-            user = User.builder()
-                    .id(resultSet.getInt("id"))
-                    .firstName(resultSet.getString("first_name"))
-                    .secondName(resultSet.getString("second_name"))
-                    .age(resultSet.getInt("age"))
-                    .team(Team.valueOf(resultSet.getString("team")))
-                    .build();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return user;
-    }
-
 
     @Override
     public UserDto mapRequestToUserDto(HttpServletRequest httpServletRequest) {
@@ -54,15 +42,23 @@ public class UserMapperImpl implements UserMapper {
         try {
             String id = httpServletRequest.getParameter("id");
             user = UserDto.builder()
-                    .id(id == null ? null : Integer.parseInt(id))
+                    .id(id == null ? null : Long.parseLong(id))
                     .firstName(httpServletRequest.getParameter("firstName"))
                     .secondName(httpServletRequest.getParameter("secondName"))
                     .age(Integer.parseInt(httpServletRequest.getParameter("age")))
-                    .team(Team.valueOf(httpServletRequest.getParameter("team")))
+                    .team(httpServletRequest.getParameter("team"))
                     .build();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return user;
+    }
+
+    @Override
+    public void updateUserByUserDto(User user, UserDto userDto) {
+        user.setFirstName(userDto.getFirstName());
+        user.setSecondName(userDto.getSecondName());
+        user.setAge(userDto.getAge());
+        user.setTeam(Team.valueOf(userDto.getTeam()));
     }
 }

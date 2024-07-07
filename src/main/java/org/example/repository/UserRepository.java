@@ -4,20 +4,20 @@ import org.example.dto.UserDto;
 import org.example.model.User;
 import org.example.model.enums.Team;
 
-import java.util.LinkedHashSet;
+import java.util.List;
 
 public interface UserRepository {
 
     boolean create(UserDto userDto);
 
-    User getById(int id);
+    User getById(Long id);
 
-    LinkedHashSet<User> getAll();
+    List<User> getAll();
 
-    LinkedHashSet<User> getAllByTeam(Team team);
+    List<User> getAllByTeam(Team team);
 
     void update(UserDto userDto);
 
-    void deleteById(int id);
+    void deleteById(Long id);
 
 }
