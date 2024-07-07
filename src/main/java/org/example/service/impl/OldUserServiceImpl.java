@@ -78,7 +78,7 @@ public class OldUserServiceImpl {
             String sql = "UPDATE user_info SET first_name = ?, second_name = ?, age = ? WHERE id = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 if (findById(user.getId()) == null) {
-                    throw new RuntimeException("User with if " + user.getId() + " not found");
+                    throw new RuntimeException("User with id " + user.getId() + " not found");
                 }
                 preparedStatement.setString(1, user.getFirstName());
                 preparedStatement.setString(2, user.getSecondName());
