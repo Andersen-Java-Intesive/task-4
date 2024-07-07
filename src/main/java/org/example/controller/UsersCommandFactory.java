@@ -14,11 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class UsersCommandFactory {
     public static UsersCommand getCommand(HttpServletRequest request) {
-        //это незаконная строчка, которая считывает из строки запроса экшн для правильного выбора команды
-        //TODO: переделать
         String action = request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1);
-
-
 
         String method = request.getMethod();
         if (action.equals("users")) {
