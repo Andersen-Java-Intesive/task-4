@@ -22,13 +22,19 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
+        .pink-team {
+            background-color: pink;
+        }
+        .orange-team {
+            background-color: orange;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h2 class="text-center">Users list</h2>
     <div class="table-wrapper">
-        <table class="table table-striped">
+        <table class="table">
             <thead>
             <tr>
                 <th>ID</th>
@@ -42,7 +48,7 @@
             </thead>
             <tbody>
             <c:forEach var="user" items="${users}">
-                <tr>
+                <tr class="${user.team == 'PINK_TEAM' ? 'pink-team' : 'orange-team'}">
                     <td>${user.id}</td>
                     <td>${user.firstName}</td>
                     <td>${user.secondName}</td>
