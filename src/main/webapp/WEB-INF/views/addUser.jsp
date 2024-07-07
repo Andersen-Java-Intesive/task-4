@@ -61,8 +61,8 @@
     <div>
         <label for="team">Team:</label>
         <select id="team" name="team" required>
-            <option value="TEAM_ONE">TEAM_ONE</option>
-            <option value="TEAM_TWO">TEAM_TWO</option>
+            <option value="ORANGE_TEAM">ORANGE_TEAM</option>
+            <option value="PINK_TEAM">PINK_TEAM</option>
         </select>
     </div>
     <div>
