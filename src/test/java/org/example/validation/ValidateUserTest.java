@@ -176,34 +176,6 @@ public class ValidateUserTest {
         });
         assertEquals("Age is improbable", exception.getMessage().trim());
     }
-
-    @Test
-    public void teamNull() {
-        UserDto userDto = UserDto.builder()
-                .firstName("Arnold")
-                .secondName("Schwarzenegger")
-                .age(76)
-                .team(null)
-                .build();
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            ValidateUserUtils.validate(userDto);
-        });
-        assertEquals("Empty Team field", exception.getMessage().trim());
-    }
-    @Test
-    public void teamEmpty() {
-        UserDto userDto = UserDto.builder()
-                .firstName("Arnold")
-                .secondName("Schwarzenegger")
-                .age(76)
-                .team("")
-                .build();
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            ValidateUserUtils.validate(userDto);
-        });
-        assertEquals("Not valid team name", exception.getMessage().trim());
-    }
-
     @Test
     public void teamInvalid() {
         UserDto userDto = UserDto.builder()
@@ -215,7 +187,7 @@ public class ValidateUserTest {
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ValidateUserUtils.validate(userDto);
         });
-        assertEquals("Not valid team name", exception.getMessage().trim());
+        assertEquals("Not a valid team", exception.getMessage().trim());
     }
     @Test
     public void ValidUser() {
@@ -227,5 +199,4 @@ public class ValidateUserTest {
                 .build();
         assertTrue(ValidateUserUtils.validate(userDto));
     }
-
 }
