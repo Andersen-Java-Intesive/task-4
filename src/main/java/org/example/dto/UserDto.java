@@ -32,7 +32,7 @@ public class UserDto {
     @Max(value = 999, message = "Age is improbable")
     private Integer age;
 
-    @NotNull(message = "Empty Team field")
+    @NotBlank(message = "Empty Team field")
     @ValidTeam
-    private Team team;
+    private String team;
 }

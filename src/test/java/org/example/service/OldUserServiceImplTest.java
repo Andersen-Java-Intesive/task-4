@@ -2,6 +2,7 @@ package org.example.service;
 
 
 import org.example.model.User;
+import org.example.model.enums.Team;
 import org.example.service.impl.OldUserServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,6 +68,7 @@ public class OldUserServiceImplTest {
         userDto.setFirstName("Arthur");
         userDto.setSecondName("Auskern");
         userDto.setAge(33);
+        userDto.setTeam(Team.valueOf("PINK_TEAM"));
 
         when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement); // Возвращение мока подготовленного запроса.
 
@@ -76,6 +78,7 @@ public class OldUserServiceImplTest {
         verify(mockPreparedStatement).setString(1, "Arthur"); // Проверка, что setString был вызван с нужными параметрами.
         verify(mockPreparedStatement).setString(2, "Auskern");
         verify(mockPreparedStatement).setInt(3, 33);
+        verify(mockPreparedStatement).setString(4, "PINK_TEAM");
         verify(mockPreparedStatement).executeUpdate(); // Проверка, что executeUpdate был вызван.
         verify(mockConnection).commit(); // Проверка, что commit был вызван.
         assertTrue(result); // Проверка, что результат метода create был true.
@@ -88,6 +91,7 @@ public class OldUserServiceImplTest {
         when(mockResultSet.getString("first_name")).thenReturn("Arnold"); // Возвращение строки "Arnold" при вызове getString.
         when(mockResultSet.getString("second_name")).thenReturn("Schwarzenegger");
         when(mockResultSet.getInt("age")).thenReturn(76);
+        when(mockResultSet.getString("team")).thenReturn("PINK_TEAM");
 
         User user = userServiceImpl.findById(1); // Вызов метода findById.
 
@@ -96,6 +100,7 @@ public class OldUserServiceImplTest {
         assertEquals("Arnold", user.getFirstName()); // Проверка, что firstName пользователя равен "Arnold".
         assertEquals("Schwarzenegger", user.getSecondName());
         assertEquals(76, user.getAge());
+        assertEquals(Team.valueOf("PINK_TEAM"), user.getTeam());
     }
 
     @Test
@@ -114,6 +119,7 @@ public class OldUserServiceImplTest {
         userDto.setFirstName("Sylvester");
         userDto.setSecondName("Stallone");
         userDto.setAge(77);
+        userDto.setTeam(Team.valueOf("ORANGE_TEAM"));
 
         when(mockResultSet.next()).thenReturn(true); // Возвращение true при вызове next.
 
@@ -123,6 +129,7 @@ public class OldUserServiceImplTest {
         verify(mockPreparedStatement).setString(1, "Sylvester"); // Проверка, что setString был вызван с нужными параметрами.
         verify(mockPreparedStatement).setString(2, "Stallone");
         verify(mockPreparedStatement).setInt(3, 77);
+        verify(mockPreparedStatement).setString(4, "ORANGE_TEAM");
         verify(mockPreparedStatement).executeUpdate(); // Проверка, что executeUpdate был вызван.
         verify(mockConnection).commit(); // Проверка, что commit был вызван.
     }
@@ -146,8 +153,8 @@ public class OldUserServiceImplTest {
                 .thenReturn(76) // Возвращение значения 76 при первом вызове getInt.
                 .thenReturn(77); // Возвращение значения 77 при втором вызове getInt.
         when(mockResultSet.getString("team"))
-                .thenReturn("PINK_TEAM") // Возвращение строки "Schwarzenegger" при первом вызове getString.
-                .thenReturn("PINK_TEAM"); // Возвращение строки "Stallone" при втором вызове getString.
+                .thenReturn("PINK_TEAM") // Возвращение строки "PINK_TEAM" при первом вызове getString.
+                .thenReturn("ORANGE_TEAM"); // Возвращение строки "ORANGE_TEAM" при втором вызове getString.
 
         LinkedHashSet<User> users = userServiceImpl.all(); // Вызов метода all.
 
@@ -161,13 +168,13 @@ public class OldUserServiceImplTest {
         assertEquals("Arnold", user1.getFirstName()); // Проверка, что firstName первого пользователя равен "Arnold".
         assertEquals("Schwarzenegger", user1.getSecondName());
         assertEquals(76, user1.getAge());
+        assertEquals(Team.valueOf("PINK_TEAM"), user1.getTeam());
 
         User user2 = iterator.next(); // Получение второго пользователя.
         assertEquals(2, user2.getId()); // Проверка, что id второго пользователя равен 2.
         assertEquals("Sylvester", user2.getFirstName()); // Проверка, что firstName второго пользователя равен "Sylvester".
         assertEquals("Stallone", user2.getSecondName());
         assertEquals(77, user2.getAge());
+        assertEquals(Team.valueOf("ORANGE_TEAM"), user2.getTeam());
     }
-
 }
-
