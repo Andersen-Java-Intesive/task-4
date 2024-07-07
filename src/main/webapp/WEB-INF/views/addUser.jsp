@@ -3,75 +3,64 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Users list</title>
+    <title>Add User</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             margin: 0;
             padding: 0;
         }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        form {
-            width: 60%;
-            margin: 20px auto;
-            border-collapse: collapse;
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
             background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        form, th, td {
-            border: 1px solid #ddd;
+        .btn-custom {
+            background-color: #4CAF50;
+            color: white;
         }
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .button-container {
-            text-align: center;
-            margin: 20px;
-        }
-        .button-container form {
-            display: inline;
+        .btn-custom:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-<h2>Add user</h2>
-<c:if test="${not empty errorMessage}">
-    <p style="color: red;">${errorMessage}</p>
-</c:if>
-<form action="addUser" method="post">
-    <div>
-        <label for="firstName">Name:</label>
-        <input type="text" id="firstName" name="firstName" required>
-    </div>
-    <div>
-        <label for="secondName">Second Name:</label>
-        <input type="text" id="secondName" name="secondName" required>
-    </div>
-    <div>
-        <label for="age">Age:</label>
-        <input type="number" id="age" name="age" min="0" required>
-    </div>
-    <div>
-        <label for="team">Team:</label>
-        <select id="team" name="team" required>
-            <option value="ORANGE_TEAM">ORANGE_TEAM</option>
-            <option value="PINK_TEAM">PINK_TEAM</option>
-        </select>
-    </div>
-    <div>
-        <input type="submit" value="Add">
-    </div>
-    <div>
-        <a href="users">Back to users list</a>
-    </div>
-</form>
-
+<div class="container">
+    <h2 class="text-center">Add User</h2>
+    <c:if test="${not empty errorMessage}">
+        <div class="alert alert-danger">${errorMessage}</div>
+    </c:if>
+    <form action="addUser" method="post">
+        <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" required>
+        </div>
+        <div class="form-group">
+            <label for="secondName">Second Name:</label>
+            <input type="text" class="form-control" id="secondName" name="secondName" required>
+        </div>
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" class="form-control" id="age" name="age" min="0" required>
+        </div>
+        <div class="form-group">
+            <label for="team">Team:</label>
+            <select class="form-control" id="team" name="team" required>
+                <option value="PINK_TEAM">PINK_TEAM</option>
+                <option value="ORANGE_TEAM">ORANGE_TEAM</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-custom btn-block">Add</button>
+        <div class="text-center mt-3">
+            <a href="users" class="btn btn-secondary">Back to Users List</a>
+        </div>
+    </form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

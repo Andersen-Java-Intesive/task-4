@@ -1,4 +1,4 @@
-package org.example.util;
+package org.example.validation.util;
 
 import org.example.dto.UserDto;
 
