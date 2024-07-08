@@ -176,6 +176,35 @@ public class ValidateUserTest {
         });
         assertEquals("Age is improbable", exception.getMessage().trim());
     }
+
+    @Test
+    public void teamNull() {
+        UserDto userDto = UserDto.builder()
+                .firstName("Arnold")
+                .secondName("Schwarzenegger")
+                .age(76)
+                .team(null)
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        assertTrue(exception.getMessage().trim().contains("Not a valid team"));
+    }
+
+    @Test
+    public void teamEmpty() {
+        UserDto userDto = UserDto.builder()
+                .firstName("Arnold")
+                .secondName("Schwarzenegger")
+                .age(76)
+                .team("")
+                .build();
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            ValidateUserUtils.validate(userDto);
+        });
+        assertTrue(exception.getMessage().trim().contains("Empty Team field"));
+    }
+
     @Test
     public void teamInvalid() {
         UserDto userDto = UserDto.builder()
