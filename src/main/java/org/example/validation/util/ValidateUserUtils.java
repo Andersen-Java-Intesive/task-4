@@ -1,6 +1,7 @@
 package org.example.validation.util;
 
 import org.example.dto.UserDto;
+import org.example.exception.UserValidationException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -19,8 +20,7 @@ public class ValidateUserUtils {
             errors.forEach(userConstraintViolation -> errorMessage.append(userConstraintViolation.getMessage()).append(" "));
         }
         if (!errorMessage.toString().isEmpty()) {
-            // TODO change to UserValidationException
-            throw new RuntimeException(errorMessage.toString());
+            throw new UserValidationException(errorMessage.toString());
         }
         return true;
     }
