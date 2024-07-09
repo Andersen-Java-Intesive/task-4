@@ -7,7 +7,14 @@ import org.example.repository.UserRepository;
 import org.example.repository.impl.UserRepositoryImpl;
 import org.example.service.UserService;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Collections;
 
 
 public class UserServiceImpl implements UserService {
@@ -17,13 +24,16 @@ public class UserServiceImpl implements UserService {
 
     private List<Map.Entry<User, User>> userPairs;
     private List<User> pairlessUsers;
+    private static Map<Pair<User, User>, Integer> pairHistory;
 
-    private UserServiceImpl() {
+
+    private UserServiceImpl(Map<Pair<User, User>, Integer> pairHistory) {
+        this.pairHistory = pairHistory;
     }
 
     public static synchronized UserService getInstance() {
         if (instance == null) {
-            instance = new UserServiceImpl();
+            instance = new UserServiceImpl(pairHistory);
         }
         return instance;
     }
@@ -79,6 +89,35 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    private User getWeightedRandomUser(User user, List<User> candidates) {
+        List<Double> weights = new ArrayList<>();
+        double totalWeight = 0.0;
+
+        for (User candidate : candidates) {
+            int historyCount = pairHistory.getOrDefault(new Pair<>(user, candidate), 0);
+            double weight = 1.0 / (1 + historyCount);
+            weights.add(weight);
+            totalWeight += weight;
+        }
+
+        double random = Math.random() * totalWeight;
+        double cumulativeWeight = 0.0;
+
+        for (int i = 0; i < candidates.size(); i++) {
+            cumulativeWeight += weights.get(i);
+            if (random <= cumulativeWeight) {
+                return candidates.get(i);
+            }
+        }
+
+        return candidates.get(candidates.size() - 1); 
+    }
+
+    private void incrementPairHistory(User user1, User user2) {
+        Pair<User, User> pair = new Pair<>(user1, user2);
+        pairHistory.put(pair, pairHistory.getOrDefault(pair, 0) + 1);
+    }
+
     @Override
     public List<Map.Entry<User, User>> getUserPairs() {
         return userPairs;
@@ -90,3 +129,5 @@ public class UserServiceImpl implements UserService {
     }
 
 }
+
+
