@@ -24,10 +24,10 @@ public class UserServiceImpl implements UserService {
 
     private List<Map.Entry<User, User>> userPairs;
     private List<User> pairlessUsers;
-    private static Map<Pair<User, User>, Integer> pairHistory;
+    public static Map<Pair<User, User>, Integer> pairHistory;
 
 
-    private UserServiceImpl(Map<Pair<User, User>, Integer> pairHistory) {
+    public UserServiceImpl(Map<Pair<User, User>, Integer> pairHistory) {
         this.pairHistory = pairHistory;
     }
 
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private User getWeightedRandomUser(User user, List<User> candidates) {
+    public static User getWeightedRandomUser(User user, List<User> candidates, Map<Pair<User, User>, Integer> pairHistory) {
         List<Double> weights = new ArrayList<>();
         double totalWeight = 0.0;
 
@@ -105,12 +105,11 @@ public class UserServiceImpl implements UserService {
 
         for (int i = 0; i < candidates.size(); i++) {
             cumulativeWeight += weights.get(i);
-            if (random <= cumulativeWeight) {
+            if (random < cumulativeWeight) {
                 return candidates.get(i);
             }
         }
-
-        return candidates.get(candidates.size() - 1); 
+        throw new RuntimeException("Randomizer error");
     }
 
     private void incrementPairHistory(User user1, User user2) {
