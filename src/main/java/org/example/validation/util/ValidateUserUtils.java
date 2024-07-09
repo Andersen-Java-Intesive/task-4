@@ -11,7 +11,7 @@ import java.util.LinkedHashSet;
 
 public class ValidateUserUtils {
 
-    private static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     public static boolean validate(UserDto userDto) {
         HashSet<ConstraintViolation<UserDto>> errors = new LinkedHashSet<>(validator.validate(userDto));

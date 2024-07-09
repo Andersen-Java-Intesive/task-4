@@ -1,6 +1,5 @@
 package org.example.validation.annotation;
 
-import org.example.validation.validatior.NotBlankNotNullNotEmptyValidator;
 import org.example.validation.validatior.ValidTeamValidator;
 
 import javax.validation.Constraint;
