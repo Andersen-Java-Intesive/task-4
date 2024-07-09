@@ -1,0 +1,75 @@
+package org.example.mapper.impl;
+
+import org.example.dto.MarkDto;
+import org.example.mapper.MarkMapper;
+import org.example.model.Mark;
+
+
+import javax.servlet.http.HttpServletRequest;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+
+public class MarkMapperImpl implements MarkMapper {
+    private static MarkMapper instance;
+
+    private MarkMapperImpl() {
+    }
+
+    public static synchronized MarkMapper getInstance() {
+        if (instance == null) {
+            instance = new MarkMapperImpl();
+        }
+        return instance;
+    }
+
+    @Override
+    public Mark mapMarkDtoToMark(MarkDto markDto) {
+        return new Mark(
+                markDto.getId(),
+                markDto.getLessonDate(),
+                markDto.getUserOneId(),
+                markDto.getUserOneMark(),
+                markDto.getUserTwoId(),
+                markDto.getUserTwoMark()
+        );
+    }
+
+    @Override
+    public Mark mapResultSetToMark(ResultSet resultSet) {
+        Mark mark = new Mark();
+        try {
+            Mark.builder()
+                    .id(resultSet.getInt("id"))
+                    .lessonDate(resultSet.getTimestamp("lesson_date"))
+                    .userOneId(resultSet.getInt("user_one_id"))
+                    .userOneMark(resultSet.getDouble("user_one_mark"))
+                    .userTwoId(resultSet.getInt("user_two_id"))
+                    .userTwoMark(resultSet.getDouble("user_two_mark"))
+                    .build();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return mark;
+    }
+
+    @Override
+    public MarkDto mapRequestToUserDto(HttpServletRequest httpServletRequest) {
+        MarkDto markDto;
+        try {
+            String id = httpServletRequest.getParameter("id");
+            markDto = MarkDto.builder()
+                    .id(id == null ? null : Integer.parseInt(id))
+                    .lessonDate(Timestamp.valueOf(httpServletRequest.getParameter("lesson_date")))
+                    .userOneId(Integer.parseInt(httpServletRequest.getParameter("user_one_id")))
+                    .userOneMark(Double.valueOf(httpServletRequest.getParameter("user_one_mark")))
+                    .userTwoId(Integer.parseInt(httpServletRequest.getParameter("user_two_id")))
+                    .userTwoMark(Double.valueOf(httpServletRequest.getParameter("user_two_mark")))
+                    .build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return markDto;
+    }
+}
+

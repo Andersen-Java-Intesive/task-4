@@ -1,7 +1,7 @@
 package org.example.service;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mockStatic;
+
 
 import org.example.model.User;
 import org.example.model.enums.Team;
@@ -9,14 +9,11 @@ import org.example.service.impl.Pair;
 import org.example.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+
 
 public class UserPairGeneratorTest {
     private User user1;
@@ -72,8 +69,4 @@ public class UserPairGeneratorTest {
     }
 
     // Вспомогательный метод для тестирования
-
-
-
-
 }
