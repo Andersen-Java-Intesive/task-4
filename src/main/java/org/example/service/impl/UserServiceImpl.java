@@ -76,7 +76,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private void createPairsBySmallerTeam(List<User> smallerTeam, List<User> largerTeam) {
+    @Override
+    public void createPairsBySmallerTeam(List<User> smallerTeam, List<User> largerTeam) {
         userPairs = new LinkedList<>();
         Iterator<User> smallerTeamIterator = smallerTeam.iterator();
         Iterator<User> largerTeamIterator = largerTeam.iterator();
@@ -88,6 +89,7 @@ public class UserServiceImpl implements UserService {
             pairlessUsers.add(largerTeamIterator.next());
         }
     }
+
 
     public static User getWeightedRandomUser(User user, List<User> candidates, Map<Pair<User, User>, Integer> pairHistory) {
         List<Double> weights = new ArrayList<>();
@@ -112,7 +114,8 @@ public class UserServiceImpl implements UserService {
         throw new RuntimeException("Randomizer error");
     }
 
-    private void incrementPairHistory(User user1, User user2) {
+    @Override
+    public void incrementPairHistory(User user1, User user2) {
         Pair<User, User> pair = new Pair<>(user1, user2);
         pairHistory.put(pair, pairHistory.getOrDefault(pair, 0) + 1);
     }

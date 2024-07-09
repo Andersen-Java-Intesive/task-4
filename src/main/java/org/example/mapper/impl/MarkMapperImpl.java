@@ -24,6 +24,18 @@ public class MarkMapperImpl implements MarkMapper {
     }
 
     @Override
+    public MarkDto mapMarkToMarkDto(Mark mark) {
+        return MarkDto.builder()
+                .id(mark.getId())
+                .lessonDate(mark.getLessonDate())
+                .userOneId(mark.getUserOneId())
+                .userOneMark(mark.getUserOneMark())
+                .userTwoId(mark.getUserTwoId())
+                .userTwoMark(mark.getUserTwoMark())
+                .build();
+    }
+
+    @Override
     public Mark mapMarkDtoToMark(MarkDto markDto) {
         return new Mark(
                 markDto.getId(),
@@ -37,9 +49,8 @@ public class MarkMapperImpl implements MarkMapper {
 
     @Override
     public Mark mapResultSetToMark(ResultSet resultSet) {
-        Mark mark = new Mark();
         try {
-            Mark.builder()
+            return Mark.builder()
                     .id(resultSet.getInt("id"))
                     .lessonDate(resultSet.getTimestamp("lesson_date"))
                     .userOneId(resultSet.getInt("user_one_id"))
@@ -50,7 +61,6 @@ public class MarkMapperImpl implements MarkMapper {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return mark;
     }
 
     @Override

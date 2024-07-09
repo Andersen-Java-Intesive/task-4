@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<jsp:useBean id="mapUtils" class="org.example.util.MapUtils" scope="application" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,6 +45,12 @@
                 <th>Second Name</th>
                 <th>Age</th>
                 <th>Team</th>
+                <c:forEach var="lesson" items="${lessons}">
+                    <th>
+                        <fmt:formatDate value="${lesson.first}" pattern="yyyy-MM-dd"/>
+                    </th>
+                </c:forEach>
+                <th>Total Score</th>
                 <th>Update</th>
                 <th>Delete</th>
             </tr>
@@ -54,6 +63,19 @@
                     <td>${user.secondName}</td>
                     <td>${user.age}</td>
                     <td>${user.team}</td>
+                    <c:forEach var="lesson" items="${lessons}">
+                        <td>
+                            <c:choose>
+                                <c:when test="${mapUtils.getValue(lesson.second, user) != null}">
+                                    ${mapUtils.getValue(lesson.second, user)}
+                                </c:when>
+                                <c:otherwise>
+                                    0
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                    </c:forEach>
+                    <td>${mapUtils.getValue(userTotalScores, user)}</td>
                     <td>
                         <form action="updateUser" method="get" style="display:inline;">
                             <input type="hidden" name="id" value="${user.id}">
