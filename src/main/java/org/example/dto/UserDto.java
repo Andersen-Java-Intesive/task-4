@@ -1,11 +1,20 @@
 package org.example.dto;
 
-import lombok.*;
-import org.example.model.enums.Team;
+import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.Builder;
 import org.example.validation.annotation.NotBlankNotNullNotEmpty;
 import org.example.validation.annotation.ValidTeam;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 
 @NoArgsConstructor
 @AllArgsConstructor

@@ -10,10 +10,16 @@ import org.example.model.enums.Team;
 import org.example.repository.UserRepository;
 import org.example.service.DatabaseService;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedHashSet;
 
-import static java.sql.Connection.*;
+import static java.sql.Connection.TRANSACTION_READ_COMMITTED;
+import static java.sql.Connection.TRANSACTION_READ_UNCOMMITTED;
+import static java.sql.Connection.TRANSACTION_REPEATABLE_READ;
 
 public class UserRepositoryImpl implements UserRepository {
 
@@ -46,11 +52,11 @@ public class UserRepositoryImpl implements UserRepository {
                 preparedStatement.setString(1, userDto.getFirstName());
                 preparedStatement.setString(2, userDto.getSecondName());
                 preparedStatement.setInt(3, userDto.getAge());
-                preparedStatement.setString(4, userDto.getTeam().toString());
+                preparedStatement.setString(4, userDto.getTeam());
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 connection.rollback();
-                throw new DatabaseOperationException("Error exceuting sql query while creating user: " + e.getMessage(), e);
+                throw new DatabaseOperationException("Error executing sql query while creating user: " + e.getMessage(), e);
             }
             connection.commit();
         } catch (SQLException e) {
@@ -117,7 +123,7 @@ public class UserRepositoryImpl implements UserRepository {
                     preparedStatement.setString(1, userDto.getFirstName());
                     preparedStatement.setString(2, userDto.getSecondName());
                     preparedStatement.setInt(3, userDto.getAge());
-                    preparedStatement.setString(4, userDto.getTeam().toString());
+                    preparedStatement.setString(4, userDto.getTeam());
                     preparedStatement.setInt(5, userDto.getId());
                     preparedStatement.executeUpdate();
                 } else {
@@ -125,7 +131,7 @@ public class UserRepositoryImpl implements UserRepository {
                 }
             } catch (SQLException e) {
                 connection.rollback();
-                throw new DatabaseOperationException("Error exceuting sql query while updating user: " + e.getMessage(), e);
+                throw new DatabaseOperationException("Error executing sql query while updating user: " + e.getMessage(), e);
             }
             connection.commit();
         } catch (SQLException e) {
@@ -147,7 +153,7 @@ public class UserRepositoryImpl implements UserRepository {
                 }
             } catch (SQLException e) {
                 connection.rollback();
-                throw new DatabaseOperationException("Error exceuting sql query while deleting user: " + e.getMessage(), e);
+                throw new DatabaseOperationException("Error executing sql query while deleting user: " + e.getMessage(), e);
             }
             connection.commit();
         } catch (SQLException e) {
