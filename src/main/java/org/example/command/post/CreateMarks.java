@@ -38,7 +38,6 @@ public class CreateMarks implements UsersCommand {
                         double pairedUserMark = Double.parseDouble(pairedUserMarkStr);
                         Mark mark = new Mark(0, lessonDate, user.getId(), userMark, pairedUser.getId(), pairedUserMark);
                         MarkDto markDto = markMapper.mapMarkToMarkDto(mark);
-                        ValidateMarkUtils.validate(markDto);
                         markService.add(markDto);
                     }
                 }

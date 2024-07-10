@@ -32,10 +32,8 @@ public class MarkDto {
     private Date lessonDate;
     private int userOneId;
     @NotNull(message = "User mark cannot be null")
-    @Pattern(regexp = "^[0-6](\\.0|\\.5)?$", message = "Mark must be between 0 and 6 inclusive with step of 0.5")
     private Double userOneMark;
     private int userTwoId;
     @NotNull(message = "User mark cannot be null")
-    @Pattern(regexp = "^[0-6](\\.0|\\.5)?$", message = "Mark must be between 0 and 6 inclusive with step of 0.5")
     private Double userTwoMark;
 }
