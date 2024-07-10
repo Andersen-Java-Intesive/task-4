@@ -7,10 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.example.model.enums.Team;
 
 import java.sql.Date;
-import java.sql.Timestamp;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,10 +19,10 @@ import java.sql.Timestamp;
 @ToString
 @Builder
 public class Mark {
-    private int id;
+    private UUID id;
     private Date lessonDate;
-    private int userOneId;
+    private UUID userOneId;
     private Double userOneMark;
-    private int userTwoId;
+    private UUID userTwoId;
     private Double userTwoMark;
 }

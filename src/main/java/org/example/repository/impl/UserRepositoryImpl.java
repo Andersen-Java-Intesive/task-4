@@ -16,10 +16,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedHashSet;
+import java.util.UUID;
 
 import static java.sql.Connection.TRANSACTION_READ_COMMITTED;
 import static java.sql.Connection.TRANSACTION_READ_UNCOMMITTED;
 import static java.sql.Connection.TRANSACTION_REPEATABLE_READ;
+import static java.sql.Types.OTHER;
 
 public class UserRepositoryImpl implements UserRepository {
 
@@ -52,7 +54,7 @@ public class UserRepositoryImpl implements UserRepository {
                 preparedStatement.setString(1, userDto.getFirstName());
                 preparedStatement.setString(2, userDto.getSecondName());
                 preparedStatement.setDate(3, userDto.getAge());
-                preparedStatement.setString(4, userDto.getTeam().toString());
+                preparedStatement.setObject(4, userDto.getTeam(), OTHER);
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 connection.rollback();
@@ -66,10 +68,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getById(int id) {
+    public User getById(UUID id) {
         try (Connection connection = databaseService.getConnection(TRANSACTION_READ_COMMITTED)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID)) {
-                preparedStatement.setInt(1, id);
+                preparedStatement.setObject(1, id, OTHER);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     return userMapper.mapResultSetToUser(resultSet);
@@ -124,8 +126,7 @@ public class UserRepositoryImpl implements UserRepository {
                     preparedStatement.setString(2, userDto.getSecondName());
                     preparedStatement.setDate(3, userDto.getAge());
                     preparedStatement.setString(4, userDto.getTeam().toString());
-
-                    preparedStatement.setInt(5, userDto.getId());
+                    preparedStatement.setObject(5, userDto.getId(), OTHER);
                     preparedStatement.executeUpdate();
                 } else {
                     throw new UserNotFoundException("User with id " + userDto.getId() + " not found");
@@ -142,12 +143,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(UUID id) {
         try (Connection connection = databaseService.getConnection(TRANSACTION_REPEATABLE_READ)) {
             connection.setAutoCommit(false);
             try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USERS_SQL)) {
                 if (getById(id) != null) {
-                    preparedStatement.setInt(1, id);
+                    preparedStatement.setObject(1, id, OTHER);
                     preparedStatement.executeUpdate();
                 } else {
                     throw new UserNotFoundException("User with id " + id + " not found");

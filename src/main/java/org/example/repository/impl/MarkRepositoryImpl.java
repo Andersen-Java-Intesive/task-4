@@ -15,10 +15,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedHashSet;
+import java.util.UUID;
 
 import static java.sql.Connection.TRANSACTION_READ_COMMITTED;
 import static java.sql.Connection.TRANSACTION_READ_UNCOMMITTED;
 import static java.sql.Connection.TRANSACTION_REPEATABLE_READ;
+import static java.sql.Types.OTHER;
 
 public class MarkRepositoryImpl implements MarkRepository {
     private static MarkRepository instance;
@@ -46,9 +48,9 @@ public class MarkRepositoryImpl implements MarkRepository {
             connection.setAutoCommit(false);
             try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_MARKS_SQL)) {
                 preparedStatement.setDate(1, markDto.getLessonDate());
-                preparedStatement.setInt(2, markDto.getUserOneId());
+                preparedStatement.setObject(2, markDto.getUserOneId(), OTHER);
                 preparedStatement.setDouble(3, markDto.getUserOneMark());
-                preparedStatement.setInt(4, markDto.getUserTwoId());
+                preparedStatement.setObject(4, markDto.getUserTwoId(), OTHER);
                 preparedStatement.setDouble(5, markDto.getUserTwoMark());
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
@@ -63,10 +65,10 @@ public class MarkRepositoryImpl implements MarkRepository {
     }
 
     @Override
-    public Mark getById(int id) {
+    public Mark getById(UUID id) {
         try (Connection connection = databaseService.getConnection(TRANSACTION_READ_COMMITTED)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_MARK_BY_ID)) {
-                preparedStatement.setInt(1, id);
+                preparedStatement.setString(1, id.toString());
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     return markMapper.mapResultSetToMark(resultSet);
@@ -101,11 +103,11 @@ public class MarkRepositoryImpl implements MarkRepository {
             try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MARKS_SQL)) {
                 if (getById(markDto.getId()) != null) {
                     preparedStatement.setDate(1, markDto.getLessonDate());
-                    preparedStatement.setInt(2, markDto.getUserOneId());
+                    preparedStatement.setObject(2, markDto.getUserOneId(), OTHER);
                     preparedStatement.setDouble(3, markDto.getUserOneMark());
-                    preparedStatement.setInt(4, markDto.getUserTwoId());
+                    preparedStatement.setObject(4, markDto.getUserTwoId(), OTHER);
                     preparedStatement.setDouble(5, markDto.getUserTwoMark());
-                    preparedStatement.setInt(6, markDto.getId());
+                    preparedStatement.setObject(6, markDto.getId(), OTHER);
                     preparedStatement.executeUpdate();
                 } else {
                     throw new MarkNotFoundException("Mark with id " + markDto.getId() + " not found");
@@ -121,11 +123,11 @@ public class MarkRepositoryImpl implements MarkRepository {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(UUID id) {
         try (Connection connection = databaseService.getConnection(TRANSACTION_REPEATABLE_READ)) {
             connection.setAutoCommit(false);
             try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_MARKS_SQL)) {
-                preparedStatement.setInt(1, id);
+                preparedStatement.setObject(1, id, OTHER);
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 connection.rollback();

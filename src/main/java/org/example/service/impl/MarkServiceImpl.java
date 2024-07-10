@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.UUID;
 
 public class MarkServiceImpl implements MarkService {
     private static MarkService instance;
@@ -36,7 +37,7 @@ public class MarkServiceImpl implements MarkService {
     }
 
     @Override
-    public Mark find(int id) {
+    public Mark find(UUID id) {
         return markRepository.getById(id);
     }
 
@@ -51,7 +52,7 @@ public class MarkServiceImpl implements MarkService {
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(UUID id) {
         markRepository.deleteById(id);
     }
     @Override

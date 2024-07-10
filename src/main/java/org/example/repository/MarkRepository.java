@@ -5,15 +5,16 @@ import org.example.model.Mark;
 
 
 import java.util.LinkedHashSet;
+import java.util.UUID;
 
 public interface MarkRepository {
     boolean create(MarkDto markDto);
 
-    Mark getById(int id);
+    Mark getById(UUID id);
 
     LinkedHashSet<Mark> getAll();
 
     void update(MarkDto markDto);
 
-    void deleteById(int id);
+    void deleteById(UUID id);
 }

@@ -7,6 +7,7 @@ import org.example.service.impl.Pair;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 
 public interface UserService {
@@ -14,13 +15,13 @@ public interface UserService {
 
     boolean add(UserDto userDto);
 
-    User find(int id);
+    User find(UUID id);
 
     LinkedHashSet<User> findAll();
 
     void edit(UserDto userDto);
 
-    void remove(int id);
+    void remove(UUID id);
 
     void generateUserPairs();
 

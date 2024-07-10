@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.ResultSet;
 
 public interface MarkMapper {
-    MarkDto mapMarkToMarkDto(Mark mark);
+    MarkDto mapMarkToMarkDto(Mark markDto);
 
     Mark mapMarkDtoToMark (MarkDto markDto);
     Mark mapResultSetToMark (ResultSet resultSet);

@@ -8,15 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Pattern;
 import java.sql.Date;
-import java.sql.Timestamp;
-
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,14 +21,21 @@ import java.sql.Timestamp;
 @ToString
 @Builder
 public class MarkDto {
-    private int id;
+
+    private UUID id;
+
     @NotNull(message = "Lesson date cannot be null")
     @PastOrPresent(message = "Lesson date cannot be a future date")
     private Date lessonDate;
-    private int userOneId;
+
+    private UUID userOneId;
+
     @NotNull(message = "User mark cannot be null")
     private Double userOneMark;
-    private int userTwoId;
+
+    private UUID userTwoId;
+
     @NotNull(message = "User mark cannot be null")
     private Double userTwoMark;
+
 }
