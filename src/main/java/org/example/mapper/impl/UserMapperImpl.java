@@ -3,12 +3,14 @@ package org.example.mapper.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dto.UserDto;
 import org.example.mapper.UserMapper;
-import org.example.model.enums.Team;
 import org.example.model.User;
+import org.example.model.enums.Team;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 @Slf4j
 public class UserMapperImpl implements UserMapper {
@@ -41,10 +43,10 @@ public class UserMapperImpl implements UserMapper {
         User user;
         try {
             user = User.builder()
-                    .id(resultSet.getInt("id"))
-                    .firstName(resultSet.getString("first_name"))
-                    .secondName(resultSet.getString("second_name"))
-                    .age(resultSet.getInt("age"))
+                    .id(UUID.fromString(resultSet.getString("id")))
+                    .firstName(resultSet.getString("name"))
+                    .secondName(resultSet.getString("surname"))
+                    .age(resultSet.getDate("age"))
                     .team(Team.valueOf(resultSet.getString("team")))
                     .build();
         } catch (SQLException e) {
@@ -53,17 +55,16 @@ public class UserMapperImpl implements UserMapper {
         return user;
     }
 
-
     @Override
     public UserDto mapRequestToUserDto(HttpServletRequest httpServletRequest) {
         UserDto user;
         try {
             String id = httpServletRequest.getParameter("id");
             user = UserDto.builder()
-                    .id(id == null ? null : Integer.parseInt(id))
+                    .id(id == null ? null : UUID.fromString(id))
                     .firstName(httpServletRequest.getParameter("firstName"))
                     .secondName(httpServletRequest.getParameter("secondName"))
-                    .age(Integer.parseInt(httpServletRequest.getParameter("age")))
+                    .age(Date.valueOf(httpServletRequest.getParameter("age")))
                     .team(httpServletRequest.getParameter("team"))
                     .build();
         } catch (Exception e) {

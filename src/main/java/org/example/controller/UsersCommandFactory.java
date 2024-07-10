@@ -5,6 +5,7 @@ import org.example.command.get.GetCreatingUserPage;
 import org.example.command.get.GetUpdatingUserPage;
 import org.example.command.get.GetAllUserPage;
 import org.example.command.get.GetUserPairs;
+import org.example.command.post.CreateMarks;
 import org.example.command.post.CreateUser;
 import org.example.command.post.DeleteUser;
 import org.example.command.post.UpdateUser;
@@ -28,6 +29,7 @@ public class UsersCommandFactory {
         commandMap.put("GET/updateUser", new GetUpdatingUserPage());
         commandMap.put("POST/updateUser", new UpdateUser());
         commandMap.put("POST/formPairs", new GetUserPairs());
+        commandMap.put("POST/addMarks", new CreateMarks());
     }
 
     public static UsersCommand getCommand(HttpServletRequest request) {

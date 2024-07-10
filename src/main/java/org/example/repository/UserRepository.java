@@ -5,12 +5,13 @@ import org.example.model.User;
 import org.example.model.enums.Team;
 
 import java.util.LinkedHashSet;
+import java.util.UUID;
 
 public interface UserRepository {
 
     boolean create(UserDto userDto);
 
-    User getById(int id);
+    User getById(UUID id);
 
     LinkedHashSet<User> getAll();
 
@@ -18,6 +19,6 @@ public interface UserRepository {
 
     void update(UserDto userDto);
 
-    void deleteById(int id);
+    void deleteById(UUID id);
 
 }

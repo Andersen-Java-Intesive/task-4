@@ -1,20 +1,21 @@
 package org.example.dto;
 
-import lombok.EqualsAndHashCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Builder;
 import org.example.validation.annotation.NotBlankNotNullNotEmpty;
 import org.example.validation.annotation.ValidTeam;
 
-import javax.validation.constraints.Size;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.sql.Date;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,7 +26,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class UserDto {
 
-    private Integer id;
+    private UUID id;
 
     @NotBlankNotNullNotEmpty
     @Size(max = 50, message = "First Name field must be no more than 50 characters long")
@@ -37,9 +38,8 @@ public class UserDto {
     @Pattern(regexp = "^[A-Za-z \\s]*$", message = "No non-latin characters or punctuation allowed")
     private String secondName;
 
-    @Min(value = 0, message = "Age is improbable")
-    @Max(value = 999, message = "Age is improbable")
-    private Integer age;
+    @NotNull(message = "Age field is required")
+    private Date age;
 
     @NotBlank(message = "Empty Team field")
     @ValidTeam

@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.example.model.enums.Team;
 
 import java.sql.Date;
 import java.util.UUID;
@@ -19,12 +18,11 @@ import java.util.UUID;
 @EqualsAndHashCode
 @ToString
 @Builder
-public class User {
-
+public class Mark {
     private UUID id;
-    private String firstName;
-    private String secondName;
-    private Date age;
-    private Team team;
-
+    private Date lessonDate;
+    private UUID userOneId;
+    private Double userOneMark;
+    private UUID userTwoId;
+    private Double userTwoMark;
 }

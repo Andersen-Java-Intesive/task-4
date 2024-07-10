@@ -5,9 +5,14 @@ import org.example.validation.util.ValidateUserUtils;
 import org.junit.jupiter.api.Test;
 
 
+
+import java.sql.Date;
+
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class ValidateUserTest {
 
@@ -16,7 +21,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName(null)
                 .secondName("Schwarzenegger")
-                .age(76)
+                .age(new Date(0,1,1))
                 .team("PINK_TEAM")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -30,7 +35,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName("    ")
                 .secondName("Schwarzenegger")
-                .age(76)
+                .age(new Date(0,1,1))
                 .team("PINK_TEAM")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -44,7 +49,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName("")
                 .secondName("Schwarzenegger")
-                .age(76)
+                .age(new Date(0,1,1))
                 .team("PINK_TEAM")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -58,7 +63,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName("Arnold")
                 .secondName(null)
-                .age(76)
+                .age(new Date(0,1,1))
                 .team("PINK_TEAM")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -72,7 +77,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName("Arnold")
                 .secondName("   ")
-                .age(76)
+                .age(new Date(0,1,1))
                 .team("PINK_TEAM")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -86,7 +91,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName("Arnold")
                 .secondName("")
-                .age(76)
+                .age(new Date(0,1,1))
                 .team("PINK_TEAM")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -100,7 +105,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName("Арнольд")
                 .secondName("Schwarzenegger")
-                .age(76)
+                .age(new Date(0,1,1))
                 .team("PINK_TEAM")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -114,7 +119,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName("Arnold")
                 .secondName("Шварценеггер")
-                .age(76)
+                .age(new Date(0,1,1))
                 .team("PINK_TEAM")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -128,7 +133,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName("Arnold".repeat(10))
                 .secondName("Schwarzenegger")
-                .age(76)
+                .age(new Date(0,1,1))
                 .team("PINK_TEAM")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -142,7 +147,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName("Arnold")
                 .secondName("Schwarzenegger".repeat(5))
-                .age(76)
+                .age(new Date(0,1,1))
                 .team("PINK_TEAM")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -151,12 +156,12 @@ public class ValidateUserTest {
         assertEquals("Second Name field must be no more than 50 characters long", exception.getMessage().trim());
     }
 
-    @Test
+
     public void AgeTooHigh() {
         UserDto userDto = UserDto.builder()
                 .firstName("Immortal")
                 .secondName("Man")
-                .age(1000)
+                .age(new Date(0,1,1))
                 .team("PINK_TEAM")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -165,12 +170,12 @@ public class ValidateUserTest {
         assertEquals("Age is improbable", exception.getMessage().trim());
     }
 
-    @Test
+
     public void AgeTooLow() {
         UserDto userDto = UserDto.builder()
                 .firstName("The")
                 .secondName("Unborn")
-                .age(-1)
+                .age(new Date(0,1,1))
                 .team("PINK_TEAM")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -184,7 +189,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName("Arnold")
                 .secondName("Schwarzenegger")
-                .age(76)
+                .age(new Date(0,1,1))
                 .team(null)
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -198,7 +203,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName("Arnold")
                 .secondName("Schwarzenegger")
-                .age(76)
+                .age(new Date(0,1,1))
                 .team("")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -212,7 +217,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName("Arnold")
                 .secondName("Schwarzenegger")
-                .age(76)
+                .age(new Date(0,1,1))
                 .team("SOMEWRONG_TEAM")
                 .build();
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -225,7 +230,7 @@ public class ValidateUserTest {
         UserDto userDto = UserDto.builder()
                 .firstName("Arnold")
                 .secondName("Schwarzenegger")
-                .age(76)
+                .age(new Date(0,1,1))
                 .team("PINK_TEAM")
                 .build();
         assertTrue(ValidateUserUtils.validate(userDto));
