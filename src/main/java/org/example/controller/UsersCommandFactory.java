@@ -1,6 +1,6 @@
 package org.example.controller;
 
-import org.example.command.*;
+import org.example.command.UsersCommand;
 import org.example.command.get.GetCreatingUserPage;
 import org.example.command.get.GetUpdatingUserPage;
 import org.example.command.get.GetAllUserPage;

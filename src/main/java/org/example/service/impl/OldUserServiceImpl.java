@@ -1,13 +1,18 @@
 package org.example.service.impl;
 
 import org.example.model.User;
-import org.example.repository.UserRepository;
 import org.example.service.DatabaseService;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.LinkedHashSet;
 
-import static java.sql.Connection.*;
+import static java.sql.Connection.TRANSACTION_READ_UNCOMMITTED;
+import static java.sql.Connection.TRANSACTION_READ_COMMITTED;
+import static java.sql.Connection.TRANSACTION_REPEATABLE_READ;
 
 public class OldUserServiceImpl {
 
