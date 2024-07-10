@@ -24,7 +24,7 @@ import static java.sql.Connection.TRANSACTION_REPEATABLE_READ;
 public class UserRepositoryImpl implements UserRepository {
 
     private static UserRepository instance;
-    private final DatabaseService databaseService = DatabaseService.getInstance();
+    private static final DatabaseService databaseService = DatabaseService.getInstance();
     private final UserMapper userMapper = UserMapperImpl.getInstance();
 
     private static final String INSERT_USERS_SQL = "INSERT INTO user_info (first_name, second_name, age, team) VALUES (?, ?, ?, ?)";
