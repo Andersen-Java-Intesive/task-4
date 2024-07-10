@@ -10,6 +10,7 @@ import org.example.service.MarkService;
 import org.example.service.UserService;
 import org.example.service.impl.MarkServiceImpl;
 import org.example.service.impl.UserServiceImpl;
+import org.example.validation.util.ValidateMarkUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +37,9 @@ public class CreateMarks implements UsersCommand {
                         double userMark = Double.parseDouble(userMarkStr);
                         double pairedUserMark = Double.parseDouble(pairedUserMarkStr);
                         Mark mark = new Mark(0, lessonDate, user.getId(), userMark, pairedUser.getId(), pairedUserMark);
-                        markService.add(markMapper.mapMarkToMarkDto(mark));
+                        MarkDto markDto = markMapper.mapMarkToMarkDto(mark);
+                        ValidateMarkUtils.validate(markDto);
+                        markService.add(markDto);
                     }
                 }
             }
