@@ -4,12 +4,11 @@ import org.example.dto.MarkDto;
 import org.example.mapper.MarkMapper;
 import org.example.model.Mark;
 
-
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.util.UUID;
 
 public class MarkMapperImpl implements MarkMapper {
     private static MarkMapper instance;
@@ -52,11 +51,11 @@ public class MarkMapperImpl implements MarkMapper {
     public Mark mapResultSetToMark(ResultSet resultSet) {
         try {
             return Mark.builder()
-                    .id(resultSet.getInt("id"))
+                    .id(UUID.fromString(resultSet.getString("id")))
                     .lessonDate(resultSet.getDate("lesson_date"))
-                    .userOneId(resultSet.getInt("user_one_id"))
+                    .userOneId(UUID.fromString(resultSet.getString("user_one_id")))
                     .userOneMark(resultSet.getDouble("user_one_mark"))
-                    .userTwoId(resultSet.getInt("user_two_id"))
+                    .userTwoId(UUID.fromString(resultSet.getString("user_two_id")))
                     .userTwoMark(resultSet.getDouble("user_two_mark"))
                     .build();
         } catch (SQLException e) {
@@ -70,11 +69,11 @@ public class MarkMapperImpl implements MarkMapper {
         try {
             String id = httpServletRequest.getParameter("id");
             markDto = MarkDto.builder()
-                    .id(id == null ? null : Integer.parseInt(id))
+                    .id(id == null ? null : UUID.fromString(id))
                     .lessonDate(Date.valueOf(httpServletRequest.getParameter("lesson_date")))
-                    .userOneId(Integer.parseInt(httpServletRequest.getParameter("user_one_id")))
+                    .userOneId(UUID.fromString(httpServletRequest.getParameter("user_one_id")))
                     .userOneMark(Double.valueOf(httpServletRequest.getParameter("user_one_mark")))
-                    .userTwoId(Integer.parseInt(httpServletRequest.getParameter("user_two_id")))
+                    .userTwoId(UUID.fromString(httpServletRequest.getParameter("user_two_id")))
                     .userTwoMark(Double.valueOf(httpServletRequest.getParameter("user_two_mark")))
                     .build();
         } catch (Exception e) {

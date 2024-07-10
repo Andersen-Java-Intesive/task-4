@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User find(int id) {
+    public User find(UUID id) {
         return userRepository.getById(id);
     }
 
@@ -67,7 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(UUID id) {
         LinkedHashSet<Mark> marks = markRepository.getAll();
         marks.forEach(mark -> {
             if (mark.getUserOneId() == id) {
@@ -87,7 +88,6 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-
     @Override
     public void generateUserPairs() {
         List<User> orangeTeamUsers = new ArrayList<>(userRepository.getAllByTeam(Team.ORANGE_TEAM));
@@ -100,11 +100,10 @@ public class UserServiceImpl implements UserService {
         createPairsWithHistory(orangeTeamUsers, pinkTeamUsers, pairHistory);
     }
 
-
     private Map<Pair<User, User>, Integer> loadPairHistory() {
 
         LinkedHashSet<User> allUsers = userRepository.getAll();
-        Map<Integer, User> userMap = allUsers.stream().collect(Collectors.toMap(User::getId, user -> user));
+        Map<UUID, User> userMap = allUsers.stream().collect(Collectors.toMap(User::getId, user -> user));
 
         LinkedHashSet<Mark> allMarks = markRepository.getAll();
         Map<Pair<User, User>, Integer> pairHistory = new HashMap<>();

@@ -7,6 +7,7 @@ import org.example.service.impl.UserServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.UUID;
 
 public class DeleteUser implements UsersCommand {
 
@@ -14,7 +15,7 @@ public class DeleteUser implements UsersCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        UUID id = UUID.fromString(request.getParameter("id"));
         userService.remove(id);
         response.sendRedirect("users");
     }

@@ -10,17 +10,18 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.UUID;
 
 public interface MarkService {
     boolean add(MarkDto markDto);
 
-    Mark find(int id);
+    Mark find(UUID id);
 
     LinkedHashSet<Mark> findAll();
 
     void edit(MarkDto markDto);
 
-    void remove(int id);
+    void remove(UUID id);
 
     LinkedHashSet<Pair<Date, Map<User, Double>>> groupMarksByLessonDate(LinkedHashSet<Mark> allMarks);
 

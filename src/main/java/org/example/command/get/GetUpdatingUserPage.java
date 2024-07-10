@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.UUID;
 
 public class GetUpdatingUserPage implements UsersCommand {
 
@@ -16,7 +17,7 @@ public class GetUpdatingUserPage implements UsersCommand {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        UUID id = UUID.fromString(request.getParameter("id"));
         User user = userService.find(id);
         request.setAttribute("user", user);
         request.getRequestDispatcher("/WEB-INF/views/updateUser.jsp").forward(request, response);
