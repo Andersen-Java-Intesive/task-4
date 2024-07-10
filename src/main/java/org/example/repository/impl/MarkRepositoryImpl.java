@@ -45,7 +45,7 @@ public class MarkRepositoryImpl implements MarkRepository {
         try (Connection connection = databaseService.getConnection(TRANSACTION_READ_UNCOMMITTED)) {
             connection.setAutoCommit(false);
             try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_MARKS_SQL)) {
-                preparedStatement.setTimestamp(1, markDto.getLessonDate());
+                preparedStatement.setDate(1, markDto.getLessonDate());
                 preparedStatement.setInt(2, markDto.getUserOneId());
                 preparedStatement.setDouble(3, markDto.getUserOneMark());
                 preparedStatement.setInt(4, markDto.getUserTwoId());
@@ -100,7 +100,7 @@ public class MarkRepositoryImpl implements MarkRepository {
             connection.setAutoCommit(false);
             try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MARKS_SQL)) {
                 if (getById(markDto.getId()) != null) {
-                    preparedStatement.setTimestamp(1, markDto.getLessonDate());
+                    preparedStatement.setDate(1, markDto.getLessonDate());
                     preparedStatement.setInt(2, markDto.getUserOneId());
                     preparedStatement.setDouble(3, markDto.getUserOneMark());
                     preparedStatement.setInt(4, markDto.getUserTwoId());

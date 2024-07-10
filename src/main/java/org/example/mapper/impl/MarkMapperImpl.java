@@ -6,6 +6,7 @@ import org.example.model.Mark;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -52,7 +53,7 @@ public class MarkMapperImpl implements MarkMapper {
         try {
             return Mark.builder()
                     .id(resultSet.getInt("id"))
-                    .lessonDate(resultSet.getTimestamp("lesson_date"))
+                    .lessonDate(resultSet.getDate("lesson_date"))
                     .userOneId(resultSet.getInt("user_one_id"))
                     .userOneMark(resultSet.getDouble("user_one_mark"))
                     .userTwoId(resultSet.getInt("user_two_id"))
@@ -70,7 +71,7 @@ public class MarkMapperImpl implements MarkMapper {
             String id = httpServletRequest.getParameter("id");
             markDto = MarkDto.builder()
                     .id(id == null ? null : Integer.parseInt(id))
-                    .lessonDate(Timestamp.valueOf(httpServletRequest.getParameter("lesson_date")))
+                    .lessonDate(Date.valueOf(httpServletRequest.getParameter("lesson_date")))
                     .userOneId(Integer.parseInt(httpServletRequest.getParameter("user_one_id")))
                     .userOneMark(Double.valueOf(httpServletRequest.getParameter("user_one_mark")))
                     .userTwoId(Integer.parseInt(httpServletRequest.getParameter("user_two_id")))

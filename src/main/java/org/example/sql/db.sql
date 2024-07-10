@@ -9,7 +9,7 @@ CREATE TABLE users (
 CREATE TABLE marks
 (
     id           SERIAL PRIMARY KEY,
-    lesson_date  TIMESTAMP NOT NULL,
+    lesson_date  DATE NOT NULL,
     user_one_id  INT NOT NULL,
     user_one_mark DOUBLE PRECISION,
     user_two_id  INT NOT NULL,

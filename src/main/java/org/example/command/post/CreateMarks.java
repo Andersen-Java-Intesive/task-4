@@ -13,6 +13,7 @@ import org.example.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.LinkedHashSet;
 
@@ -24,7 +25,7 @@ public class CreateMarks implements UsersCommand {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String lessonDateStr = request.getParameter("lessonDate");
-        Timestamp lessonDate = Timestamp.valueOf(lessonDateStr + " 00:00:00");
+        Date lessonDate = Date.valueOf(lessonDateStr);
         LinkedHashSet<User> users = userService.findAll();
         for (User user : users) {
             for (User pairedUser : users) {

@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +21,7 @@ import java.sql.Timestamp;
 @Builder
 public class MarkDto {
     private int id;
-    private Timestamp lessonDate;
+    private Date lessonDate;
     private int userOneId;
     private Double userOneMark;
     private int userTwoId;

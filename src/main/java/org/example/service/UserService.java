@@ -24,7 +24,7 @@ public interface UserService {
 
     void generateUserPairs();
 
-    void createPairsBySmallerTeam(List<User> smallerTeam, List<User> largerTeam);
+    void createPairsWithHistory(List<User> orangeTeamUsers, List<User> pinkTeamUsers, Map<Pair<User, User>, Integer> pairHistory);
 
     void incrementPairHistory(User user1, User user2);
 

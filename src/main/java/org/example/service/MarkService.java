@@ -6,6 +6,7 @@ import org.example.model.Mark;
 import org.example.model.User;
 import org.example.service.impl.Pair;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -21,7 +22,7 @@ public interface MarkService {
 
     void remove(int id);
 
-    LinkedHashSet<Pair<Timestamp, Map<User, Double>>> groupMarksByLessonDate(LinkedHashSet<Mark> allMarks);
+    LinkedHashSet<Pair<Date, Map<User, Double>>> groupMarksByLessonDate(LinkedHashSet<Mark> allMarks);
 
-    Map<User, Double> getUserTotalScores(LinkedHashSet<Pair<Timestamp, Map<User, Double>>> lessons);
+    Map<User, Double> getUserTotalScores(LinkedHashSet<Pair<Date, Map<User, Double>>> lessons);
 }
