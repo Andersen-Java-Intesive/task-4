@@ -79,6 +79,9 @@ public class UserServiceImpl implements UserService {
                 mark.setUserTwoId(mark.getUserOneId());
                 markRepository.update(MarkMapperImpl.getInstance().mapMarkToMarkDto(mark));
             }
+            if (mark.getUserOneId() == id && mark.getUserTwoId() == id) {
+                markRepository.deleteById(mark.getId());
+            }
         });
         userRepository.deleteById(id);
     }
