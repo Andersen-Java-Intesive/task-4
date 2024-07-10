@@ -24,11 +24,11 @@ public class OldUserServiceImpl {
 
         try (Connection connection = DatabaseService.getInstance().getConnection(TRANSACTION_READ_UNCOMMITTED)) {
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO user_info (first_name, second_name, age) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO users (first_name, second_name, age) VALUES (?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.setString(1, user.getFirstName());
                 preparedStatement.setString(2, user.getSecondName());
-                preparedStatement.setInt(3, user.getAge());
+                preparedStatement.setDate(3, user.getAge());
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 connection.rollback();
@@ -46,7 +46,7 @@ public class OldUserServiceImpl {
         Connection connection = DatabaseService.getInstance().getConnection(TRANSACTION_READ_COMMITTED);
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM user_info where id =" + id);
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM users where id =" + id);
             if (resultSet.next()) {
                 return createUser(resultSet);
             }
@@ -64,7 +64,7 @@ public class OldUserServiceImpl {
             Statement statement = connection.createStatement();
             try {
                 if (findById(id) != null) {
-                    statement.execute("DELETE FROM user_info where id =" + id);
+                    statement.execute("DELETE FROM users where id =" + id);
                 }
             } catch (SQLException e) {
                 connection.rollback();
@@ -80,14 +80,14 @@ public class OldUserServiceImpl {
     public void update(User user) {
         try (Connection connection = DatabaseService.getInstance().getConnection(TRANSACTION_REPEATABLE_READ)) {
             connection.setAutoCommit(false);
-            String sql = "UPDATE user_info SET first_name = ?, second_name = ?, age = ? WHERE id = ?";
+            String sql = "UPDATE users SET first_name = ?, second_name = ?, age = ? WHERE id = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 if (findById(user.getId()) == null) {
                     throw new RuntimeException("User with id " + user.getId() + " not found");
                 }
                 preparedStatement.setString(1, user.getFirstName());
                 preparedStatement.setString(2, user.getSecondName());
-                preparedStatement.setInt(3, user.getAge());
+                preparedStatement.setDate(3, user.getAge());
                 preparedStatement.setInt(4, user.getId());
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
@@ -104,7 +104,7 @@ public class OldUserServiceImpl {
         LinkedHashSet<User> users = new LinkedHashSet<>();
         try (Connection connection = DatabaseService.getInstance().getConnection(TRANSACTION_READ_COMMITTED)) {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM user_info");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
             while (resultSet.next()) {
                 users.add(createUser(resultSet));
             }
@@ -117,7 +117,7 @@ public class OldUserServiceImpl {
     private User createUser(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setId(resultSet.getInt("id"));
-        user.setAge(resultSet.getInt("age"));
+        user.setAge(resultSet.getDate("age"));
         user.setFirstName(resultSet.getString("first_name"));
         user.setSecondName(resultSet.getString("second_name"));
         return user;

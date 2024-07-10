@@ -72,7 +72,7 @@ public class OldUserServiceImplTest {
         userDto.setId(2);
         userDto.setFirstName("Arthur");
         userDto.setSecondName("Auskern");
-        userDto.setAge(33);
+        userDto.setAge(new Date(0,1,1));
 
         when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement); // Возвращение мока подготовленного запроса.
 
@@ -81,7 +81,7 @@ public class OldUserServiceImplTest {
         verify(mockConnection).setAutoCommit(false); // Проверка, что setAutoCommit был вызван с параметром false.
         verify(mockPreparedStatement).setString(1, "Arthur"); // Проверка, что setString был вызван с нужными параметрами.
         verify(mockPreparedStatement).setString(2, "Auskern");
-        verify(mockPreparedStatement).setInt(3, 33);
+        verify(mockPreparedStatement).setDate(3, new Date(0,1,1));
         verify(mockPreparedStatement).executeUpdate(); // Проверка, что executeUpdate был вызван.
         verify(mockConnection).commit(); // Проверка, что commit был вызван.
         assertTrue(result); // Проверка, что результат метода create был true.
@@ -93,7 +93,7 @@ public class OldUserServiceImplTest {
         when(mockResultSet.getInt("id")).thenReturn(1); // Возвращение значения 1 при вызове getInt.
         when(mockResultSet.getString("first_name")).thenReturn("Arnold"); // Возвращение строки "Arnold" при вызове getString.
         when(mockResultSet.getString("second_name")).thenReturn("Schwarzenegger");
-        when(mockResultSet.getInt("age")).thenReturn(76);
+        when(mockResultSet.getDate("age")).thenReturn(new Date(0,1,1));
 
         User user = userServiceImpl.findById(1); // Вызов метода findById.
 
@@ -101,7 +101,7 @@ public class OldUserServiceImplTest {
         assertEquals(1, user.getId()); // Проверка, что id пользователя равен 1.
         assertEquals("Arnold", user.getFirstName()); // Проверка, что firstName пользователя равен "Arnold".
         assertEquals("Schwarzenegger", user.getSecondName());
-        assertEquals(76, user.getAge());
+        assertEquals(new Date(0,1,1), user.getAge());
     }
 
     @Test
@@ -109,7 +109,7 @@ public class OldUserServiceImplTest {
         when(mockResultSet.next()).thenReturn(true); // Возвращение true при вызове next.
         userServiceImpl.deleteById(1); // Вызов метода deleteById.
         verify(mockConnection).setAutoCommit(false); // Проверка, что setAutoCommit был вызван с параметром false.
-        verify(mockStatement).execute("DELETE FROM user_info where id =1"); // Проверка, что execute был вызван с нужным SQL запросом.
+        verify(mockStatement).execute("DELETE FROM users where id =1"); // Проверка, что execute был вызван с нужным SQL запросом.
         verify(mockConnection).commit(); // Проверка, что commit был вызван.
     }
 
@@ -119,7 +119,7 @@ public class OldUserServiceImplTest {
         userDto.setId(1);
         userDto.setFirstName("Sylvester");
         userDto.setSecondName("Stallone");
-        userDto.setAge(77);
+        userDto.setAge(new Date(0,1,1));
 
         when(mockResultSet.next()).thenReturn(true); // Возвращение true при вызове next.
 
@@ -128,7 +128,7 @@ public class OldUserServiceImplTest {
         verify(mockConnection).setAutoCommit(false); // Проверка, что setAutoCommit был вызван с параметром false.
         verify(mockPreparedStatement).setString(1, "Sylvester"); // Проверка, что setString был вызван с нужными параметрами.
         verify(mockPreparedStatement).setString(2, "Stallone");
-        verify(mockPreparedStatement).setInt(3, 77);
+        verify(mockPreparedStatement).setDate(3, new Date(0,1,1));
         verify(mockPreparedStatement).executeUpdate(); // Проверка, что executeUpdate был вызван.
         verify(mockConnection).commit(); // Проверка, что commit был вызван.
     }
@@ -148,9 +148,9 @@ public class OldUserServiceImplTest {
         when(mockResultSet.getString("second_name"))
                 .thenReturn("Schwarzenegger") // Возвращение строки "Schwarzenegger" при первом вызове getString.
                 .thenReturn("Stallone"); // Возвращение строки "Stallone" при втором вызове getString.
-        when(mockResultSet.getInt("age"))
-                .thenReturn(76) // Возвращение значения 76 при первом вызове getInt.
-                .thenReturn(77); // Возвращение значения 77 при втором вызове getInt.
+        when(mockResultSet.getDate("age"))
+                .thenReturn(new Date(0,1,1)) // Возвращение значения 76 при первом вызове getInt.
+                .thenReturn(new Date(0,1,1)); // Возвращение значения 77 при втором вызове getInt.
 
         LinkedHashSet<User> users = userServiceImpl.all(); // Вызов метода all.
 
@@ -163,12 +163,12 @@ public class OldUserServiceImplTest {
         assertEquals(1, user1.getId()); // Проверка, что id первого пользователя равен 1.
         assertEquals("Arnold", user1.getFirstName()); // Проверка, что firstName первого пользователя равен "Arnold".
         assertEquals("Schwarzenegger", user1.getSecondName());
-        assertEquals(76, user1.getAge());
+        assertEquals(new Date(0,1,1), user1.getAge());
 
         User user2 = iterator.next(); // Получение второго пользователя.
         assertEquals(2, user2.getId()); // Проверка, что id второго пользователя равен 2.
         assertEquals("Sylvester", user2.getFirstName()); // Проверка, что firstName второго пользователя равен "Sylvester".
         assertEquals("Stallone", user2.getSecondName());
-        assertEquals(77, user2.getAge());
+        assertEquals(new Date(0,1,1), user2.getAge());
     }
 }

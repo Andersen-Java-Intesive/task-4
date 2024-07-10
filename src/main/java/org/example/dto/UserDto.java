@@ -16,6 +16,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
@@ -37,9 +38,8 @@ public class UserDto {
     @Pattern(regexp = "^[A-Za-z \\s]*$", message = "No non-latin characters or punctuation allowed")
     private String secondName;
 
-    @Min(value = 0, message = "Age is improbable")
-    @Max(value = 999, message = "Age is improbable")
-    private Integer age;
+    @NotNull(message = "Age field is required")
+    private Date age;
 
     @NotBlank(message = "Empty Team field")
     @ValidTeam

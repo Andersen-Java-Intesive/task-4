@@ -1,134 +1,120 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>User pairs</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Users list</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             margin: 0;
             padding: 0;
         }
-
-        h2 {
-            text-align: center;
-            color: #333;
+        .container {
+            margin-top: 50px;
         }
-
-        table {
-            width: 60%;
+        .table-wrapper {
             margin: 20px auto;
-            border-collapse: collapse;
             background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .button-container {
-            text-align: center;
-            margin: 20px;
-        }
-
-        .button-container form {
-            display: inline;
-        }
-
         .pink-team {
             background-color: pink;
         }
-
         .orange-team {
             background-color: orange;
         }
-
     </style>
 </head>
 <body>
 <div class="container">
-    <h2>User pairs</h2>
+    <h2 class="text-center">Users list</h2>
     <div class="table-wrapper">
-        <table class="table table-striped">
-            <thead class="thead-dark">
-                <thead>
-                <tr>
-                    <th>Team</th>
-                    <th>First Name</th>
-                    <th>Second Name</th>
-                    <th>VS</th>
-                    <th>Team</th>
-                    <th>First Name</th>
-                    <th>Second Name</th>
-                </tr>
-                </thead>
-            <tbody>
-            <c:forEach var="pair" items="${pairs}">
-                <tr>
-                    <td class="${pair.getKey().team == 'PINK_TEAM' ? 'pink-team' : (pair.getKey().team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.getKey().team}</td>
-                    <td class="${pair.getKey().team == 'PINK_TEAM' ? 'pink-team' : (pair.getKey().team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.getKey().firstName}</td>
-                    <td class="${pair.getKey().team == 'PINK_TEAM' ? 'pink-team' : (pair.getKey().team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.getKey().secondName}</td>
-                    <td>VS</td>
-                    <td class="${pair.getValue().team == 'PINK_TEAM' ? 'pink-team' : (pair.getValue().team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.getValue().team}</td>
-                    <td class="${pair.getValue().team == 'PINK_TEAM' ? 'pink-team' : (pair.getValue().team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.getValue().firstName}</td>
-                    <td class="${pair.getValue().team == 'PINK_TEAM' ? 'pink-team' : (pair.getValue().team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.getValue().secondName}</td>
-                </tr>
-            </c:forEach>
-            </tbody>
-            </table>
+        <form action="addMarks" method="post">
+            <div class="form-group">
+                <label for="lessonDate">Select Lesson Date:</label>
+                <input type="date" id="lessonDate" name="lessonDate" class="form-control" required>
+            </div>
+            <h2 class="text-center">User pairs</h2>
+            <div class="table-wrapper">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Team</th>
+                        <th>First Name</th>
+                        <th>Second Name</th>
+                        <th>User Mark</th>
+                        <th>VS</th>
+                        <th>User Mark</th>
+                        <th>Team</th>
+                        <th>First Name</th>
+                        <th>Second Name</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="pair" items="${pairs}">
+                        <tr>
+                            <td class="${pair.key.team == 'PINK_TEAM' ? 'pink-team' : (pair.key.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.key.team}</td>
+                            <td class="${pair.key.team == 'PINK_TEAM' ? 'pink-team' : (pair.key.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.key.firstName}</td>
+                            <td class="${pair.key.team == 'PINK_TEAM' ? 'pink-team' : (pair.key.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.key.secondName}</td>
+                            <td><input type="number" name="userMark_${pair.key.id}_${pair.value.id}" class="form-control" step="0.5" min="0" max="6" required></td>
+                            <td>VS</td>
+                            <td><input type="number" name="pairedUserMark_${pair.key.id}_${pair.value.id}" class="form-control" step="0.5" min="0" max="6" required></td>
+                            <td class="${pair.value.team == 'PINK_TEAM' ? 'pink-team' : (pair.value.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.value.team}</td>
+                            <td class="${pair.value.team == 'PINK_TEAM' ? 'pink-team' : (pair.value.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.value.firstName}</td>
+                            <td class="${pair.value.team == 'PINK_TEAM' ? 'pink-team' : (pair.value.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.value.secondName}</td>
+
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-success">Save Marks</button>
+            </div>
+        </form>
     </div>
     <h2>Pairless users</h2>
-    <div class="table-wrapper">
-        <table class="table table-striped">
-            <thead class="thead-dark">
-            <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Second Name</th>
-                <th>Age</th>
-                <th>Team</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="user" items="${pairlessUsers}">
+        <div class="table-wrapper">
+            <table class="table table-striped">
+                <thead class="thead-dark">
                 <tr>
-                    <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.id}</td>
-                    <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.firstName}</td>
-                    <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.secondName}</td>
-                    <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.age}</td>
-                    <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.team}</td>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Second Name</th>
+                    <th>Age</th>
+                    <th>Team</th>
                 </tr>
-            </c:forEach>
-            </tbody>
-
-        </table>
+                </thead>
+                <tbody>
+                <c:forEach var="user" items="${pairlessUsers}">
+                    <tr>
+                        <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.id}</td>
+                        <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.firstName}</td>
+                        <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.secondName}</td>
+                        <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.age}</td>
+                        <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.team}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    <div class="text-center mt-3">
+            <div class="button-container">
+                <a href="users" class="btn btn-secondary ml-2">Back to users list</a>
+            </div>
+        <form action="formPairs" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-warning">Form Pairs</button>
+        </form>
     </div>
-    <div class="button-container">
-        <a href="users" class="btn btn-secondary ml-2">Back to users list</a>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
-            integrity="sha384-i2Dk1UqD5V2ZYYGw5kU6B9PV2ClstcBlt8qD4VAzRD1LkhdpdQ6yo4ZDQ4Ow+1Fm"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+pbzo5ml+726UlfqB5Z3Nvxca5bK41EPXmY"
-            crossorigin="anonymous"></script>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
