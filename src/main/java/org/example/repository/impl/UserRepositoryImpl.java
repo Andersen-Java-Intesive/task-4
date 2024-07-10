@@ -21,12 +21,12 @@ public class UserRepositoryImpl implements UserRepository {
     private final DatabaseService databaseService = DatabaseService.getInstance();
     private final UserMapper userMapper = UserMapperImpl.getInstance();
 
-    private static final String INSERT_USERS_SQL = "INSERT INTO user_info (first_name, second_name, age, team) VALUES (?, ?, ?, ?)";
-    private static final String SELECT_USER_BY_ID = "SELECT id, first_name, second_name, age, team FROM user_info WHERE id = ?";
-    private static final String SELECT_ALL_USERS = "SELECT id, first_name, second_name, age, team FROM user_info ORDER BY id ASC";
-    private static final String SELECT_ALL_USERS_BY_TEAM = "SELECT id, first_name, second_name, age, team FROM user_info WHERE team = ? ORDER BY id ASC";
-    private static final String UPDATE_USERS_SQL = "UPDATE user_info SET first_name = ?, second_name = ?, age = ?, team = ? WHERE id = ?;";
-    private static final String DELETE_USERS_SQL = "DELETE FROM user_info WHERE id = ?;";
+    private static final String INSERT_USERS_SQL = "INSERT INTO users (name, surname, age, team) VALUES (?, ?, ?, ?)";
+    private static final String SELECT_USER_BY_ID = "SELECT id, name, surname, age, team FROM users WHERE id = ?";
+    private static final String SELECT_ALL_USERS = "SELECT id, name, surname, age, team FROM users ORDER BY id ASC";
+    private static final String SELECT_ALL_USERS_BY_TEAM = "SELECT id, name, surname, age, team FROM users WHERE team = ? ORDER BY id ASC";
+    private static final String UPDATE_USERS_SQL = "UPDATE users SET name = ?, surname = ?, age = ?, team = ? WHERE id = ?;";
+    private static final String DELETE_USERS_SQL = "DELETE FROM users WHERE id = ?;";
 
     private UserRepositoryImpl() {
     }
@@ -45,7 +45,7 @@ public class UserRepositoryImpl implements UserRepository {
             try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL)) {
                 preparedStatement.setString(1, userDto.getFirstName());
                 preparedStatement.setString(2, userDto.getSecondName());
-                preparedStatement.setInt(3, userDto.getAge());
+                preparedStatement.setDate(3, userDto.getAge());
                 preparedStatement.setString(4, userDto.getTeam().toString());
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
@@ -116,7 +116,7 @@ public class UserRepositoryImpl implements UserRepository {
                 if (getById(userDto.getId()) != null) {
                     preparedStatement.setString(1, userDto.getFirstName());
                     preparedStatement.setString(2, userDto.getSecondName());
-                    preparedStatement.setInt(3, userDto.getAge());
+                    preparedStatement.setDate(3, userDto.getAge());
                     preparedStatement.setString(4, userDto.getTeam().toString());
                     preparedStatement.setInt(5, userDto.getId());
                     preparedStatement.executeUpdate();

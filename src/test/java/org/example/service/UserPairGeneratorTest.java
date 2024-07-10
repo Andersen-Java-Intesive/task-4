@@ -9,6 +9,8 @@ import org.example.service.impl.Pair;
 import org.example.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +28,9 @@ public class UserPairGeneratorTest {
     @BeforeEach
     public void setUp() {
         user1 = new User();
-        candidate1 = new User(1,"Candidate1", "new", 25, Team.ORANGE_TEAM);
-        candidate2 = new User(2,"Candidate2","new", 25, Team.ORANGE_TEAM);
-        candidate3 = new User(3,"Candidate3","new", 25, Team.ORANGE_TEAM);
+        candidate1 = new User(1,"Candidate1", "new", new Date(0,1,1), Team.ORANGE_TEAM);
+        candidate2 = new User(2,"Candidate2","new", new Date(0,1,1), Team.ORANGE_TEAM);
+        candidate3 = new User(3,"Candidate3","new", new Date(0,1,1), Team.ORANGE_TEAM);
 
         pairHistory = new HashMap<>();
         pairHistory.put(new Pair<>(user1, candidate1), 1);

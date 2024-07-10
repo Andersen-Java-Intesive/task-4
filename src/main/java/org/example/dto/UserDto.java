@@ -6,6 +6,7 @@ import org.example.validation.annotation.NotBlankNotNullNotEmpty;
 import org.example.validation.annotation.ValidTeam;
 
 import javax.validation.constraints.*;
+import java.sql.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,9 +29,8 @@ public class UserDto {
     @Pattern(regexp = "^[A-Za-z \\s]*$", message = "No non-latin characters or punctuation allowed")
     private String secondName;
 
-    @Min(value = 0, message = "Age is improbable")
-    @Max(value = 999, message = "Age is improbable")
-    private Integer age;
+    @NotNull(message = "Age field is required")
+    private Date age;
 
     @NotBlank(message = "Empty Team field")
     @ValidTeam

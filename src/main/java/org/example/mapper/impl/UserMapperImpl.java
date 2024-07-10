@@ -7,6 +7,7 @@ import org.example.model.enums.Team;
 import org.example.model.User;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -42,9 +43,9 @@ public class UserMapperImpl implements UserMapper {
         try {
             user = User.builder()
                     .id(resultSet.getInt("id"))
-                    .firstName(resultSet.getString("first_name"))
-                    .secondName(resultSet.getString("second_name"))
-                    .age(resultSet.getInt("age"))
+                    .firstName(resultSet.getString("name"))
+                    .secondName(resultSet.getString("surname"))
+                    .age(resultSet.getDate("age"))
                     .team(Team.valueOf(resultSet.getString("team")))
                     .build();
         } catch (SQLException e) {
@@ -52,7 +53,6 @@ public class UserMapperImpl implements UserMapper {
         }
         return user;
     }
-
 
     @Override
     public UserDto mapRequestToUserDto(HttpServletRequest httpServletRequest) {
@@ -63,7 +63,7 @@ public class UserMapperImpl implements UserMapper {
                     .id(id == null ? null : Integer.parseInt(id))
                     .firstName(httpServletRequest.getParameter("firstName"))
                     .secondName(httpServletRequest.getParameter("secondName"))
-                    .age(Integer.parseInt(httpServletRequest.getParameter("age")))
+                    .age(Date.valueOf(httpServletRequest.getParameter("age")))
                     .team(httpServletRequest.getParameter("team"))
                     .build();
         } catch (Exception e) {
