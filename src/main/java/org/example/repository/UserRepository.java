@@ -15,7 +15,7 @@ public interface UserRepository {
 
     LinkedHashSet<User> getAll();
 
-    LinkedHashSet<User> getAllByTeam(Team team);
+    LinkedHashSet<User> getAllByTeam(String team);
 
     void update(UserDto userDto);
 

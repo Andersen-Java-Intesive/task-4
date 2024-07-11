@@ -90,8 +90,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void generateUserPairs() {
-        List<User> orangeTeamUsers = new ArrayList<>(userRepository.getAllByTeam(Team.ORANGE_TEAM));
-        List<User> pinkTeamUsers = new ArrayList<>(userRepository.getAllByTeam(Team.PINK_TEAM));
+        List<User> orangeTeamUsers = new ArrayList<>(userRepository.getAllByTeam("orange"));
+        List<User> pinkTeamUsers = new ArrayList<>(userRepository.getAllByTeam("pink"));
         Map<Pair<User, User>, Integer> pairHistory = loadPairHistory();
 
         userPairs = new LinkedList<>();
