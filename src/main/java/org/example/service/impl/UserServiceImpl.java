@@ -134,10 +134,9 @@ public class UserServiceImpl implements UserService {
         for (User user : smallerTeam) {
             User pairUser = getWeightedRandomUser(user, largerTeam, pairHistory);
             userPairs.add(new AbstractMap.SimpleEntry<>(user, pairUser));
-            usedUsers.add(pairUser);
+            largerTeam.remove(pairUser);
         }
 
-        largerTeam.removeAll(usedUsers);
         pairlessUsers.addAll(largerTeam);
     }
 
