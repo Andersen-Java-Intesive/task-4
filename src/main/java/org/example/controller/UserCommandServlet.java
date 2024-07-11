@@ -17,32 +17,25 @@ import java.util.Arrays;
 @WebServlet(urlPatterns = {"/users", "/"})
 public class UserCommandServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             UsersCommand command = UsersCommandFactory.getCommand(request);
             command.execute(request, response);
-        } catch (UserNotFoundException e) {
-            handleException(response, request, "UserNotFoundException", e);
-        } catch (DatabaseOperationException e) {
-            handleException(response, request, "DatabaseOperationException", e);
         } catch (Exception e) {
-            handleException(response, request, "Exception", e);
-        }
-    }
+            log.error("Exception occurred during processRequest(): {}", e.getMessage(), e);
+            log.debug(Arrays.asList(e.getStackTrace()).toString());
 
-    private void handleException(HttpServletResponse response, HttpServletRequest request, String exceptionType, Exception e) throws IOException {
-        String errorMessage = "/error.jsp?error=" + exceptionType + ": " + e.getMessage();
-        response.sendRedirect(request.getContextPath() + errorMessage);
-        log.error(e.getMessage(), e);
-        log.debug(Arrays.asList(e.getStackTrace()).toString());
+            String errorMessage = "/error.jsp?error=Exception: " + e.getMessage();
+            response.sendRedirect(request.getContextPath() + errorMessage);
+        }
     }
 }
