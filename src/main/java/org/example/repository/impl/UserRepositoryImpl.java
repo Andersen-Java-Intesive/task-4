@@ -26,7 +26,7 @@ import static java.sql.Types.OTHER;
 public class UserRepositoryImpl implements UserRepository {
 
     private static UserRepository instance;
-    private final DatabaseService databaseService = DatabaseService.getInstance();
+    private static final DatabaseService databaseService = DatabaseService.getInstance();
     private final UserMapper userMapper = UserMapperImpl.getInstance();
 
     private static final String INSERT_USERS_SQL = "INSERT INTO users (name, surname, age, team) VALUES (?, ?, ?, ?)";
