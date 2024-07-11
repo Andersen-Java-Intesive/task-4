@@ -221,22 +221,22 @@ public class UserServiceImplTest {
         List<User> mockOrangeUsers = new LinkedList<>();
         UUID userIdOrange1 = UUID.randomUUID();
         UUID userIdOrange2 = UUID.randomUUID();
-        User orangeUser1 = new User(userIdOrange1, "orangename1", "orangesecond1", new Date(2000, 1, 1), "ORANGE_TEAM");
-        User orangeUser2 = new User(userIdOrange2, "orangename2", "orangesecond2", new Date(2000, 1, 1), "ORANGE_TEAM");
+        User orangeUser1 = new User(userIdOrange1, "orangename1", "orangesecond1", new Date(2000, 1, 1), "orange");
+        User orangeUser2 = new User(userIdOrange2, "orangename2", "orangesecond2", new Date(2000, 1, 1), "orange");
         mockOrangeUsers.add(orangeUser1);
         mockOrangeUsers.add(orangeUser2);
 
         List<User> mockPinkUsers = new LinkedList<>();
         UUID userIdPink1 = UUID.randomUUID();
         UUID userIdPink2 = UUID.randomUUID();
-        User pinkUser1 = new User(userIdPink1, "pinkname1", "pinksecond1", new Date(2000, 1, 1), "PINK_TEAM");
-        User pinkUser2 = new User(userIdPink2, "pinksecond2", "pinksecond2", new Date(2000, 1, 1), "PINK_TEAM");
+        User pinkUser1 = new User(userIdPink1, "pinkname1", "pinksecond1", new Date(2000, 1, 1), "pink");
+        User pinkUser2 = new User(userIdPink2, "pinksecond2", "pinksecond2", new Date(2000, 1, 1), "pink");
         mockPinkUsers.add(pinkUser1);
         mockPinkUsers.add(pinkUser2);
 
 
-        when(userRepository.getAllByTeam("ORANGE_TEAM")).thenReturn(new  LinkedHashSet<>(mockOrangeUsers));
-        when(userRepository.getAllByTeam("PINK_TEAM")).thenReturn(new LinkedHashSet<>(mockPinkUsers));
+        when(userRepository.getAllByTeam("orange")).thenReturn(new  LinkedHashSet<>(mockOrangeUsers));
+        when(userRepository.getAllByTeam("pink")).thenReturn(new LinkedHashSet<>(mockPinkUsers));
 
         userService.generateUserPairs();
 
@@ -248,11 +248,11 @@ public class UserServiceImplTest {
         for (Map.Entry<User, User> pair : userPairs) {
             User orangeUser = pair.getKey();
             User pinkUser = pair.getValue();
-            assertEquals("ORANGE_TEAM", orangeUser.getTeam());
-            assertEquals("PINK_TEAM", pinkUser.getTeam());
+            assertEquals("orange", orangeUser.getTeam());
+            assertEquals("pink", pinkUser.getTeam());
         }
 
-        verify(userRepository, times(1)).getAllByTeam("ORANGE_TEAM");
-        verify(userRepository, times(1)).getAllByTeam("PINK_TEAM");
+        verify(userRepository, times(1)).getAllByTeam("orange");
+        verify(userRepository, times(1)).getAllByTeam("pink");
     }
 }
