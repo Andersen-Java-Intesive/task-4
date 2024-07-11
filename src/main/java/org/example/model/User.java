@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.example.model.enums.Team;
 
 import java.sql.Date;
 import java.util.UUID;
@@ -25,6 +24,6 @@ public class User {
     private String firstName;
     private String secondName;
     private Date age;
-    private Team team;
+    private String team;
 
 }

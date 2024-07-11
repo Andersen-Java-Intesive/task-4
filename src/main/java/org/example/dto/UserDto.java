@@ -42,6 +42,5 @@ public class UserDto {
     private Date age;
 
     @NotBlank(message = "Empty Team field")
-    @ValidTeam
     private String team;
 }

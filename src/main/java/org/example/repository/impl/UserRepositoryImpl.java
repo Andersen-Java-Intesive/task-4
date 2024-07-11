@@ -6,7 +6,6 @@ import org.example.exception.UserNotFoundException;
 import org.example.mapper.UserMapper;
 import org.example.mapper.impl.UserMapperImpl;
 import org.example.model.User;
-import org.example.model.enums.Team;
 import org.example.repository.UserRepository;
 import org.example.service.DatabaseService;
 
@@ -54,7 +53,7 @@ public class UserRepositoryImpl implements UserRepository {
                 preparedStatement.setString(1, userDto.getFirstName());
                 preparedStatement.setString(2, userDto.getSecondName());
                 preparedStatement.setDate(3, userDto.getAge());
-                preparedStatement.setObject(4, userDto.getTeam(), OTHER);
+                preparedStatement.setString(4, userDto.getTeam());
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 connection.rollback();
@@ -100,11 +99,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public LinkedHashSet<User> getAllByTeam(Team team) {
+    public LinkedHashSet<User> getAllByTeam(String team) {
         LinkedHashSet<User> users = new LinkedHashSet<>();
         try (Connection connection = databaseService.getConnection(TRANSACTION_READ_COMMITTED)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS_BY_TEAM)) {
-                preparedStatement.setString(1, team.toString());
+                preparedStatement.setString(1, team);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     users.add(userMapper.mapResultSetToUser(resultSet));
@@ -125,7 +124,7 @@ public class UserRepositoryImpl implements UserRepository {
                     preparedStatement.setString(1, userDto.getFirstName());
                     preparedStatement.setString(2, userDto.getSecondName());
                     preparedStatement.setDate(3, userDto.getAge());
-                    preparedStatement.setString(4, userDto.getTeam().toString());
+                    preparedStatement.setString(4, userDto.getTeam());
                     preparedStatement.setObject(5, userDto.getId(), OTHER);
                     preparedStatement.executeUpdate();
                 } else {

@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.dto.UserDto;
 import org.example.mapper.UserMapper;
 import org.example.model.User;
-import org.example.model.enums.Team;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
@@ -34,7 +33,7 @@ public class UserMapperImpl implements UserMapper {
                 userDto.getFirstName(),
                 userDto.getSecondName(),
                 userDto.getAge(),
-                Team.valueOf(userDto.getTeam())
+                userDto.getTeam()
         );
     }
 
@@ -47,7 +46,7 @@ public class UserMapperImpl implements UserMapper {
                     .firstName(resultSet.getString("name"))
                     .secondName(resultSet.getString("surname"))
                     .age(resultSet.getDate("age"))
-                    .team(Team.value(resultSet.getString("team")))
+                    .team(resultSet.getString("team"))
                     .build();
         } catch (SQLException e) {
             throw new RuntimeException(e);

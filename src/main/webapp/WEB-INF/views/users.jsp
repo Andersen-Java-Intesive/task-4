@@ -57,7 +57,7 @@
             </thead>
             <tbody>
             <c:forEach var="user" items="${users}">
-                <tr class="${user.team == 'PINK_TEAM' ? 'pink-team' : 'orange-team'}">
+                <tr class="${user.team == 'pink' ? 'pink-team' : (user.team == 'orange' ? 'orange-team' : '')}">
                     <td>${user.id}</td>
                     <td>${user.firstName}</td>
                     <td>${user.secondName}</td>

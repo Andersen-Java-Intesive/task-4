@@ -130,7 +130,7 @@ public class UserServiceImplTest {
         mockUser.setFirstName("Nurdos");
         mockUser.setSecondName("Ramazan");
         mockUser.setAge(new Date(2000, 1, 1));
-        mockUser.setTeam(Team.PINK_TEAM);
+        mockUser.setTeam("PINK_TEAM");
 
         when(userRepository.getById(userId)).thenReturn(mockUser);
 
@@ -140,7 +140,7 @@ public class UserServiceImplTest {
         assertEquals("Nurdos", foundUser.getFirstName());
         assertEquals("Ramazan", foundUser.getSecondName());
         assertEquals(new Date(2000, 1, 1), foundUser.getAge());
-        assertEquals(Team.PINK_TEAM, foundUser.getTeam());
+        assertEquals("PINK_TEAM", foundUser.getTeam());
     }
 
     @Test
@@ -148,8 +148,8 @@ public class UserServiceImplTest {
         LinkedHashSet<User> mockUsers = new LinkedHashSet<>();
         UUID userId1 = UUID.randomUUID();
         UUID userId2 = UUID.randomUUID();
-        User user1 = new User(userId1, "name1", "second1", new Date(2000, 1, 1), Team.ORANGE_TEAM);
-        User user2 = new User(userId2, "name2", "second2", new Date(2000, 1, 1), Team.PINK_TEAM);
+        User user1 = new User(userId1, "name1", "second1", new Date(2000, 1, 1), "ORANGE_TEAM");
+        User user2 = new User(userId2, "name2", "second2", new Date(2000, 1, 1), "PINK_TEAM");
         mockUsers.add(user1);
         mockUsers.add(user2);
 
@@ -165,12 +165,12 @@ public class UserServiceImplTest {
                 assertEquals("name1", user.getFirstName());
                 assertEquals("second1", user.getSecondName());
                 assertEquals(new Date(2000, 1, 1), user.getAge());
-                assertEquals(Team.ORANGE_TEAM, user.getTeam());
+                assertEquals("ORANGE_TEAM", user.getTeam());
             } else if (user.getId().equals(userId2)) {
                 assertEquals("name2", user.getFirstName());
                 assertEquals("second2", user.getSecondName());
                 assertEquals(new Date(2000, 1, 1), user.getAge());
-                assertEquals(Team.PINK_TEAM, user.getTeam());
+                assertEquals("PINK_TEAM", user.getTeam());
             } else {
                 fail("Unexpected user ID: " + user.getId());
             }
@@ -184,7 +184,7 @@ public class UserServiceImplTest {
         UUID userId = UUID.randomUUID();
         UserDto updatedUserDto = new UserDto(userId, "newName", "newSecond", new Date(2000, 1, 1), "ORANGE_TEAM");
 
-        User existingUser = new User(userId, "exisingName", "existings", new Date(2000, 1, 1), Team.PINK_TEAM);
+        User existingUser = new User(userId, "exisingName", "existings", new Date(2000, 1, 1), "PINK_TEAM");
         when(userRepository.getById(userId)).thenReturn(existingUser);
 
         userService.edit(updatedUserDto);
@@ -195,7 +195,7 @@ public class UserServiceImplTest {
         UserDto capturedUserDto = userDtoCaptor.getValue();
         assertEquals(updatedUserDto, capturedUserDto);
 
-        User updatedUser = new User(userId, "newName", "newSecond", new Date(2000, 1, 1), Team.ORANGE_TEAM);
+        User updatedUser = new User(userId, "newName", "newSecond", new Date(2000, 1, 1), "ORANGE_TEAM");
         when(userRepository.getById(userId)).thenReturn(updatedUser);
 
         User fetchedUser = userRepository.getById(userId);
@@ -221,22 +221,22 @@ public class UserServiceImplTest {
         List<User> mockOrangeUsers = new LinkedList<>();
         UUID userIdOrange1 = UUID.randomUUID();
         UUID userIdOrange2 = UUID.randomUUID();
-        User orangeUser1 = new User(userIdOrange1, "orangename1", "orangesecond1", new Date(2000, 1, 1), Team.ORANGE_TEAM);
-        User orangeUser2 = new User(userIdOrange2, "orangename2", "orangesecond2", new Date(2000, 1, 1), Team.ORANGE_TEAM);
+        User orangeUser1 = new User(userIdOrange1, "orangename1", "orangesecond1", new Date(2000, 1, 1), "ORANGE_TEAM");
+        User orangeUser2 = new User(userIdOrange2, "orangename2", "orangesecond2", new Date(2000, 1, 1), "ORANGE_TEAM");
         mockOrangeUsers.add(orangeUser1);
         mockOrangeUsers.add(orangeUser2);
 
         List<User> mockPinkUsers = new LinkedList<>();
         UUID userIdPink1 = UUID.randomUUID();
         UUID userIdPink2 = UUID.randomUUID();
-        User pinkUser1 = new User(userIdPink1, "pinkname1", "pinksecond1", new Date(2000, 1, 1), Team.PINK_TEAM);
-        User pinkUser2 = new User(userIdPink2, "pinksecond2", "pinksecond2", new Date(2000, 1, 1), Team.PINK_TEAM);
+        User pinkUser1 = new User(userIdPink1, "pinkname1", "pinksecond1", new Date(2000, 1, 1), "PINK_TEAM");
+        User pinkUser2 = new User(userIdPink2, "pinksecond2", "pinksecond2", new Date(2000, 1, 1), "PINK_TEAM");
         mockPinkUsers.add(pinkUser1);
         mockPinkUsers.add(pinkUser2);
 
 
-        when(userRepository.getAllByTeam(Team.ORANGE_TEAM)).thenReturn(new  LinkedHashSet<>(mockOrangeUsers));
-        when(userRepository.getAllByTeam(Team.PINK_TEAM)).thenReturn(new LinkedHashSet<>(mockPinkUsers));
+        when(userRepository.getAllByTeam("ORANGE_TEAM")).thenReturn(new  LinkedHashSet<>(mockOrangeUsers));
+        when(userRepository.getAllByTeam("PINK_TEAM")).thenReturn(new LinkedHashSet<>(mockPinkUsers));
 
         userService.generateUserPairs();
 
@@ -248,11 +248,11 @@ public class UserServiceImplTest {
         for (Map.Entry<User, User> pair : userPairs) {
             User orangeUser = pair.getKey();
             User pinkUser = pair.getValue();
-            assertEquals(Team.ORANGE_TEAM, orangeUser.getTeam());
-            assertEquals(Team.PINK_TEAM, pinkUser.getTeam());
+            assertEquals("ORANGE_TEAM", orangeUser.getTeam());
+            assertEquals("PINK_TEAM", pinkUser.getTeam());
         }
 
-        verify(userRepository, times(1)).getAllByTeam(Team.ORANGE_TEAM);
-        verify(userRepository, times(1)).getAllByTeam(Team.PINK_TEAM);
+        verify(userRepository, times(1)).getAllByTeam("ORANGE_TEAM");
+        verify(userRepository, times(1)).getAllByTeam("PINK_TEAM");
     }
 }

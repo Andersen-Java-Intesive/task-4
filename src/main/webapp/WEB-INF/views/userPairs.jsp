@@ -60,15 +60,15 @@
                     <tbody>
                     <c:forEach var="pair" items="${pairs}">
                         <tr>
-                            <td class="${pair.key.team == 'PINK_TEAM' ? 'pink-team' : (pair.key.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.key.team}</td>
-                            <td class="${pair.key.team == 'PINK_TEAM' ? 'pink-team' : (pair.key.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.key.firstName}</td>
-                            <td class="${pair.key.team == 'PINK_TEAM' ? 'pink-team' : (pair.key.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.key.secondName}</td>
+                            <td class="${pair.key.team == 'pink' ? 'pink-team' : (pair.key.team == 'orange' ? 'orange-team' : '')}">${pair.key.team}</td>
+                            <td class="${pair.key.team == 'pink' ? 'pink-team' : (pair.key.team == 'orange' ? 'orange-team' : '')}">${pair.key.firstName}</td>
+                            <td class="${pair.key.team == 'pink' ? 'pink-team' : (pair.key.team == 'orange' ? 'orange-team' : '')}">${pair.key.secondName}</td>
                             <td><input type="number" name="userMark_${pair.key.id}_${pair.value.id}" class="form-control" step="0.5" min="0" max="6" required></td>
                             <td>VS</td>
                             <td><input type="number" name="pairedUserMark_${pair.key.id}_${pair.value.id}" class="form-control" step="0.5" min="0" max="6" required></td>
-                            <td class="${pair.value.team == 'PINK_TEAM' ? 'pink-team' : (pair.value.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.value.team}</td>
-                            <td class="${pair.value.team == 'PINK_TEAM' ? 'pink-team' : (pair.value.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.value.firstName}</td>
-                            <td class="${pair.value.team == 'PINK_TEAM' ? 'pink-team' : (pair.value.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${pair.value.secondName}</td>
+                            <td class="${pair.value.team == 'pink' ? 'pink-team' : (pair.value.team == 'orange' ? 'orange-team' : '')}">${pair.value.team}</td>
+                            <td class="${pair.value.team == 'pink' ? 'pink-team' : (pair.value.team == 'orange' ? 'orange-team' : '')}">${pair.value.firstName}</td>
+                            <td class="${pair.value.team == 'pink' ? 'pink-team' : (pair.value.team == 'orange' ? 'orange-team' : '')}">${pair.value.secondName}</td>
 
                         </tr>
                     </c:forEach>
@@ -95,11 +95,11 @@
                 <tbody>
                 <c:forEach var="user" items="${pairlessUsers}">
                     <tr>
-                        <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.id}</td>
-                        <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.firstName}</td>
-                        <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.secondName}</td>
-                        <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.age}</td>
-                        <td class="${user.team == 'PINK_TEAM' ? 'pink-team' : (user.team == 'ORANGE_TEAM' ? 'orange-team' : '')}">${user.team}</td>
+                        <td class="${user.team == 'pink' ? 'pink-team' : (user.team == 'orange' ? 'orange-team' : '')}">${user.id}</td>
+                        <td class="${user.team == 'pink' ? 'pink-team' : (user.team == 'orange' ? 'orange-team' : '')}">${user.firstName}</td>
+                        <td class="${user.team == 'pink' ? 'pink-team' : (user.team == 'orange' ? 'orange-team' : '')}">${user.secondName}</td>
+                        <td class="${user.team == 'pink' ? 'pink-team' : (user.team == 'orange' ? 'orange-team' : '')}">${user.age}</td>
+                        <td class="${user.team == 'pink' ? 'pink-team' : (user.team == 'orange' ? 'orange-team' : '')}">${user.team}</td>
                     </tr>
                 </c:forEach>
                 </tbody>

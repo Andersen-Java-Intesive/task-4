@@ -29,9 +29,9 @@ public class UserPairGeneratorTest {
     @BeforeEach
     public void setUp() {
         user1 = new User();
-        candidate1 = new User(UUID.randomUUID(),"Candidate1", "new", new Date(0,1,1), Team.ORANGE_TEAM);
-        candidate2 = new User(UUID.randomUUID(),"Candidate2","new", new Date(0,1,1), Team.ORANGE_TEAM);
-        candidate3 = new User(UUID.randomUUID(),"Candidate3","new", new Date(0,1,1), Team.ORANGE_TEAM);
+        candidate1 = new User(UUID.randomUUID(),"Candidate1", "new", new Date(0,1,1), "ORANGE_TEAM");
+        candidate2 = new User(UUID.randomUUID(),"Candidate2","new", new Date(0,1,1), "ORANGE_TEAM");
+        candidate3 = new User(UUID.randomUUID(),"Candidate3","new", new Date(0,1,1), "ORANGE_TEAM");
 
         pairHistory = new HashMap<>();
         pairHistory.put(new Pair<>(user1, candidate1), 1);
