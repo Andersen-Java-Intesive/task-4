@@ -71,12 +71,12 @@ public class UserServiceImpl implements UserService {
     public void remove(UUID id) {
         LinkedHashSet<Mark> marks = markRepository.getAll();
         marks.forEach(mark -> {
-            if (mark.getUserOneId() == id) {
+            if (mark.getUserOneId().toString().equals(id.toString())) {
                 mark.setUserOneMark(mark.getUserTwoMark());
                 mark.setUserOneId(mark.getUserTwoId());
                 markRepository.update(MarkMapperImpl.getInstance().mapMarkToMarkDto(mark));
             }
-            if (mark.getUserTwoId() == id) {
+            if (mark.getUserTwoId().toString().equals(id.toString())) {
                 mark.setUserTwoMark(mark.getUserOneMark());
                 mark.setUserTwoId(mark.getUserOneId());
                 markRepository.update(MarkMapperImpl.getInstance().mapMarkToMarkDto(mark));

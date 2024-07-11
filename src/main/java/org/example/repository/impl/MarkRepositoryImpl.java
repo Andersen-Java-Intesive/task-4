@@ -68,7 +68,7 @@ public class MarkRepositoryImpl implements MarkRepository {
     public Mark getById(UUID id) {
         try (Connection connection = databaseService.getConnection(TRANSACTION_READ_COMMITTED)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_MARK_BY_ID)) {
-                preparedStatement.setString(1, id.toString());
+                preparedStatement.setObject(1, id.toString(), OTHER);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     return markMapper.mapResultSetToMark(resultSet);

@@ -1,9 +1,9 @@
 package org.example.model.enums;
 
 public enum Team {
-    NO_TEAM("noteam"),
-    ORANGE_TEAM("orange"),
-    PINK_TEAM("pink");
+    NO_TEAM("NO_TEAM"),
+    ORANGE_TEAM("ORANGE_TEAM"),
+    PINK_TEAM("PINK_TEAM");
 
     private final String teamName;
 
@@ -17,7 +17,7 @@ public enum Team {
 
     public static Team fromString(String teamName) {
         for (Team team : Team.values()) {
-            if (team.teamName.equalsIgnoreCase(teamName)) {
+            if (team.teamName.equalsIgnoreCase(teamName) || team.name().equalsIgnoreCase(teamName)) {
                 return team;
             }
         }
