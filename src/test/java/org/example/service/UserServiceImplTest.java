@@ -24,7 +24,12 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.UUID;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.LinkedList;
 
 import static java.sql.Connection.TRANSACTION_READ_UNCOMMITTED;
 import static org.junit.Assert.assertTrue;
@@ -63,7 +68,6 @@ public class UserServiceImplTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        // Mock static methods and fields
         PowerMockito.mockStatic(UserRepository.class);
         PowerMockito.mockStatic(MarkRepository.class);
         PowerMockito.mockStatic(DatabaseService.class);
@@ -71,14 +75,12 @@ public class UserServiceImplTest {
         Whitebox.setInternalState(UserRepositoryImpl.class, "databaseService", mockDatabaseService);
         Whitebox.setInternalState(DatabaseService.class, "instance", mockDatabaseService);
 
-        // Manually create UserServiceImpl instance
         Map<Pair<User, User>, Integer> mockPairHistory = new HashMap<>();
         userService = new UserServiceImpl(mockPairHistory);
 
         Whitebox.setInternalState(userService, "userRepository", userRepository);
         Whitebox.setInternalState(userService, "markRepository", markRepository);
 
-        // Mock connection and prepared statement
         mockConnection = mock(Connection.class);
         mockPreparedStatement = mock(PreparedStatement.class);
         when(mockDatabaseService.getConnection(anyInt())).thenReturn(mockConnection);
@@ -90,43 +92,28 @@ public class UserServiceImplTest {
 
     @Test
     public void testAdd() throws SQLException {
-        // Mock UserSerivce and UserRepository
-        //UserRepository userRepositoryMock = mock(UserRepository.class);
         UserServiceImpl userService = (UserServiceImpl) UserServiceImpl.getInstance();
 
-        // Mock static methods of repository
-        //PowerMockito.mockStatic(UserRepositoryImpl.class);
-        //when(UserRepositoryImpl.getInstance()).thenReturn(userRepositoryMock);
-
-        // Prepare userDto
         UserDto userDto = new UserDto();
         userDto.setFirstName("Nurdos");
         userDto.setSecondName("Ramazan");
         userDto.setAge(new Date(2000, 1, 1));
         userDto.setTeam("PINK_TEAM");
 
-        // Mock database interaction
         Connection mockConnection = mock(Connection.class);
         PreparedStatement mockStatement = mock(PreparedStatement.class);
 
-        // Mock database service to return mock connection
         DatabaseService mockDatabaseService = mock(DatabaseService.class);
         when(mockDatabaseService.getConnection(anyInt())).thenReturn(mockConnection);
 
-        // Mock statement execution
         when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
         when(mockStatement.executeUpdate()).thenReturn(1); // Simulate successful execution
 
-        // Set mock database service for verifiers
         Whitebox.setInternalState(UserRepositoryImpl.class, "databaseService", mockDatabaseService);
 
-        // Invoke method under test
         boolean result = userService.add(userDto);
 
-        // Assert the result
         assertTrue(result);
-
-        // Verify interactions
         verify(mockDatabaseService).getConnection(TRANSACTION_READ_UNCOMMITTED);
         verify(mockConnection).setAutoCommit(false);
         verify(mockConnection).commit();
@@ -253,26 +240,18 @@ public class UserServiceImplTest {
 
         userService.generateUserPairs();
 
-        // Get generated pairs and pairless users
         List<Map.Entry<User, User>> userPairs = userService.getUserPairs();
 
-        // Assertions
         assertNotNull(userPairs);
         assertEquals(2, userPairs.size());
 
-        // Verify pairs individually
         for (Map.Entry<User, User> pair : userPairs) {
             User orangeUser = pair.getKey();
             User pinkUser = pair.getValue();
-            // Assert the pair's correctness based on your expected logic
-            // Example assertions (adjust according to your actual logic)
             assertEquals(Team.ORANGE_TEAM, orangeUser.getTeam());
             assertEquals(Team.PINK_TEAM, pinkUser.getTeam());
-            // Verify specific attributes as needed
-            // assertEquals(expectedValue, actualValue);
         }
 
-        // Verify repository interactions
         verify(userRepository, times(1)).getAllByTeam(Team.ORANGE_TEAM);
         verify(userRepository, times(1)).getAllByTeam(Team.PINK_TEAM);
     }

@@ -12,9 +12,6 @@ public class NotBlankNotNullNotEmptyValidator implements ConstraintValidator<Not
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null || value.isEmpty() || value.isBlank()) {
-            return false;
-        }
-        return true;
+        return value != null && !value.isEmpty() && !value.isBlank();
     }
 }

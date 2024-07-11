@@ -1,6 +1,6 @@
 package org.example.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 import org.example.model.User;
@@ -11,7 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
-import java.util.*;
+import java.util.Map;
+import java.util.UUID;
+import java.util.HashMap;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class UserPairGeneratorTest {
