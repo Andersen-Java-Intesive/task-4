@@ -47,7 +47,7 @@ public class UserMapperImpl implements UserMapper {
                     .firstName(resultSet.getString("name"))
                     .secondName(resultSet.getString("surname"))
                     .age(resultSet.getDate("age"))
-                    .team(Team.valueOf(resultSet.getString("team")))
+                    .team(Team.value(resultSet.getString("team")))
                     .build();
         } catch (SQLException e) {
             throw new RuntimeException(e);
